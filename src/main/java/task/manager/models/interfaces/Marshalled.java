@@ -1,6 +1,6 @@
-package sample.model.interfaces;
+package task.manager.models.interfaces;
 
-import sample.model.Journal;
+import task.manager.models.Journal;
 
 import java.io.IOException;
 
