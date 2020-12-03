@@ -14,14 +14,13 @@ import java.util.Date;
 
 public class ReadJournalForFile {
 
-    // переделат на бинарное считывание потом, не по таску а самого журнала сразу!
     public static Journal read(String filename) throws IOException {
         Journal journal = new Journal();
         BufferedReader br = new BufferedReader(new FileReader(filename));
-        int sizeList = Integer.parseInt( br.readLine());           // 1) считыввем число - размер журнала
+        int sizeList = Integer.parseInt( br.readLine());         
         for (int i = 0; i < sizeList; i++) {
-          Task task = new Task(Integer.parseInt(br.readLine()));   // создаем обект записи + id считываем
-          for (int j = 0; j< 4; j++){                              // заполняем остальными данными наши TASKs
+          Task task = new Task(Integer.parseInt(br.readLine()));   
+          for (int j = 0; j< 4; j++){                             
               if (j==0) {
                   task.setName( br.readLine());
                   continue;
