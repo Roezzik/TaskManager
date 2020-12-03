@@ -22,30 +22,17 @@ public class WriteJournalForFile {
             System.out.println("ошибка обнаружения файла");
         }
 
-        BufferedReader br = null; // нужен, чтобы узнать надо ли записывать CountTask
-        PrintWriter pw=null;
-        try {
-            pw = new PrintWriter( new FileWriter(file, true));
-            br = new BufferedReader(new FileReader(path));
-            if(br.equals("")) pw.println(journal.getCountTask()); // записываем в файл CountTask только если он пустой
-
-            pw.println(journal.getTaskByIndex(0));
-           //pw.close();
-        }catch (FileNotFoundException e){
-            // алерт
-            System.out.println("ошибка записи в файл!");
-        } catch (IOException e) {
-            // алерт
-            e.printStackTrace();
+      
+        try ( PrintWriter pw = new PrintWriter( new FileWriter(file, true));
+              BufferedReader br = new BufferedReader(new FileReader(path)) ) {
+            
+            if (br.equals("")) pw.println(journal.getCountTask()); // записываем в файл CountTask только если он пустой
+            for (int i=0; i< journal.getCountTask(); i++)
+                  pw.println(journal.getTaskByIndex(i));
         }
-        finally {
-            try {
-                pw.close();
-                br.close();
-            } catch (IOException e) {
-                //алерт - ошибка закрытия потоков
-                e.printStackTrace();
-            }
+        catch ( IOException e){
+            // алерт 
+            System.out.println("ошибка записи в файл!");
         }
     }
 }
