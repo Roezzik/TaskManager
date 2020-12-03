@@ -59,4 +59,6 @@ public class Task {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+
+	// todo implement default Object methods
 }

@@ -4,6 +4,7 @@ import sample.controller.resourсes.Dependences;
 import sample.model.Journal;
 import java.io.*;
 
+// todo the same like for ReadJournalForFile
 public class WriteJournalForFile {
     public static  void write(Journal journal, String path){
 
@@ -12,7 +13,7 @@ public class WriteJournalForFile {
         try {
             if(!file.exists()){
                 // тут алерт написать
-                System.out.println("файла не найдено!");
+                System.out.println("файла не найдено!"); // todo english and move all messages to constant class
                 // хотите ли вы создать файл? - можно реализовать
                //file.createNewFile();
                 return;

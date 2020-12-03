@@ -1,5 +1,6 @@
 package sample.controller.work_with_file.file;
 
+// todo this class do not work, imports is invalid
 import sample.model.Journal;
 import sample.model.enums.Status;
 import sample.model.Task;
@@ -12,6 +13,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+// todo read and write should be implement in one class, do not separate it to two classes
+// also you can create interface with two methods - read and write and do implementation for it for binary and txt
+
+// todo create interface Marshalled
+// this class will be TextMarshaller
+// binary class will be BinaryMarshaller
 public class ReadJournalForFile {
 
     public static Journal read(String filename) throws IOException {

@@ -8,7 +8,8 @@ public enum Status {
 	POSTPONED("Postponed"),
 	EXPIRED("Expired"),
 	CANCELLED("Cancelled");
-	
+
+	// what is title for this class? you can set Status.DONE or smthg else for tasks WO this field
 	private final String title;
 	
 	Status(String title) {
