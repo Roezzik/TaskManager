@@ -1,4 +1,4 @@
-package sample.model.interfaces;
+package task.manager.models.interfaces;
 
 public interface Journals {
 }
