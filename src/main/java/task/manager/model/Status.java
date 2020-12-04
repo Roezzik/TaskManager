@@ -1,4 +1,4 @@
-package task.manager.models;
+package task.manager.model;
 
 
 public enum Status {
