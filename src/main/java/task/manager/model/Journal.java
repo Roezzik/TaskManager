@@ -18,6 +18,10 @@ public class Journal {
         return Collections.unmodifiableMap(tasksMap);
     }
     
+    public Task getTask(int taskId) {
+        return tasksMap.get(taskId);
+    }
+    
     public void addTask(Task task) {
         tasksMap.put(task.getId(), task);
     }
@@ -41,5 +45,12 @@ public class Journal {
     @Override
     public int hashCode() {
         return tasksMap.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return "Journal{" +
+               "tasksMap=" + tasksMap +
+               '}';
     }
 }
