@@ -1,9 +1,10 @@
 package task.manager.controllers;
 
-import task.manager.models.Journal;
+
+import task.manager.model.Journal;
 
 public class Factory {
-    public Journal created(){
+    public Journal created() {
         return new Journal();
     }
 }
