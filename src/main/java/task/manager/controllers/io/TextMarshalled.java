@@ -16,6 +16,8 @@ public class TextMarshalled implements Marshalled {
     public static TextMarshalled getTextMarshaller() {
         return tm;
     }
+    
+    private TextMarshalled(){};
 
     @Override
     public Journal read(String path) throws IOException {
