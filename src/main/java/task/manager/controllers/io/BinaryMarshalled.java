@@ -11,6 +11,8 @@ public class BinaryMarshalled implements Marshalled {
     public static BinaryMarshalled getBinaryMarshalled() {
         return bm;
     }
+    
+    private BinaryMarshalled(){};
 
     @Override
     public Journal read(String path) {
