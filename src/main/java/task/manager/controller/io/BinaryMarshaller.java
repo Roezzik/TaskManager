@@ -1,19 +1,22 @@
-package task.manager.controllers.io;
+package task.manager.controller.io;
+
 
 import task.manager.model.Journal;
 
 import java.io.*;
 
-public class BinaryMarshalled implements Marshalled {
 
-    private static final BinaryMarshalled bm = new BinaryMarshalled();
-
-    public static BinaryMarshalled getBinaryMarshalled() {
+public class BinaryMarshaller implements Marshaller {
+    
+    private static final BinaryMarshaller bm = new BinaryMarshaller();
+    
+    public static BinaryMarshaller getBinaryMarshaller() {
         return bm;
     }
     
-    private BinaryMarshalled(){};
-
+    private BinaryMarshaller() {
+    }
+    
     @Override
     public Journal read(String path) {
         Journal journal = null;
@@ -25,10 +28,10 @@ public class BinaryMarshalled implements Marshalled {
         }
         return journal;
     }
-
+    
     @Override
     public void write(Journal journal, String path) {
-
+        
         try (FileOutputStream fos = new FileOutputStream(path);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(journal);
@@ -36,5 +39,5 @@ public class BinaryMarshalled implements Marshalled {
             e.printStackTrace();
         }
     }
-
+    
 }
