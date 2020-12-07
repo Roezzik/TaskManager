@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPaneEditTaskView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="203.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.manager.view.editForm.EditTaskController">
+    <Label layoutX="12.0" layoutY="13.0" text="Task Name"/>
+    <Label layoutX="12.0" layoutY="42.0" text="Task Description"/>
+    <Label layoutX="12.0" layoutY="135.0" text="Notification Date"/>
+    <TextField layoutX="112.0" layoutY="9.0" prefHeight="25.0" prefWidth="255.0"/>
+    <TextField layoutX="112.0" layoutY="41.0" minHeight="83.0" prefHeight="83.0" prefWidth="255.0"/>
+    <DatePicker layoutX="112.0" layoutY="131.0" prefHeight="25.0" prefWidth="255.0"/>
+    <Button layoutX="226.0" layoutY="166.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="67.0" text="Save"/>
+    <Button layoutX="300.0" layoutY="166.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="67.0"
+            text="Cancel"/>
+</AnchorPane>
