@@ -6,7 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
+// todo rename to DateConverter
 public class DateChange {
     
     public static String getStringDate(Date date) {
