@@ -76,7 +76,7 @@ public class MainFormController {
     @FXML
     private void initialize() throws IOException {
         
-        Map<Integer, Task>   tasksMap  = TextMarshaller.getTextMarshaller().read(Constants.FILE_PATH).getTasksMap();
+        Map<Integer, Task>   tasksMap  = TextMarshaller.getInstance().read(Constants.FILE_PATH).getTasksMap();
         ObservableList<Task> tasksData = FXCollections.observableArrayList();
         
         tasksMap.forEach((k, v) -> tasksData.add(v));
