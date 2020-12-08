@@ -15,7 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import task.manager.controller.Constants;
+import task.manager.controller.Setting;
 import task.manager.controller.io.BinaryMarshaller;
 import task.manager.controller.io.TextMarshaller;
 import task.manager.model.Task;
@@ -75,8 +75,7 @@ public class MainFormController {
     
     @FXML
     private void initialize() throws IOException {
-        
-        Map<Integer, Task>   tasksMap  = TextMarshaller.getInstance().read(Constants.FILE_PATH).getTasksMap();
+        Map<Integer, Task>   tasksMap  = TextMarshaller.getInstance().read(Setting.getPropertyValue("FILE_PATH")).getTasksMap();
         ObservableList<Task> tasksData = FXCollections.observableArrayList();
         
         tasksMap.forEach((k, v) -> tasksData.add(v));

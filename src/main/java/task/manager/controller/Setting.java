@@ -24,8 +24,8 @@ public class Setting {
     }
 
     //test main
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Integer x = Setting.getIntegerPropertyValue("x");
         System.out.println(x);
-    }
+    }*/
 }

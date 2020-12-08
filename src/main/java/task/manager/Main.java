@@ -14,20 +14,16 @@ import java.net.URL;
 
 public class Main extends Application {
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		URL    url  = new File("src/main/java/task/manager/view/mainForm/mainFormView.fxml").toURI().toURL();
-		Parent root = FXMLLoader.load(url);
-		primaryStage.setTitle("Task Manager");
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
-	}
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        URL url = new File("src/main/java/task/manager/view/mainForm/mainFormView.fxml").toURI().toURL();
+        Parent root = FXMLLoader.load(url);
+        primaryStage.setTitle("Task Manager");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+    }
 
-	public static void main(String[] args) {
-
-	launch(args);
-
-		Integer x = Setting.getIntegerPropertyValue("x");
-		System.out.println(x);
-	}
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

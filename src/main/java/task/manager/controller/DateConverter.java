@@ -6,16 +6,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-// todo rename to DateConverter
 public class DateConverter {
     
     public static String getStringDate(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+        DateFormat dateFormat = new SimpleDateFormat(Setting.getPropertyValue("DATE_FORMAT"));
         return dateFormat.format(date);
     }
     
     public static Date stringToDate(String stringDate) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+        DateFormat dateFormat = new SimpleDateFormat(Setting.getPropertyValue("DATE_FORMAT"));
         return dateFormat.parse(stringDate);
     }
 }

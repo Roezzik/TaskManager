@@ -1,7 +1,6 @@
 package task.manager.controller.io;
 
 
-import task.manager.controller.Constants;
 import task.manager.controller.DateConverter;
 import task.manager.model.Journal;
 import task.manager.model.Status;
@@ -69,7 +68,7 @@ public class TextMarshaller implements Marshaller {
     @Override
     public void write(Journal journal, String path) {
 
-        File file = new File(Constants.FILE_PATH);
+        File file = new File(path);
 
         try {
             if (!file.exists()) {
