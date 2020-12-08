@@ -2,15 +2,9 @@ package task.manager.view.addForm;
 
 
 import javafx.fxml.FXML;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 
 public class AddTaskController {
@@ -25,21 +19,41 @@ public class AddTaskController {
     private DatePicker notificationDate;
     
     @FXML
-    private TextField notificationHour;
+    private Spinner<Integer> notificationHour;
     
     @FXML
-    private TextField notificationMinute;
+    private Spinner<Integer> notificationMinute;
     
-    
-    //the method is an attempt to get the date and time for an alert from the form
-    //can be deleted
     @FXML
-    public Date getNotificationDateTime() throws ParseException {
-        String           date      = notificationDate.getValue().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        String           time      = (notificationHour.getText() + ":" + notificationMinute.getText());
-        String           dateTime  = (date + " " + time);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        return formatter.parse(dateTime);
+    private void initialize() {
+        initDatePicker();
+        initSpinner();
+    }
+
+//    public Date getNotificationDateTime() throws ParseException {
+//        //TODO: rewrite the method for getting the date
+//
+//    }
+    
+    @FXML
+    private void initDatePicker() {
+        LocalDate today = LocalDate.now();
+        notificationDate.setValue(today);
+        notificationDate.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
+    }
+    
+    private void initSpinner() {
+        SpinnerValueFactory<Integer> hourFactory   = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23);
+        SpinnerValueFactory<Integer> minuteFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59);
+        
+        notificationHour.setValueFactory(hourFactory);
+        notificationMinute.setValueFactory(minuteFactory);
     }
     
     //TODO

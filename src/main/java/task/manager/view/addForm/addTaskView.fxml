@@ -9,11 +9,13 @@
    <Label layoutX="12.0" layoutY="135.0" text="Notification Date" />
    <TextField fx:id="taskName" layoutX="112.0" layoutY="9.0" prefHeight="25.0" prefWidth="255.0" />
    <TextField fx:id="taskDescription" layoutX="112.0" layoutY="41.0" minHeight="83.0" prefHeight="83.0" prefWidth="255.0" />
-   <DatePicker fx:id="notificationDate" layoutX="112.0" layoutY="131.0" prefHeight="25.0" prefWidth="255.0" />
+   <DatePicker fx:id="notificationDate" editable="false" layoutX="112.0" layoutY="131.0" prefHeight="25.0" prefWidth="255.0" />
    <Button layoutX="300.0" layoutY="200.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="67.0" text="Add" />
    <Label layoutX="12.0" layoutY="167.0" text="Notification Time" />
-   <TextField fx:id="notificationHour" layoutX="178.0" layoutY="163.0" prefHeight="25.0" prefWidth="50.0" />
-   <Label layoutX="144.0" layoutY="167.0" text="Hour" />
-   <Label layoutX="240.0" layoutY="167.0" text="Minute" />
-   <TextField fx:id="notificationMinute" layoutX="284.0" layoutY="163.0" prefHeight="25.0" prefWidth="50.0" />
+<!--   <TextField fx:id="notificationHour" layoutX="178.0" layoutY="188.0" prefHeight="25.0" prefWidth="50.0" />-->
+   <Label layoutX="138.0" layoutY="167.0" text="Hour" />
+   <Label layoutX="236.0" layoutY="167.0" text="Minute" />
+<!--   <TextField fx:id="notificationMinute" layoutX="234.0" layoutY="188.0" prefHeight="25.0" prefWidth="50.0" />-->
+   <Spinner fx:id="notificationHour" layoutX="171.0" layoutY="163.0" prefHeight="25.0" prefWidth="59.0" />
+   <Spinner fx:id="notificationMinute" layoutX="280.0" layoutY="163.0" prefHeight="25.0" prefWidth="59.0" />
 </AnchorPane>
