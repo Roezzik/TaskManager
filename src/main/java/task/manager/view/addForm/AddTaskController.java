@@ -1,14 +1,30 @@
 package task.manager.view.addForm;
 
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+import task.manager.controller.Controller;
+import task.manager.controller.Setting;
+import task.manager.controller.io.TextMarshaller;
+import task.manager.model.Task;
 
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.time.LocalDate;
+
+import static task.manager.model.Status.SCHEDULED;
 
 
 public class AddTaskController {
-    
+
+    @FXML
+    public Button add;
+
     @FXML
     private TextField taskName;
     
@@ -23,9 +39,12 @@ public class AddTaskController {
     
     @FXML
     private Spinner<Integer> notificationMinute;
-    
+    private Object NullPointerException;
+    Controller controller;
+
     @FXML
-    private void initialize() {
+    private void initialize() throws IOException {
+        controller = new Controller();
         initDatePicker();
         initSpinner();
     }
@@ -55,6 +74,32 @@ public class AddTaskController {
         notificationHour.setValueFactory(hourFactory);
         notificationMinute.setValueFactory(minuteFactory);
     }
-    
+
+    public void clickadd(ActionEvent actionEvent) throws ParseException, IOException {
+        if (taskName.getText().equals("") || taskDescription.getText().equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Add eroor");
+            alert.setHeaderText(null);
+            alert.setContentText("\n" + "Fill in all the fields");
+            alert.showAndWait();
+        } else {
+            String name = taskName.getText();
+            String description = taskDescription.getText();
+            Date date = Date.valueOf(notificationDate.getValue());
+            Timestamp timestamp = new Timestamp(date.getTime());
+            timestamp.setHours(notificationHour.getValue());
+            timestamp.setMinutes(notificationMinute.getValue());
+            System.out.println(timestamp);
+            Task task = new Task(1, name, description, timestamp, SCHEDULED);
+            controller = new Controller();
+            controller.addTask(task);
+            Stage stage = (Stage) add.getScene().getWindow();
+            stage.close();
+            TextMarshaller textMarshaller = TextMarshaller.getInstance();
+            textMarshaller.write(controller.get(), Setting.getPropertyValue("FILE_PATH"));
+        }
+    }
+
+
     //TODO
 }

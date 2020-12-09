@@ -72,7 +72,7 @@ public class MainFormController {
     
     @FXML
     private Button deleteButton;
-    
+
     @FXML
     private void initialize() throws IOException {
         Map<Integer, Task>   tasksMap  = TextMarshaller.getInstance().read(Setting.getPropertyValue("FILE_PATH")).getTasksMap();
@@ -128,7 +128,8 @@ public class MainFormController {
             Stage  stage = new Stage();
             stage.setTitle("Add Task");
             stage.setScene(scene);
-            stage.show();
+            stage.showAndWait();
+            initialize();
         } catch (IOException e) {
             e.printStackTrace();
         }
