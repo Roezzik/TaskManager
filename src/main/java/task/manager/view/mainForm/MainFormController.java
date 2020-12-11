@@ -18,6 +18,8 @@ import javafx.util.Callback;
 import task.manager.controller.Setting;
 import task.manager.controller.io.BinaryMarshaller;
 import task.manager.controller.io.TextMarshaller;
+import task.manager.controller.test.WorkingWithNotifications;
+import task.manager.model.Journal;
 import task.manager.model.Task;
 
 import java.io.File;
@@ -95,6 +97,17 @@ public class MainFormController {
         addEditButtonToTable();
         
         tasksTable.setItems(tasksData);
+
+
+        //----------\
+        Journal journal = new Journal();
+        tasksMap.values().forEach( t -> {
+            journal.addTask(t);
+        });
+
+       WorkingWithNotifications.startAllTasks(journal);
+
+
     }
     
     @FXML
@@ -118,7 +131,8 @@ public class MainFormController {
     public void saveJournal(ActionEvent actionEvent) {
         //TODO
     }
-    
+
+
     @FXML
     public void openAddTaskView(ActionEvent event) {
         try {
