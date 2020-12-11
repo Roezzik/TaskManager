@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import task.manager.controller.Controller;
 import task.manager.controller.Setting;
 import task.manager.controller.io.BinaryMarshaller;
 import task.manager.controller.io.TextMarshaller;
@@ -28,6 +29,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.zip.CheckedOutputStream;
 
 
 public class MainFormController {
@@ -73,8 +75,10 @@ public class MainFormController {
     @FXML
     private Button deleteButton;
 
+    Controller controller;
     @FXML
     private void initialize() throws IOException {
+        controller = new Controller();
         Map<Integer, Task>   tasksMap  = TextMarshaller.getInstance().read(Setting.getPropertyValue("FILE_PATH")).getTasksMap();
         ObservableList<Task> tasksData = FXCollections.observableArrayList();
         
@@ -129,7 +133,7 @@ public class MainFormController {
             stage.setTitle("Add Task");
             stage.setScene(scene);
             stage.showAndWait();
-            initialize();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
