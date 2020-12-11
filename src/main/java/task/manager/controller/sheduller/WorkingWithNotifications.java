@@ -1,4 +1,4 @@
-package task.manager.controller.test;
+package task.manager.controller.sheduller;
 
 import task.manager.model.Journal;
 import task.manager.model.Status;
@@ -23,6 +23,7 @@ public abstract class WorkingWithNotifications {
         }
     }
 
+   /* //not tested
     // отмена таски (если эл-т существует, отменяем его, удаляем отменненный из очереди )
     public static void cancelNotification(int id, Journal journal) {
         if (timers.get(id) != null) {
@@ -41,7 +42,7 @@ public abstract class WorkingWithNotifications {
             timers.get(id).purge();
             //+перезапись файла
             journal.getTask(id).setStatus(Status.DONE);
-            timers.keySet().removeIf(key -> key == id); // удаляем из мапы
+            timers.keySet().removeIf(key -> key == id);
         }
     }
 
@@ -57,12 +58,12 @@ public abstract class WorkingWithNotifications {
         if (timers.get(task.getId()) != null) {
             timers.get(task.getId()).cancel();
             timers.get(task.getId()).purge();
-            //+перезапись файла
+            //+перезапись файла?
             timers.keySet().removeIf(key -> key == task.getId()); // удаляем из мапы
             // создаем с новыми параметрами
             timers.put(task.getId(), new Timer());
             timers.get(task.getId()).schedule(new ScheduledTask(task), task.getDate().getTime() - new Date().getTime());
         }
     }
-
+    */
 }
