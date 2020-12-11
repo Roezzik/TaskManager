@@ -34,6 +34,7 @@ public abstract class WorkingWithNotifications {
         }
     }
 
+    //not tested
     public static void doneNotification(int id, Journal journal) {
         if (timers.get(id) != null) {
             timers.get(id).cancel();
@@ -44,11 +45,13 @@ public abstract class WorkingWithNotifications {
         }
     }
 
+    //not tested
     public static void addNotification(Task task) {
         timers.put(task.getId(), new Timer());
         timers.get(task.getId()).schedule(new ScheduledTask(task), task.getDate().getTime() - new Date().getTime() + TIME_DELAY);
     }
 
+    //not tested
     public static void postponedNotification(Task task) {
         // останавливаем предыдущую запись и удаляем ее из потока и мапы
         if (timers.get(task.getId()) != null) {

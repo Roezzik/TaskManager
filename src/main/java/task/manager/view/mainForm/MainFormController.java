@@ -99,13 +99,10 @@ public class MainFormController {
         tasksTable.setItems(tasksData);
 
 
-        //----------\
+        //----------encourage sheduler ----------------------------
         Journal journal = new Journal();
-        tasksMap.values().forEach( t -> {
-            journal.addTask(t);
-        });
-
-       WorkingWithNotifications.startAllTasks(journal);
+        tasksMap.values().forEach( t -> journal.addTask(t));
+        WorkingWithNotifications.startAllTasks(journal);
 
 
     }
