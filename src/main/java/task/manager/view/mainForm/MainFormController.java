@@ -17,10 +17,11 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
-import task.manager.controller.Controller;
 import task.manager.controller.Setting;
 import task.manager.controller.io.BinaryMarshaller;
 import task.manager.controller.io.TextMarshaller;
+import task.manager.controller.sheduller.WorkingWithNotifications;
+import task.manager.model.Journal;
 import task.manager.model.Task;
 import task.manager.view.editForm.EditTaskController;
 
@@ -33,7 +34,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.zip.CheckedOutputStream;
 
 
 public class MainFormController {
@@ -79,9 +79,11 @@ public class MainFormController {
     @FXML
     private Button deleteButton;
 
+
     @FXML
     private void initialize() throws IOException {
-        Map<Integer, Task>   tasksMap  = Controller.getInstance().getTasksMap();
+        Map<Integer, Task>   tasksMap  = TextMarshaller.getInstance().read(Setting.getPropertyValue("FILE_PATH")).getTasksMap();
+
         ObservableList<Task> tasksData = FXCollections.observableArrayList();
         
         tasksMap.forEach((k, v) -> tasksData.add(v));
@@ -104,6 +106,11 @@ public class MainFormController {
         tasksTable.setEditable(true);
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        //----------encourage sheduller ----------------------------
+        Journal journal = new Journal();
+        tasksMap.values().forEach(t -> journal.addTask(t));
+        WorkingWithNotifications.startAllTasks(journal);
 
     }
 
@@ -151,6 +158,7 @@ public class MainFormController {
             stage.setScene(scene);
             stage.showAndWait();
             initialize();
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
