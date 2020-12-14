@@ -7,18 +7,34 @@ import task.manager.model.Task;
 import java.io.IOException;
 
 public class Controller {
-    private Journal journal;
+    private static Journal instance;
 
 
-    public Controller() throws IOException {
-        journal = TextMarshaller.getInstance().read(Setting.getPropertyValue("FILE_PATH"));
+    private Controller() {
     }
 
-    public void addTask(Task task){
-        this.journal.addTask(task);
+    public static Journal getInstance() throws IOException {
+        if (instance == null) {
+            instance = TextMarshaller.getInstance().read(Setting.getPropertyValue("FILE_PATH"));;
+        }
+        return instance;
     }
 
-    public Journal get(){
-        return journal;
+    public static void addTask(Task task) throws IOException {
+        getInstance().addTask(task);
     }
+
+    public static void updateTask(Task task) throws IOException {
+        getInstance().updateTask(task);
+    }
+
+    public static void deleteTask(int id) throws IOException {
+        getInstance().deleteTask(id);
+    }
+
+    public static void writeJournal() throws IOException {
+        TextMarshaller textMarshaller = TextMarshaller.getInstance();
+        TextMarshaller.getInstance().write(getInstance(), Setting.getPropertyValue("FILE_PATH"));
+    }
+
 }
