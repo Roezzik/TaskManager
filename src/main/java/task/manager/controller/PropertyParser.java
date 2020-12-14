@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class Setting {
+public class PropertyParser {
 
     public static String getPropertyValue(String PropertyName) {
         Properties properties = new Properties();
         String propertyValue = "";
 
-        try (InputStream inputStream = Setting.class.getClassLoader().getResourceAsStream("application.properties")) {
+        try (InputStream inputStream = PropertyParser.class.getClassLoader().getResourceAsStream("application.properties")) {
             properties.load(inputStream);
             propertyValue = properties.getProperty(PropertyName);
         } catch (IOException e) {

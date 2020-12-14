@@ -15,7 +15,7 @@ public class Controller {
     
     private Controller() throws IOException {
         //journal = new Journal();
-        journal = TextMarshaller.getInstance().read(Setting.getPropertyValue("FILE_PATH"));
+        journal = TextMarshaller.getInstance().read(PropertyParser.getPropertyValue("FILE_PATH"));
     }
     
     public static synchronized Controller getInstance() throws IOException {
