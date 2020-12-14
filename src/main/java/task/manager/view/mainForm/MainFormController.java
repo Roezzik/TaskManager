@@ -1,39 +1,18 @@
 package task.manager.view.mainForm;
 
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import javafx.util.Callback;
-import task.manager.controller.Setting;
-import task.manager.controller.io.BinaryMarshaller;
-import task.manager.controller.io.TextMarshaller;
-import task.manager.controller.sheduller.WorkingWithNotifications;
-import task.manager.model.Journal;
-import task.manager.model.Task;
-import task.manager.view.editForm.EditTaskController;
+import task.manager.controller.Controller;
+import task.manager.view.addForm.AddTaskForm;
+import task.manager.view.editForm.EditTaskForm;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
+import java.util.ArrayList;
 
 
 public class MainFormController {
@@ -45,27 +24,29 @@ public class MainFormController {
     private MenuItem saveJournalItem;
     
     @FXML
-    private TableView<Task> tasksTable;
+    private TableView<TaskRow> tasksTable;
     
     @FXML
-    private CheckBox selectAll;
+    private CheckBox checkBoxAllTasks;
     //TODO: create selectAll() method
     
-    //add checkbox in task model?
     @FXML
-    private TableColumn<Task, CheckBox> chooseColumn;
+    private TableColumn<TaskRow, CheckBox> checkColumn;
     
     @FXML
-    private TableColumn<Task, String> nameColumn;
+    private TableColumn<TaskRow, String> nameColumn;
     
     @FXML
-    private TableColumn<Task, String> descriptionColumn;
+    private TableColumn<TaskRow, String> descriptionColumn;
     
     @FXML
-    private TableColumn<Task, String> dateColumn;
+    private TableColumn<TaskRow, String> dateColumn;
     
     @FXML
-    private TableColumn<Task, String> statusColumn;
+    private TableColumn<TaskRow, String> statusColumn;
+    
+    @FXML
+    private TableColumn<TaskRow, String> editColumn;
     
     @FXML
     private Button editButton;
@@ -78,63 +59,48 @@ public class MainFormController {
     
     @FXML
     private Button deleteButton;
-
-
+    
+    private final ArrayList<TaskRow> taskRows;
+    
+    public MainFormController() {
+        this.taskRows = new ArrayList<>();
+    }
+    
+    public void refreshTable() throws IOException {
+        
+        taskRows.clear();
+        for (int i = 0; i < Controller.getInstance().getAllTasks().size(); i++) {
+            taskRows.add(new TaskRow(Controller.getInstance().getAllTasks().get(i)));
+        }
+        tasksTable.setItems(FXCollections.observableList(taskRows));
+    }
+    
     @FXML
     private void initialize() throws IOException {
-        Map<Integer, Task>   tasksMap  = TextMarshaller.getInstance().read(Setting.getPropertyValue("FILE_PATH")).getTasksMap();
-
-        ObservableList<Task> tasksData = FXCollections.observableArrayList();
         
-        tasksMap.forEach((k, v) -> tasksData.add(v));
-        
-        //TODO: chooseColumn
-        //chooseColumn.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
-        
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        dateColumn.setCellValueFactory(param -> {
-            Date             date       = param.getValue().getDate();
-            SimpleDateFormat simpleDate = new SimpleDateFormat("dd.MM.yyyy hh:mm");
-            String           dateInView = simpleDate.format(date);
-            return new SimpleObjectProperty<>(dateInView);
-        });
-        statusColumn.setCellValueFactory(param -> new SimpleObjectProperty<>(param.getValue().getStatus().getTitle()));
-        addEditButtonToTable();
-        
-        tasksTable.setItems(tasksData);
-        tasksTable.setEditable(true);
-        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-
-        //----------encourage sheduller ----------------------------
-        Journal journal = new Journal();
-        tasksMap.values().forEach(t -> journal.addTask(t));
-        WorkingWithNotifications.startAllTasks(journal);
-
+        initTableColumns();
+        refreshTable();
     }
 
-    public void edittaskname(TableColumn.CellEditEvent editEvent){
-        Task taskSelected = tasksTable.getSelectionModel().getSelectedItem();
-        taskSelected.setName(editEvent.getNewValue().toString());
-    }
-
-    public void edittaskdesc(TableColumn.CellEditEvent editEvent){
-        Task taskSelected = tasksTable.getSelectionModel().getSelectedItem();
-        taskSelected.setDescription(editEvent.getNewValue().toString());
-    }
-
-
+//    public void edittaskname(TableColumn.CellEditEvent editEvent){
+//        Task taskSelected = tasksTable.getSelectionModel().getSelectedItem();
+//        taskSelected.setName(editEvent.getNewValue().toString());
+//    }
+//
+//    public void edittaskdesc(TableColumn.CellEditEvent editEvent){
+//        Task taskSelected = tasksTable.getSelectionModel().getSelectedItem();
+//        taskSelected.setDescription(editEvent.getNewValue().toString());
+//    }
+    
     @FXML
-    private void addEditButtonToTable() {
+    private void initTableColumns() {
         
-        TableColumn<Task, Task> editButtonColumn = new TableColumn<>();
-        editButtonColumn.setMaxWidth(25);
-        
-        editButtonColumn.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue()));
-        editButtonColumn.setCellFactory(p -> new ButtonCell());
-        
-        tasksTable.getColumns().add(editButtonColumn);
+        checkColumn.setCellValueFactory(new PropertyValueFactory<>("taskCheckBox"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("taskName"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("taskDescription"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("notificationDate"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("taskStatus"));
+        editColumn.setCellValueFactory(new PropertyValueFactory<>("taskEditButton"));
     }
     
     @FXML
@@ -148,76 +114,18 @@ public class MainFormController {
     }
     
     @FXML
-    public void openAddTaskView(ActionEvent event) {
-        try {
-            URL    url   = new File("src/main/java/task/manager/view/addForm/addTaskView.fxml").toURI().toURL();
-            Parent root  = FXMLLoader.load(url);
-            Scene  scene = new Scene(root);
-            Stage  stage = new Stage();
-            stage.setTitle("Add Task");
-            stage.setScene(scene);
-            stage.showAndWait();
-            initialize();
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void clickAddButton(ActionEvent event) throws Exception {
+        AddTaskForm addTaskForm = new AddTaskForm();
+        Stage       stage       = new Stage();
+        addTaskForm.start(stage);
+        //refresh table after add;
     }
     
     @FXML
-    public void openEditTaskView(Task tsk) {
-        try {
-            URL    url   = new File("src/main/java/task/manager/view/editForm/editTaskView.fxml").toURI().toURL();
-            Parent root  = FXMLLoader.load(url);
-            EditTaskController editTaskController = new FXMLLoader(getClass().getResource("src/main/java/task/manager/view/editForm/editTaskView.fxml")).getController();
-            editTaskController.showtask(tsk);
-            Scene  scene = new Scene(root);
-            Stage  stage = new Stage();
-            stage.setTitle("Edit Task");
-            stage.setScene(scene);
-            stage.showAndWait();
-            initialize();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void clickEditButton(ActionEvent event) throws Exception {
+        EditTaskForm editTaskForm = new EditTaskForm();
+        Stage        stage        = new Stage();
+        editTaskForm.start(stage);
+        //refresh table after edit;
     }
-    
-    private class ButtonCell extends TableCell<Task, Task> {
-        final Button cellButton = new Button();
-        
-        ButtonCell() {
-            FileInputStream inputStream = null;
-            try {
-                inputStream = new FileInputStream("src/main/resources/images/editButton.png");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            assert inputStream != null;
-            Image     img  = new Image(inputStream);
-            ImageView view = new ImageView(img);
-            cellButton.setGraphic(view);
-            cellButton.setStyle("-fx-background-color: transparent;");
-            cellButton.setMinSize(17, 17);
-            cellButton.setMaxSize(17, 17);
-            cellButton.setPrefSize(17, 17);
-            cellButton.setOnAction(t -> {
-                // Действие кнопки.
-                Task task = this.getItem();
-                openEditTaskView(task);
-                System.out.println("selectedData: " + task);
-            });
-        }
-        
-        @Override
-        protected void updateItem(Task t, boolean empty) {
-            super.updateItem(t, empty);
-            // Чтобы показывалась только в строках с данными.
-            if (empty) {
-                setGraphic(null);
-            } else {
-                setGraphic(cellButton);
-            }
-        }
-    }
-
 }
