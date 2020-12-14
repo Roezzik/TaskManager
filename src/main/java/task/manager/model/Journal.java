@@ -1,9 +1,7 @@
 package task.manager.model;
 
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class Journal {
@@ -16,6 +14,11 @@ public class Journal {
     
     public Map<Integer, Task> getTasksMap() {
         return Collections.unmodifiableMap(tasksMap);
+    }
+    
+    public List<Task> getListAllTasks() {
+        List<Task> allTasks = new ArrayList<>(tasksMap.values());
+        return Collections.unmodifiableList(allTasks);
     }
     
     public Task getTask(int taskId) {
