@@ -11,9 +11,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import task.manager.controller.Setting;
 import task.manager.controller.io.BinaryMarshaller;
@@ -21,12 +23,14 @@ import task.manager.controller.io.TextMarshaller;
 import task.manager.controller.sheduller.WorkingWithNotifications;
 import task.manager.model.Journal;
 import task.manager.model.Task;
+import task.manager.view.editForm.EditTaskController;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -74,10 +78,12 @@ public class MainFormController {
     
     @FXML
     private Button deleteButton;
-    
+
+
     @FXML
     private void initialize() throws IOException {
         Map<Integer, Task>   tasksMap  = TextMarshaller.getInstance().read(Setting.getPropertyValue("FILE_PATH")).getTasksMap();
+
         ObservableList<Task> tasksData = FXCollections.observableArrayList();
         
         tasksMap.forEach((k, v) -> tasksData.add(v));
@@ -97,6 +103,9 @@ public class MainFormController {
         addEditButtonToTable();
         
         tasksTable.setItems(tasksData);
+        tasksTable.setEditable(true);
+        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
         //----------encourage sheduller ----------------------------
         Journal journal = new Journal();
@@ -104,7 +113,18 @@ public class MainFormController {
         WorkingWithNotifications.startAllTasks(journal);
 
     }
-    
+
+    public void edittaskname(TableColumn.CellEditEvent editEvent){
+        Task taskSelected = tasksTable.getSelectionModel().getSelectedItem();
+        taskSelected.setName(editEvent.getNewValue().toString());
+    }
+
+    public void edittaskdesc(TableColumn.CellEditEvent editEvent){
+        Task taskSelected = tasksTable.getSelectionModel().getSelectedItem();
+        taskSelected.setDescription(editEvent.getNewValue().toString());
+    }
+
+
     @FXML
     private void addEditButtonToTable() {
         
@@ -136,6 +156,8 @@ public class MainFormController {
             Stage  stage = new Stage();
             stage.setTitle("Add Task");
             stage.setScene(scene);
+            stage.showAndWait();
+            initialize();
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -143,15 +165,18 @@ public class MainFormController {
     }
     
     @FXML
-    public void openEditTaskView(Task task) {
+    public void openEditTaskView(Task tsk) {
         try {
             URL    url   = new File("src/main/java/task/manager/view/editForm/editTaskView.fxml").toURI().toURL();
             Parent root  = FXMLLoader.load(url);
+            EditTaskController editTaskController = new FXMLLoader(getClass().getResource("src/main/java/task/manager/view/editForm/editTaskView.fxml")).getController();
+            editTaskController.showtask(tsk);
             Scene  scene = new Scene(root);
             Stage  stage = new Stage();
             stage.setTitle("Edit Task");
             stage.setScene(scene);
-            stage.show();
+            stage.showAndWait();
+            initialize();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -194,5 +219,5 @@ public class MainFormController {
             }
         }
     }
-    
+
 }

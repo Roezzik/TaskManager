@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import task.manager.controller.Controller;
 import task.manager.controller.Setting;
 import task.manager.controller.io.TextMarshaller;
+import task.manager.model.Journal;
 import task.manager.model.Task;
 
 import java.io.IOException;
@@ -40,11 +41,10 @@ public class AddTaskController {
     @FXML
     private Spinner<Integer> notificationMinute;
 
-    Controller controller;
+
 
     @FXML
     private void initialize() throws IOException {
-        controller = new Controller();
         initDatePicker();
         initSpinner();
     }
@@ -90,12 +90,12 @@ public class AddTaskController {
             timestamp.setHours(notificationHour.getValue());
             timestamp.setMinutes(notificationMinute.getValue());
             System.out.println(timestamp);
-            Task task = new Task(1, name, description, timestamp, SCHEDULED);
-            controller.addTask(task);
+            Task task = new Task((int)(Math.random()*100), name, description, timestamp, SCHEDULED);
+            System.out.println(Controller.getInstance());
+            Controller.addTask(task);
+            System.out.println(Controller.getInstance());
             Stage stage = (Stage) add.getScene().getWindow();
             stage.close();
-//            TextMarshaller textMarshaller = TextMarshaller.getInstance();
-//            textMarshaller.write(controller.get(), Setting.getPropertyValue("FILE_PATH"));
         }
     }
 
