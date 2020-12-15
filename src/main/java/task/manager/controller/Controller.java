@@ -29,6 +29,14 @@ public class Controller {
         journal.addTask(task);
     }
 
+    public void updateTask(Task task) {
+        journal.updateTask(task);
+    }
+
+    public void deleteTask(int id) {
+        journal.deleteTask(id);
+    }
+
     public Journal getJournal() {
         return journal;
     }
@@ -36,4 +44,5 @@ public class Controller {
     public List<Task> getAllTasks() {
         return journal.getListAllTasks();
     }
+
 }

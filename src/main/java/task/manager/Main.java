@@ -6,7 +6,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import task.manager.controller.io.TextMarshaller;
+import task.manager.model.Journal;
 import task.manager.view.ViewPathConstants;
+
+import java.io.IOException;
 
 
 public class Main extends Application {
@@ -26,6 +31,12 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.show();
+//        primaryStage.setOnCloseRequest(new javafx.event.EventHandler<WindowEvent>() {
+//            @Override
+//            public void handle(WindowEvent event) {
+//                    TextMarshaller.getInstance().write(journal, Setting.getPropertyValue("FILE_PATH"));
+//            }
+//        });
     }
     
     public static void main(String[] args) {
