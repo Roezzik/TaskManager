@@ -8,11 +8,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import task.manager.controller.Controller;
+import task.manager.model.Task;
 import task.manager.view.addForm.AddTaskForm;
 import task.manager.view.editForm.EditTaskForm;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainFormController {
@@ -28,7 +30,6 @@ public class MainFormController {
     
     @FXML
     private CheckBox checkBoxAllTasks;
-    //TODO: create selectAll() method
     
     @FXML
     private TableColumn<TaskRow, CheckBox> checkColumn;
@@ -62,35 +63,41 @@ public class MainFormController {
     
     private final ArrayList<TaskRow> taskRows;
     
-    public MainFormController() {
+    public MainFormController() throws IOException {
         this.taskRows = new ArrayList<>();
     }
     
-    public void refreshTable() throws IOException {
+    Controller controller = Controller.getInstance();
+    
+    public void refreshTable() {
         
+        List<Task> tasksList = controller.getAllTasks();
         taskRows.clear();
-        for (int i = 0; i < Controller.getInstance().getAllTasks().size(); i++) {
-            taskRows.add(new TaskRow(Controller.getInstance().getAllTasks().get(i)));
+        for (Task task : tasksList) {
+            taskRows.add(new TaskRow(task));
         }
         tasksTable.setItems(FXCollections.observableList(taskRows));
     }
     
     @FXML
-    private void initialize() throws IOException {
+    private void initialize() {
         
         initTableColumns();
         refreshTable();
     }
-
-//    public void edittaskname(TableColumn.CellEditEvent editEvent){
-//        Task taskSelected = tasksTable.getSelectionModel().getSelectedItem();
-//        taskSelected.setName(editEvent.getNewValue().toString());
-//    }
-//
-//    public void edittaskdesc(TableColumn.CellEditEvent editEvent){
-//        Task taskSelected = tasksTable.getSelectionModel().getSelectedItem();
-//        taskSelected.setDescription(editEvent.getNewValue().toString());
-//    }
+    
+    @FXML
+    public void selectAllTasks() {
+        if (checkBoxAllTasks.isSelected()) {
+            for (TaskRow taskRow : taskRows) {
+                taskRow.getTaskCheckBox().setSelected(true);
+            }
+        } else {
+            for (TaskRow taskRow : taskRows) {
+                taskRow.getTaskCheckBox().setSelected(false);
+            }
+        }
+    }
     
     @FXML
     private void initTableColumns() {
@@ -118,7 +125,7 @@ public class MainFormController {
         AddTaskForm addTaskForm = new AddTaskForm();
         Stage       stage       = new Stage();
         addTaskForm.start(stage);
-        //refresh table after add;
+        stage.setOnCloseRequest(we -> refreshTable());
     }
     
     @FXML
@@ -128,4 +135,17 @@ public class MainFormController {
         editTaskForm.start(stage);
         //refresh table after edit;
     }
+    
+    @FXML
+    public void clickDeleteButton(ActionEvent event) {
+        
+        for (int i = controller.getAllTasks().size() - 1; i >= 0; i--) {
+            if (tasksTable.getItems().get(i).getTaskCheckBox().isSelected()) {
+                controller.deleteTask(tasksTable.getItems().get(i).getId());
+            }
+        }
+        refreshTable();
+    }
 }
+
+

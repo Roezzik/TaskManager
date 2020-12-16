@@ -1,11 +1,12 @@
 package task.manager.controller;
 
+
 import task.manager.controller.io.TextMarshaller;
 import task.manager.model.Journal;
 import task.manager.model.Task;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 
 public class Controller {
@@ -24,25 +25,25 @@ public class Controller {
         }
         return instance;
     }
-
-    public void addTask(Task task) {
-        journal.addTask(task);
-    }
-
-    public void updateTask(Task task) {
-        journal.updateTask(task);
-    }
-
-    public void deleteTask(int id) {
-        journal.deleteTask(id);
-    }
-
-    public Journal getJournal() {
-        return journal;
-    }
     
     public List<Task> getAllTasks() {
         return journal.getListAllTasks();
     }
-
+    
+    public void addTask(Task task) {
+        journal.addTask(task);
+    }
+    
+    public void updateTask(Task task) {
+        journal.updateTask(task);
+    }
+    
+    public void deleteTask(int taskId) {
+        journal.deleteTask(taskId);
+    }
+    
+    public int getLastTaskId() {
+        Map<Integer, Task> tasksMap = journal.getTasksMap();
+        return tasksMap.keySet().stream().max(Integer::compareTo).orElse(0);
+    }
 }
