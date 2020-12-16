@@ -3,21 +3,29 @@ package task.manager.controller;
 
 public class IdGenerator {
     
-    private static final IdGenerator idG = new IdGenerator();
+    private static IdGenerator instance;
+    private        int         counter;
     
-    public static IdGenerator getIdGenerator() {
-        return idG;
-    }
-    //TODO: create 2 private constructor's for Singleton?
+    private IdGenerator() {
     
-    private int counter;
-    
-    public IdGenerator() {
-        counter = 0;
     }
     
-    public IdGenerator(int counter) {
+    private IdGenerator(int counter) {
         this.counter = counter;
+    }
+    
+    public static IdGenerator getInstance() {
+        if (instance == null) {
+            instance = new IdGenerator();
+        }
+        return instance;
+    }
+    
+    public static IdGenerator getInstance(int counter) {
+        if (instance == null) {
+            instance = new IdGenerator(counter);
+        }
+        return instance;
     }
     
     public int getNextId() {
