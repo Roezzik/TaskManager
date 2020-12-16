@@ -1,4 +1,4 @@
-package task.manager.view;
+package task.manager.view.utils;
 
 
 public class ViewPathConstants {

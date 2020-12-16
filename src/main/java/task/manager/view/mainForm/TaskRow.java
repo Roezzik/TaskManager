@@ -10,7 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import task.manager.controller.PropertyParser;
 import task.manager.model.Task;
-import task.manager.view.ViewOtherConstants;
+import task.manager.view.utils.ViewConstants;
 import task.manager.view.editForm.EditTaskForm;
 
 import java.io.FileInputStream;
@@ -128,7 +128,7 @@ public class TaskRow {
         final Button    cellButton  = new Button();
         FileInputStream inputStream = null;
         try {
-            inputStream = new FileInputStream(ViewOtherConstants.PATH_TO_EDIT_BUTTON_IMAGE);
+            inputStream = new FileInputStream(ViewConstants.PATH_TO_EDIT_BUTTON_IMAGE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -136,10 +136,10 @@ public class TaskRow {
         Image     image = new Image(inputStream);
         ImageView view  = new ImageView(image);
         cellButton.setGraphic(view);
-        cellButton.setStyle(ViewOtherConstants.STYLE_FOR_EDIT_BUTTON);
-        cellButton.setMinSize(ViewOtherConstants.MIN_SIZE_EDIT_BUTTON, ViewOtherConstants.MIN_SIZE_EDIT_BUTTON);
-        cellButton.setMaxSize(ViewOtherConstants.MAX_SIZE_EDIT_BUTTON, ViewOtherConstants.MAX_SIZE_EDIT_BUTTON);
-        cellButton.setPrefSize(ViewOtherConstants.PREF_SIZE_EDIT_BUTTON, ViewOtherConstants.PREF_SIZE_EDIT_BUTTON);
+        cellButton.setStyle(ViewConstants.STYLE_FOR_EDIT_BUTTON);
+        cellButton.setMinSize(ViewConstants.MIN_SIZE_EDIT_BUTTON, ViewConstants.MIN_SIZE_EDIT_BUTTON);
+        cellButton.setMaxSize(ViewConstants.MAX_SIZE_EDIT_BUTTON, ViewConstants.MAX_SIZE_EDIT_BUTTON);
+        cellButton.setPrefSize(ViewConstants.PREF_SIZE_EDIT_BUTTON, ViewConstants.PREF_SIZE_EDIT_BUTTON);
         cellButton.setOnAction(t -> {
             try {
                 openEditForm();
