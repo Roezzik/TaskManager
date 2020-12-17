@@ -77,6 +77,13 @@ public class MainFormController {
             taskRows.add(new TaskRow(task));
         }
         tasksTable.setItems(FXCollections.observableList(taskRows));
+        
+        editButton.setDisable(true);
+        cancelButton.setDisable(true);
+        deleteButton.setDisable(true);
+        for (TaskRow taskRow : taskRows) {
+            taskRow.getTaskCheckBox().setOnAction(event -> disableButtons());
+        }
     }
     
     @FXML
@@ -88,14 +95,49 @@ public class MainFormController {
     
     @FXML
     public void selectAllTasks() {
+        
         if (checkBoxAllTasks.isSelected()) {
             for (TaskRow taskRow : taskRows) {
                 taskRow.getTaskCheckBox().setSelected(true);
+                editButton.setDisable(true);
+                cancelButton.setDisable(false);
+                deleteButton.setDisable(false);
             }
         } else {
             for (TaskRow taskRow : taskRows) {
                 taskRow.getTaskCheckBox().setSelected(false);
+                editButton.setDisable(true);
+                cancelButton.setDisable(true);
+                deleteButton.setDisable(true);
             }
+        }
+    }
+    
+    @FXML
+    public void disableButtons() {
+        
+        int counter = 0;
+        for (TaskRow taskRow : taskRows) {
+            if (taskRow.getTaskCheckBox().isSelected()) {
+                counter++;
+            }
+        }
+        if (counter == 0) {
+            editButton.setDisable(true);
+            cancelButton.setDisable(true);
+            deleteButton.setDisable(true);
+        }
+        
+        if (counter == 1) {
+            editButton.setDisable(false);
+            cancelButton.setDisable(false);
+            deleteButton.setDisable(false);
+        }
+        
+        if (counter > 1) {
+            editButton.setDisable(true);
+            cancelButton.setDisable(false);
+            deleteButton.setDisable(false);
         }
     }
     
