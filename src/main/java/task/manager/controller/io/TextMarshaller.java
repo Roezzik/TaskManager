@@ -1,6 +1,8 @@
 package task.manager.controller.io;
 
 
+import javafx.scene.control.ComboBox;
+import task.manager.controller.Controller;
 import task.manager.controller.DateConverter;
 import task.manager.model.Journal;
 import task.manager.model.Status;
@@ -10,7 +12,9 @@ import java.io.*;
 import java.text.ParseException;
 
 
+
 public class TextMarshaller implements Marshaller {
+
 
     private static TextMarshaller instance;
 
@@ -82,9 +86,7 @@ public class TextMarshaller implements Marshaller {
             e.printStackTrace();
         }
 
-        try (PrintWriter pw = new PrintWriter(new FileWriter(file, true));
-             BufferedReader br = new BufferedReader(new FileReader(path))) {
-
+        try (PrintWriter pw = new PrintWriter(path)){
             journal.getTasksMap().values().forEach(task -> {
                 pw.println(task.getId());
                 pw.println(task.getName());
@@ -92,10 +94,8 @@ public class TextMarshaller implements Marshaller {
                 pw.println(DateConverter.getStringDate(task.getDate()));
                 pw.println((task.getStatus()).getTitle());
             });
-
-        } catch (IOException e) {
-            //alert
-            e.printStackTrace();
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
         }
 
     }
