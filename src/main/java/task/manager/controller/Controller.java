@@ -3,7 +3,9 @@ package task.manager.controller;
 
 import task.manager.controller.io.TextMarshaller;
 import task.manager.model.Journal;
+import task.manager.model.Status;
 import task.manager.model.Task;
+import task.manager.view.utils.ViewPathConstants;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,7 +18,7 @@ public class Controller {
     
     private Controller() throws IOException {
         //journal = new Journal();
-        journal = TextMarshaller.getInstance().read(PropertyParser.getPropertyValue("FILE_PATH"));
+        journal = TextMarshaller.getInstance().read(ViewPathConstants.FILE_PATH);
     }
     
     public static synchronized Controller getInstance() throws IOException {
@@ -46,4 +48,7 @@ public class Controller {
         Map<Integer, Task> tasksMap = journal.getTasksMap();
         return tasksMap.keySet().stream().max(Integer::compareTo).orElse(0);
     }
+
+    public void cancelTask(int taskId){ journal.getTask(taskId).setStatus(Status.CANCELLED); }
+
 }

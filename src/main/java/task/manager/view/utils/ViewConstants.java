@@ -15,7 +15,8 @@ public class ViewConstants {
     
     public static final String TITLE_TO_ALERT_ERROR_ADDING  = "Adding error!";
     public static final String TITLE_TO_ALERT_ERROR_EDITING = "Editing error!";
-    
+    public static final String TITLE_TO_ALERT_ERROR_EXIST_FILE = "Hello!";
+
     public static final String ALERT_MISSING_TASK_NAME        = "Please, enter a name of task!";
     public static final String ALERT_MISSING_TASK_DESCRIPTION = "Please, enter a description of task!";
     public static final String ALERT_INCORRECT_TIME           = "Please, enter a correct time of notification!";

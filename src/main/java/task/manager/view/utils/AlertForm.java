@@ -33,4 +33,11 @@ public class AlertForm {
         alert.setHeaderText(info);
         alert.showAndWait();
     }
+
+    public static void infoNewAlert(String info) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(ViewConstants.TITLE_TO_ALERT_ERROR_EXIST_FILE);
+        alert.setHeaderText(info);
+        alert.showAndWait();
+    }
 }

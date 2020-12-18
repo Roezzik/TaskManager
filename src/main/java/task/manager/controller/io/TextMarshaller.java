@@ -7,6 +7,7 @@ import task.manager.controller.DateConverter;
 import task.manager.model.Journal;
 import task.manager.model.Status;
 import task.manager.model.Task;
+import task.manager.view.utils.AlertForm;
 
 import java.io.*;
 import java.text.ParseException;
@@ -30,6 +31,17 @@ public class TextMarshaller implements Marshaller {
 
     @Override
     public Journal read(String path) throws IOException {
+        File file = new File(path);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+                AlertForm.infoNewAlert("Welcome to task manager");
+            }
+        } catch (Exception e) {
+            // alert
+            e.printStackTrace();
+        }
+
         Journal journal = new Journal();
         BufferedReader br = null;
         try {
@@ -38,8 +50,6 @@ public class TextMarshaller implements Marshaller {
             e.printStackTrace();
         }
 
-//        String str = "";
-//        while ((str = br.readLine()) != null) {
         String str;
         if (br != null) {
             while ((str = br.readLine()) != null) {
