@@ -85,10 +85,7 @@ public class AddTaskController {
             AlertForm.infoAddAlert(ViewConstants.ALERT_MISSING_TASK_NAME);
             return;
         }
-        if (taskDescription.getText().length() == 0) {
-            AlertForm.infoAddAlert(ViewConstants.ALERT_MISSING_TASK_DESCRIPTION);
-            return;
-        }
+
         LocalDate taskDate = notificationDate.getValue();
         int       hour     = notificationHour.getValue();
         int       minute   = notificationMinute.getValue();

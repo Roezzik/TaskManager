@@ -6,8 +6,8 @@ import java.util.Objects;
 
 
 public class Task {
-    
-    private final int    id;
+
+    private       int    id;
     private       String name;
     private       String description;
     private       Date   date;
@@ -24,7 +24,11 @@ public class Task {
         this.date = date;
         this.status = status;
     }
-    
+
+    public Task() { }
+
+    public void setId(int id) { this.id = id; }
+
     public int getId() {
         return id;
     }
