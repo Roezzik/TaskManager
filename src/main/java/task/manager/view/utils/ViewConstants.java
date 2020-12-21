@@ -2,10 +2,13 @@ package task.manager.view.utils;
 
 
 public class ViewConstants {
+
+    public static final String DATE_FORMAT = "dd.MM.yyyy HH:mm";
     
     public static final String TITLE_TO_MAIN_FORM_VIEW = "Task Manager";
     public static final String TITLE_TO_ADD_FORM_VIEW  = "Add Task";
     public static final String TITLE_TO_EDIT_FORM_VIEW = "Edit Task";
+    public static final String TITLE_TO_NOTIFICATION_FORM_VIEW = "NOTIFICATION Task";
     
     public static final String PATH_TO_EDIT_BUTTON_IMAGE = "src/main/resources/images/editButton.png";
     public static final String STYLE_FOR_EDIT_BUTTON     = "-fx-background-color: transparent;";

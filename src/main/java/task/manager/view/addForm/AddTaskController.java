@@ -62,7 +62,6 @@ public class AddTaskController {
         notificationDate.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
-                
                 setDisable(empty || date.compareTo(today) < 0);
             }
         });

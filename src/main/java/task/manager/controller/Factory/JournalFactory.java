@@ -1,7 +1,7 @@
 package task.manager.controller.Factory;
 
-import task.manager.model.Journal;
 
+import task.manager.model.Journal;
 
 public class JournalFactory implements JournalFactoryInterface {
 

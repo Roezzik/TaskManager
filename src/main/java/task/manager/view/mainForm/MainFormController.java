@@ -85,6 +85,7 @@ public class MainFormController {
             taskRow.getTaskCheckBox().setOnAction(event -> disableButtons());
         }
     }
+
     
     @FXML
     private void initialize() {
@@ -143,7 +144,6 @@ public class MainFormController {
     
     @FXML
     private void initTableColumns() {
-        
         checkColumn.setCellValueFactory(new PropertyValueFactory<>("taskCheckBox"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("taskName"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("taskDescription"));

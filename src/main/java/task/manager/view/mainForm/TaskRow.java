@@ -120,7 +120,7 @@ public class TaskRow {
     private String formatNotificationDate(Task task) {
         
         Date             date       = task.getDate();
-        SimpleDateFormat simpleDate = new SimpleDateFormat(PropertyParser.getPropertyValue("DATE_FORMAT"));
+        SimpleDateFormat simpleDate = new SimpleDateFormat(ViewConstants.DATE_FORMAT);
         return simpleDate.format(date);
     }
     

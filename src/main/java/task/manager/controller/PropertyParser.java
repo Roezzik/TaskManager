@@ -10,7 +10,7 @@ public class PropertyParser {
         Properties properties = new Properties();
         String propertyValue = "";
 
-        try (InputStream inputStream = PropertyParser.class.getClassLoader().getResourceAsStream("application.properties")) {
+        try (InputStream inputStream = PropertyParser.class.getClassLoader().getResourceAsStream("staff/application.properties")) {
             properties.load(inputStream);
             propertyValue = properties.getProperty(PropertyName);
         } catch (IOException e) {

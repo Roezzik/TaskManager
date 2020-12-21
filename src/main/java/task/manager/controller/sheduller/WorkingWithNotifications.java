@@ -1,69 +1,69 @@
 package task.manager.controller.sheduller;
 
-import task.manager.model.Journal;
 import task.manager.model.Status;
 import task.manager.model.Task;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 
-public abstract class WorkingWithNotifications {
+public class WorkingWithNotifications {
 
     public static HashMap<Integer, Timer> timers = new HashMap<>();
+    private static int TIME_DELAY = 250;
 
-    private static int TIME_DELAY = 50;
+    private static WorkingWithNotifications instance;
 
-    public static void startAllTasks(Journal journal) {
-        for (Task task : journal.getTasksMap().values()) {
-            if (task.getDate().getTime() - new Date().getTime() < 0 || task.getStatus() == Status.CANCELLED) continue;
+    private WorkingWithNotifications() {
+    }
+
+    public static WorkingWithNotifications getInstance() {
+        if (instance == null) {
+            instance = new WorkingWithNotifications();
+        }
+        return instance;
+    }
+
+    public void startAllTasks(List<Task> listTask) {
+
+        // after come up with a normal way
+       /* for (int i = listTask.size()-1; i>=0; i--){*/
+        for (int i = 0; i< listTask.size(); i++ ){
+            if ( listTask.get(i).getDate().getTime() - new Date().getTime() < 0 || (listTask.get(i).getStatus() != Status.SCHEDULED && listTask.get(i).getStatus() != Status.POSTPONED) )
+                continue;
+            TaskNotificationList.addTaskIdList(listTask.get(i).getId());
+        }
+
+        for (Task task : listTask) {
+            if (task.getDate().getTime() - new Date().getTime() < 0 || (task.getStatus() != Status.SCHEDULED && task.getStatus() != Status.POSTPONED) )
+                continue;
+
             timers.put(task.getId(), new Timer());
             timers.get(task.getId()).schedule(new ScheduledTask(task), task.getDate().getTime() - new Date().getTime() + TIME_DELAY);
             TIME_DELAY = TIME_DELAY % 2 == 0 ? TIME_DELAY / 2 : TIME_DELAY * 2;
         }
     }
 
-   /* //not tested
-    // отмена таски (если эл-т существует, отменяем его, удаляем отменненный из очереди )
-    public static void cancelNotification(int id, Journal journal) {
-        if (timers.get(id) != null) {
-            timers.get(id).cancel();
-            timers.get(id).purge();
-            //+перезапись файла
-            journal.getTask(id).setStatus(Status.CANCELLED);
-            timers.keySet().removeIf(key -> key == id); // удаляем из мапы
-        }
-    }
-
-    //not tested
-    public static void doneNotification(int id, Journal journal) {
-        if (timers.get(id) != null) {
-            timers.get(id).cancel();
-            timers.get(id).purge();
-            //+перезапись файла
-            journal.getTask(id).setStatus(Status.DONE);
-            timers.keySet().removeIf(key -> key == id);
-        }
-    }
-
-    //not tested
-    public static void addNotification(Task task) {
+    public void addNotification(Task task) {
         timers.put(task.getId(), new Timer());
         timers.get(task.getId()).schedule(new ScheduledTask(task), task.getDate().getTime() - new Date().getTime() + TIME_DELAY);
     }
 
-    //not tested
-    public static void postponedNotification(Task task) {
-        // останавливаем предыдущую запись и удаляем ее из потока и мапы
-        if (timers.get(task.getId()) != null) {
-            timers.get(task.getId()).cancel();
-            timers.get(task.getId()).purge();
-            //+перезапись файла?
-            timers.keySet().removeIf(key -> key == task.getId()); // удаляем из мапы
-            // создаем с новыми параметрами
-            timers.put(task.getId(), new Timer());
-            timers.get(task.getId()).schedule(new ScheduledTask(task), task.getDate().getTime() - new Date().getTime());
+    //cancel, done, delete
+    public void removeNotification(int taskId) {
+        if (timers.get(taskId) != null) {
+            timers.get(taskId).cancel();
+            timers.get(taskId).purge();
+            timers.keySet().removeIf(key -> key == taskId); //  remove task from the map
         }
     }
-    */
+
+    // no tested (it is necessary to write in the editform)
+    public void postponedNotification(Task task) {
+        removeNotification(task.getId());
+        addNotification(task);
+    }
+
 }
+
