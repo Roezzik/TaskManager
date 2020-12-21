@@ -9,6 +9,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import task.manager.controller.Controller;
 import task.manager.model.Task;
+import task.manager.view.utils.Refresher;
+import task.manager.view.utils.TaskRowManager;
 import task.manager.view.addForm.AddTaskForm;
 import task.manager.view.editForm.EditTaskForm;
 
@@ -77,6 +79,7 @@ public class MainFormController {
             taskRows.add(new TaskRow(task));
         }
         tasksTable.setItems(FXCollections.observableList(taskRows));
+        Refresher.getInstance().setMainFormController(this);
         
         editButton.setDisable(true);
         cancelButton.setDisable(true);
@@ -159,7 +162,9 @@ public class MainFormController {
     
     @FXML
     public void saveJournal(ActionEvent actionEvent) {
-        //TODO
+        //TextMarshaller.getInstance().write(controller.getJournal(), PropertyParser.getPropertyValue("FILE_PATH"));
+        //BinaryMarshaller.getInstance().write(controller.getJournal(), PropertyParser.getPropertyValue("FILE_PATH"));
+        controller.write();
     }
     
     @FXML
@@ -172,10 +177,26 @@ public class MainFormController {
     
     @FXML
     public void clickEditButton(ActionEvent event) throws Exception {
+        for (int i = 0; i < tasksTable.getItems().size(); i++) {
+            if (tasksTable.getItems().get(i).getTaskCheckBox().isSelected()) {
+                TaskRowManager.getInstance().setTaskRow(tasksTable.getItems().get(i));
+            }
+        }
+        
         EditTaskForm editTaskForm = new EditTaskForm();
         Stage        stage        = new Stage();
         editTaskForm.start(stage);
-        //refresh table after edit;
+        stage.setOnCloseRequest(we -> refreshTable());
+    }
+    
+    @FXML
+    public void clickCancelButton(ActionEvent event) {
+        for (int i = controller.getAllTasks().size() - 1; i >= 0; i--) {
+            if (tasksTable.getItems().get(i).getTaskCheckBox().isSelected()) {
+                controller.cancelTask(tasksTable.getItems().get(i).getId());
+            }
+        }
+        refreshTable();
     }
     
     @FXML
