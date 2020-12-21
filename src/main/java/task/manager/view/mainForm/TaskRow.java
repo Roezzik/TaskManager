@@ -8,13 +8,13 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import task.manager.controller.PropertyParser;
 import task.manager.model.Task;
+import task.manager.view.utils.Refresher;
+import task.manager.view.utils.TaskRowManager;
 import task.manager.view.utils.ViewConstants;
 import task.manager.view.editForm.EditTaskForm;
+import task.manager.view.utils.ViewPathConstants;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,7 +28,6 @@ public class TaskRow {
     private final SimpleStringProperty           notificationDate;
     private final SimpleStringProperty           taskStatus;
     private final SimpleObjectProperty<Button>   taskEditButton;
-    
     
     public TaskRow(Task task) {
         
@@ -120,22 +119,15 @@ public class TaskRow {
     private String formatNotificationDate(Task task) {
         
         Date             date       = task.getDate();
-        SimpleDateFormat simpleDate = new SimpleDateFormat(PropertyParser.getPropertyValue("DATE_FORMAT"));
+        SimpleDateFormat simpleDate = new SimpleDateFormat(ViewConstants.DATE_FORMAT);
         return simpleDate.format(date);
     }
     
     private Button createEditButton(Task task) {
+        
         final Button    cellButton  = new Button();
-        FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(ViewConstants.PATH_TO_EDIT_BUTTON_IMAGE);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        assert inputStream != null;
-        Image     image = new Image(inputStream);
-        ImageView view  = new ImageView(image);
-        cellButton.setGraphic(view);
+        Image image = new Image(ViewPathConstants.PATH_TO_EDIT_BUTTON_IMAGE);
+        cellButton.setGraphic(new ImageView(image));
         cellButton.setStyle(ViewConstants.STYLE_FOR_EDIT_BUTTON);
         cellButton.setMinSize(ViewConstants.MIN_SIZE_EDIT_BUTTON, ViewConstants.MIN_SIZE_EDIT_BUTTON);
         cellButton.setMaxSize(ViewConstants.MAX_SIZE_EDIT_BUTTON, ViewConstants.MAX_SIZE_EDIT_BUTTON);
@@ -146,14 +138,15 @@ public class TaskRow {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("selectedData: " + task);
         });
         return cellButton;
     }
     
     public void openEditForm() throws Exception {
+        TaskRowManager.getInstance().setTaskRow(this);
         EditTaskForm editTaskForm = new EditTaskForm();
         Stage        stage        = new Stage();
+        stage.setOnCloseRequest(we -> Refresher.getInstance().getMainFormController().refreshTable());
         editTaskForm.start(stage);
     }
 }
