@@ -19,8 +19,10 @@ public class TaskFactory {
     }
     
     public Task create(String name, String description, Date date, Status status) throws IOException {
+        // todo controller?
         controller = Controller.getInstance();
         Task task = new Task();
+        // todo id generator every time init?
         task.setId(IdGenerator.getInstance(controller.getLastTaskId()).getNextId());
         task.setName(name);
         task.setDescription(description);
@@ -32,6 +34,7 @@ public class TaskFactory {
     public Task create(String name, String description, Date date) throws IOException {
         controller = Controller.getInstance();
         Task task = new Task();
+        // the same
         task.setId(IdGenerator.getInstance(controller.getLastTaskId()).getNextId());
         task.setName(name);
         task.setDescription(description);
