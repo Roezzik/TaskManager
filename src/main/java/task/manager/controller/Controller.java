@@ -48,14 +48,16 @@ public class Controller {
         Map<Integer, Task> tasksMap = journal.getTasksMap();
         return tasksMap.keySet().stream().max(Integer::compareTo).orElse(0);
     }
-
-    public void cancelTask(int taskId){ getTask(taskId).setStatus(Status.CANCELLED); }
-
-    public Task getTask(int taskId){
+    
+    public void cancelTask(int taskId) {
+        getTask(taskId).setStatus(Status.CANCELLED);
+    }
+    
+    public Task getTask(int taskId) {
         return journal.getTask(taskId);
     }
-
-    public void write(){
+    
+    public void write() {
         TextMarshaller.getInstance().write(journal, ViewPathConstants.FILE_PATH);
     }
 }
