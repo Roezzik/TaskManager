@@ -1,29 +1,24 @@
 package task.manager.controller.factory;
 
 
-import task.manager.controller.Controller;
 import task.manager.controller.IdGenerator;
 import task.manager.model.Status;
 import task.manager.model.Task;
 
-import java.io.IOException;
 import java.util.Date;
 
 
 public class TaskFactory {
     
-    Controller controller;
+    IdGenerator idGenerator = IdGenerator.getInstance();
     
     public Task create(int id, String name, String description, Date date, Status status) {
         return new Task(id, name, description, date, status);
     }
     
-    public Task create(String name, String description, Date date, Status status) throws IOException {
-        // todo controller?
-        controller = Controller.getInstance();
+    public Task create(String name, String description, Date date, Status status) {
         Task task = new Task();
-        // todo id generator every time init?
-        task.setId(IdGenerator.getInstance(controller.getLastTaskId()).getNextId());
+        task.setId(idGenerator.getNextId());
         task.setName(name);
         task.setDescription(description);
         task.setStatus(status);
@@ -31,23 +26,19 @@ public class TaskFactory {
         return task;
     }
     
-    public Task create(String name, String description, Date date) throws IOException {
-        controller = Controller.getInstance();
+    public Task create(String name, String description, Date date) {
         Task task = new Task();
-        // the same
-        task.setId(IdGenerator.getInstance(controller.getLastTaskId()).getNextId());
+        task.setId(idGenerator.getNextId());
         task.setName(name);
         task.setDescription(description);
-        task.setStatus(Status.SCHEDULED);
         task.setDate(date);
         return task;
     }
     
-    public Task create(int id, String name, String description, Date date) {
+    public Task create(String name, Date date, Status status) {
         Task task = new Task();
-        task.setId(id);
+        task.setId(idGenerator.getNextId());
         task.setName(name);
-        task.setDescription(description);
         task.setStatus(Status.SCHEDULED);
         task.setDate(date);
         return task;

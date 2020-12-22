@@ -6,12 +6,12 @@ import java.util.Objects;
 
 
 public class Task {
-
-    private       int    id;
-    private       String name;
-    private       String description;
-    private       Date   date;
-    private       Status status;
+    
+    private int    id;
+    private String name;
+    private String description;
+    private Date   date;
+    private Status status;
     
     public Task(int id,
                 String name,
