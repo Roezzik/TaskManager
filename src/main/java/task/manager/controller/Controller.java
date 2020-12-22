@@ -1,9 +1,9 @@
 package task.manager.controller;
 
 
+import task.manager.controller.io.Marshaller;
 import task.manager.controller.io.TextMarshaller;
-import task.manager.controller.sheduller.ScheduledTask;
-import task.manager.controller.sheduller.WorkingWithNotifications;
+import task.manager.controller.sheduler.NotificationScheduler;
 import task.manager.model.Journal;
 import task.manager.model.Status;
 import task.manager.model.Task;
@@ -16,16 +16,21 @@ import java.util.*;
 public class Controller {
     
     private static Controller instance;
-    private final  Journal    journal;
-    private WorkingWithNotifications workingWithNotifications;
+    private final Journal               journal; // todo final? how will we load from disk backup?
+    private final NotificationScheduler notificationScheduler; // todo shit happens you forget init this object, but i did it, no problem if you could not ;)
     
-    private Controller() throws IOException {
-        //journal = new Journal();
-        journal = TextMarshaller.getInstance().read(ViewPathConstants.FILE_PATH);
+    // todo example how it really should be presented if you create interface
+    private final Marshaller marshaller;
+    
+    private Controller() throws IOException { // todo noway controller throws exception and system stuck
+        this.marshaller = TextMarshaller.getInstance();
+        this.journal = TextMarshaller.getInstance().read(ViewPathConstants.FILE_PATH); // todo exception catch for case if journal is not available
+        this.notificationScheduler = NotificationScheduler.getInstance();
+    
         IdGenerator.getInstance(getLastTaskId());
-        //start all tasks
-        (workingWithNotifications = WorkingWithNotifications.getInstance()).startAllTasks(journal.getListAllTasks());
-
+        
+        // refactor
+        notificationScheduler.startAllTasks(journal.getListAllTasks());
     }
     
     public static synchronized Controller getInstance() throws IOException {
@@ -41,17 +46,17 @@ public class Controller {
     
     public void addTask(Task task) {
         journal.addTask(task);
-        workingWithNotifications.addNotification(task);
+        notificationScheduler.addNotification(task);
     }
     
     public void updateTask(Task task) {
         journal.updateTask(task);
-        workingWithNotifications.postponedNotification(task);
+        notificationScheduler.postponedNotification(task);
     }
     
     public void deleteTask(int taskId) {
         journal.deleteTask(taskId);
-        workingWithNotifications.removeNotification(taskId);
+        notificationScheduler.removeNotification(taskId);
     }
     
     public int getLastTaskId() {
@@ -61,12 +66,12 @@ public class Controller {
 
     public void cancelTask(int taskId){
         getTask(taskId).setStatus(Status.CANCELLED);
-        workingWithNotifications.removeNotification(taskId);
+        notificationScheduler.removeNotification(taskId);
     }
 
     public void doneTask(int taskId){
         getTask(taskId).setStatus(Status.DONE);
-        workingWithNotifications.removeNotification(taskId);
+        notificationScheduler.removeNotification(taskId);
     }
 
     public Task getTask(int taskId){
