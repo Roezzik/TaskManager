@@ -10,7 +10,7 @@ import task.manager.view.utils.ViewConstants;
 import task.manager.view.utils.ViewPathConstants;
 
 
-public class AddTaskForm extends Application {
+public class AddTaskForm extends Application { // todo separate app instance? provide more details on syncup
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource(ViewPathConstants.PATH_TO_ADD_FORM_VIEW));

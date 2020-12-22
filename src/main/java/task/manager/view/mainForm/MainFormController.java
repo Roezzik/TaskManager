@@ -68,7 +68,8 @@ public class MainFormController {
     public MainFormController() throws IOException {
         this.taskRows = new ArrayList<>();
     }
-    
+
+    // todo where is access modifier
     Controller controller = Controller.getInstance();
     
     public void refreshTable() {

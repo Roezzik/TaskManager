@@ -47,7 +47,8 @@ public class EditTaskController {
     
     @FXML
     public Button cancelButton;
-    
+
+    // todo where is access modifier
     Controller     controller     = Controller.getInstance();
     TaskRowManager taskRowManager = TaskRowManager.getInstance();
     
