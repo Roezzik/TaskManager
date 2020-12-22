@@ -5,18 +5,27 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import task.manager.controller.Controller;
+import task.manager.controller.factory.TaskFactory;
+import task.manager.model.Status;
 import task.manager.model.Task;
+import task.manager.view.addForm.AddTaskController;
+import task.manager.view.utils.AlertForm;
+import task.manager.view.utils.TaskRowManager;
+import task.manager.view.utils.ViewConstants;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 
 
 public class EditTaskController {
+    
+    public EditTaskController() throws IOException {
+    }
     
     @FXML
     private TextField taskName;
@@ -39,38 +48,87 @@ public class EditTaskController {
     @FXML
     public Button cancelButton;
     
+    Controller     controller     = Controller.getInstance();
+    TaskRowManager taskRowManager = TaskRowManager.getInstance();
+    
     @FXML
     private void initialize() {
-    
+        
+        initData();
+        initDatePicker();
+        initSpinner();
     }
     
-    public void clickCancelButton(ActionEvent event) {
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
+    private void initData() {
+        
+        taskName.setText(taskRowManager.getTaskRow().getTaskName());
+        taskDescription.setText(taskRowManager.getTaskRow().getTaskDescription());
+        
+    }
+    
+    private void initDatePicker() {
+        
+        LocalDate today = LocalDate.now();
+        notificationDate.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
+        
+        Date      taskDate      = controller.getTask(taskRowManager.getTaskRow().getId()).getDate();
+        LocalDate taskLocalDate = taskDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        
+        notificationDate.setValue(taskLocalDate);
+    }
+    
+    private void initSpinner() {
+        
+        AddTaskController.initSpinnerFactory(notificationHour, notificationMinute);
+        
+        Date          taskDate     = controller.getTask(taskRowManager.getTaskRow().getId()).getDate();
+        LocalDateTime taskDateTime = LocalDateTime.ofInstant(taskDate.toInstant(), ZoneId.systemDefault());
+        
+        notificationHour.getValueFactory().setValue(taskDateTime.getHour());
+        notificationMinute.getValueFactory().setValue(taskDateTime.getMinute());
+    }
+    
+    public void clickSaveButton(ActionEvent event) {
+        
+        if (taskName.getText().length() == 0) {
+            AlertForm.infoEditAlert(ViewConstants.ALERT_MISSING_TASK_NAME);
+            return;
+        }
+        
+        LocalDate taskDate = notificationDate.getValue();
+        int       hour     = notificationHour.getValue();
+        int       minute   = notificationMinute.getValue();
+        LocalDateTime taskDateTime = LocalDateTime.of(taskDate.getYear(),
+                                                      taskDate.getMonth(),
+                                                      taskDate.getDayOfMonth(),
+                                                      hour,
+                                                      minute);
+        if (taskDateTime.isBefore(LocalDateTime.now())) {
+            AlertForm.warningEditAlert(ViewConstants.ALERT_INCORRECT_TIME);
+            return;
+        }
+        Date        notificationDate = Date.from(taskDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        TaskFactory taskFactory      = new TaskFactory();
+        Task task = taskFactory.create(taskRowManager.getTaskRow().getId(),
+                                       taskName.getText(),
+                                       taskDescription.getText(),
+                                       notificationDate,
+                                       Status.SCHEDULED);
+        controller.updateTask(task);
+        Stage stage = (Stage) saveButton.getScene().getWindow();
+        stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
         stage.close();
     }
     
-//    public void showtask(Task task) {
-//        name.setText(task.getName());
-//        desc.setText(task.getDescription());
-//        date.setValue(task.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-//    }
-
-//    public void clickedit() throws IOException {
-//        if (name.getText().equals("") || desc.getText().equals("")) {
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Add eroor");
-//            alert.setHeaderText(null);
-//            alert.setContentText("\n" + "Fill in all the fields");
-//            alert.showAndWait();
-//        } else {
-//            String names       = name.getText();
-//            String description = desc.getText();
-//            Date   data        = Date.valueOf(date.getValue());
-//            //task = new Task((int)(Math.random()*100), names, description, data, SCHEDULED);
-//            //Controller.addTask(task);
-//            Stage stage = (Stage) edit.getScene().getWindow();
-//            stage.close();
-//        }
-//    }
-
+    public void clickCancelButton(ActionEvent event) {
+        
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
+    }
 }

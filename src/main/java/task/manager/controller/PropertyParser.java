@@ -22,10 +22,4 @@ public class PropertyParser {
     public static int getIntegerPropertyValue(String PropertyName) throws NumberFormatException {
         return Integer.parseInt(getPropertyValue(PropertyName));
     }
-
-    //test main
-    /*public static void main(String[] args) {
-        Integer x = Setting.getIntegerPropertyValue("x");
-        System.out.println(x);
-    }*/
 }

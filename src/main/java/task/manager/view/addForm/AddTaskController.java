@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import task.manager.controller.Controller;
 import task.manager.controller.IdGenerator;
+import task.manager.controller.factory.TaskFactory;
 import task.manager.model.Status;
 import task.manager.model.Task;
 import task.manager.view.utils.AlertForm;
@@ -69,11 +70,22 @@ public class AddTaskController {
     
     private void initSpinner() {
         
+        LocalDateTime todayTime = LocalDateTime.now();
+        int           hour      = todayTime.getHour();
+        int           minute    = todayTime.getMinute();
+        
+        initSpinnerFactory(notificationHour, notificationMinute);
+        
+        notificationHour.getValueFactory().setValue(hour);
+        notificationMinute.getValueFactory().setValue(minute);
+    }
+    
+    public static void initSpinnerFactory(Spinner<Integer> notificationHour, Spinner<Integer> notificationMinute) {
+        
         SpinnerValueFactory<Integer> hourFactory   = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23);
         SpinnerValueFactory<Integer> minuteFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59);
         hourFactory.setWrapAround(true);
         minuteFactory.setWrapAround(true);
-        
         notificationHour.setValueFactory(hourFactory);
         notificationMinute.setValueFactory(minuteFactory);
     }
@@ -84,7 +96,7 @@ public class AddTaskController {
             AlertForm.infoAddAlert(ViewConstants.ALERT_MISSING_TASK_NAME);
             return;
         }
-
+        
         LocalDate taskDate = notificationDate.getValue();
         int       hour     = notificationHour.getValue();
         int       minute   = notificationMinute.getValue();
@@ -94,15 +106,16 @@ public class AddTaskController {
                                                       hour,
                                                       minute);
         if (taskDateTime.isBefore(LocalDateTime.now())) {
-            AlertForm.infoAddAlert(ViewConstants.ALERT_INCORRECT_TIME);
+            AlertForm.warningAddAlert(ViewConstants.ALERT_INCORRECT_TIME);
             return;
         }
-        Date notificationDate = Date.from(taskDateTime.atZone(ZoneId.systemDefault()).toInstant());
-        Task task = new Task(IdGenerator.getInstance(controller.getLastTaskId()).getNextId(),
-                             taskName.getText(),
-                             taskDescription.getText(),
-                             notificationDate,
-                             Status.SCHEDULED);
+        Date        notificationDate = Date.from(taskDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        TaskFactory taskFactory      = new TaskFactory();
+        Task task = taskFactory.create(IdGenerator.getInstance(controller.getLastTaskId()).getNextId(),
+                                       taskName.getText(),
+                                       taskDescription.getText(),
+                                       notificationDate,
+                                       Status.SCHEDULED);
         controller.addTask(task);
         Stage stage = (Stage) addButton.getScene().getWindow();
         stage.getOnCloseRequest().handle(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));

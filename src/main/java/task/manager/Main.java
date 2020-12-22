@@ -6,15 +6,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import task.manager.controller.Controller;
-import task.manager.controller.PropertyParser;
-import task.manager.controller.io.TextMarshaller;
-import task.manager.model.Journal;
 import task.manager.view.utils.ViewConstants;
 import task.manager.view.utils.ViewPathConstants;
-
-import java.io.IOException;
 
 
 public class Main extends Application {
@@ -29,12 +23,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.show();
-        primaryStage.setOnCloseRequest(new javafx.event.EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                controller.write();
-            }
-        });
+        primaryStage.setOnCloseRequest(event -> controller.write());
     }
     
     public static void main(String[] args) {
