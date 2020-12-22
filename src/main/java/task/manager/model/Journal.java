@@ -11,7 +11,8 @@ public class Journal {
     public Journal() {
         tasksMap = new HashMap<>();
     }
-    
+
+    // todo ok then list or map is output? choose between Map or List from the next method
     public Map<Integer, Task> getTasksMap() {
         return Collections.unmodifiableMap(tasksMap);
     }

@@ -27,7 +27,7 @@ public class BinaryMarshaller implements Marshaller {
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             journal = (Journal) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // todo you know
         }
         return journal;
     }
@@ -39,7 +39,7 @@ public class BinaryMarshaller implements Marshaller {
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(journal);
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // todo you know
         }
     }
 

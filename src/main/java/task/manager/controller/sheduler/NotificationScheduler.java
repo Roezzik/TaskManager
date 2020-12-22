@@ -1,4 +1,4 @@
-package task.manager.controller.sheduller;
+package task.manager.controller.sheduler;
 
 import task.manager.model.Status;
 import task.manager.model.Task;
@@ -8,19 +8,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 
-public class WorkingWithNotifications {
+public class NotificationScheduler {
 
     public static HashMap<Integer, Timer> timers = new HashMap<>();
     private static int TIME_DELAY = 250;
 
-    private static WorkingWithNotifications instance;
+    private static NotificationScheduler instance;
 
-    private WorkingWithNotifications() {
+    private NotificationScheduler() {
     }
 
-    public static WorkingWithNotifications getInstance() {
+    public static NotificationScheduler getInstance() {
         if (instance == null) {
-            instance = new WorkingWithNotifications();
+            instance = new NotificationScheduler();
         }
         return instance;
     }
@@ -60,6 +60,8 @@ public class WorkingWithNotifications {
     }
 
     // no tested (it is necessary to write in the editform)
+
+    // todo all methods should be named in imperative mood
     public void postponedNotification(Task task) {
         removeNotification(task.getId());
         addNotification(task);

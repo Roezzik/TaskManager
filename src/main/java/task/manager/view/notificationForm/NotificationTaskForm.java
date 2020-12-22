@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import task.manager.controller.sheduller.TaskNotificationList;
+import task.manager.controller.sheduler.TaskNotificationList;
 import task.manager.view.utils.ViewConstants;
 import task.manager.view.utils.ViewPathConstants;
 

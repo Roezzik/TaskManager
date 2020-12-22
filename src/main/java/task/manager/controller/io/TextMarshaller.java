@@ -1,8 +1,6 @@
 package task.manager.controller.io;
 
 
-import javafx.scene.control.ComboBox;
-import task.manager.controller.Controller;
 import task.manager.controller.DateConverter;
 import task.manager.model.Journal;
 import task.manager.model.Status;
@@ -11,7 +9,6 @@ import task.manager.view.utils.AlertForm;
 
 import java.io.*;
 import java.text.ParseException;
-
 
 
 public class TextMarshaller implements Marshaller {
@@ -35,10 +32,12 @@ public class TextMarshaller implements Marshaller {
         try {
             if (!file.exists()) {
                 file.createNewFile();
+                // todo thanks, but why is it here? is it ui?
                 AlertForm.infoNewAlert("Welcome to task manager");
             }
         } catch (Exception e) {
             // alert
+            // todo ok then, i do not wanna know that something went wrong
             e.printStackTrace();
         }
 
@@ -96,7 +95,7 @@ public class TextMarshaller implements Marshaller {
             e.printStackTrace();
         }
 
-        try (PrintWriter pw = new PrintWriter(path)){
+        try (PrintWriter pw = new PrintWriter(path)) {
             journal.getTasksMap().values().forEach(task -> {
                 pw.println(task.getId());
                 pw.println(task.getName());

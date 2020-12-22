@@ -5,8 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import task.manager.controller.Controller;
-import task.manager.controller.sheduller.TaskNotificationList;
-import task.manager.model.Task;
+import task.manager.controller.sheduler.TaskNotificationList;
 import task.manager.view.editForm.EditTaskForm;
 
 

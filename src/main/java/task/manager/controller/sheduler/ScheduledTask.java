@@ -1,4 +1,4 @@
-package task.manager.controller.sheduller;
+package task.manager.controller.sheduler;
 
 import javafx.application.Platform;
 import task.manager.controller.DateConverter;
@@ -10,8 +10,8 @@ import java.util.TimerTask;
 
 public class ScheduledTask extends TimerTask {
 
-    Task task;
-    static int v =20;
+    Task task; // todo all guys from this package can take me and change?
+    static int v =20; // todo what is it?
 
     public ScheduledTask(Task task) {
         this.task = task;
@@ -21,7 +21,7 @@ public class ScheduledTask extends TimerTask {
     public void run() {
 
 
-        v *=5;
+        v *=5; // todo who am i?
         Platform.runLater(() -> {
 
             try {
@@ -31,7 +31,7 @@ public class ScheduledTask extends TimerTask {
                 ntf.setLabelTaskDescription(task.getDescription());
                 ntf.setLabelTime(DateConverter.getStringDate(task.getDate()));
             } catch (Exception e) {
-                e.printStackTrace();
+                e.printStackTrace(); // todo ok thanks that you do not say anything
             }
 
 
