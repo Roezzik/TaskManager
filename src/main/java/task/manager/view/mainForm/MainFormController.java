@@ -65,12 +65,11 @@ public class MainFormController {
     
     private final ArrayList<TaskRow> taskRows;
     
+    private final Controller controller = Controller.getInstance();
+    
     public MainFormController() throws IOException {
         this.taskRows = new ArrayList<>();
     }
-
-    // todo where is access modifier
-    Controller controller = Controller.getInstance();
     
     public void refreshTable() {
         
@@ -89,7 +88,6 @@ public class MainFormController {
             taskRow.getTaskCheckBox().setOnAction(event -> disableButtons());
         }
     }
-
     
     @FXML
     private void initialize() {
