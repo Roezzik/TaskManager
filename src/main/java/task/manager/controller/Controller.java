@@ -56,9 +56,11 @@ public class Controller {
     
     public void deleteTask(int taskId) {
         journal.deleteTask(taskId);
+        //сначала попробовать отменить нотификацию, потом удалять
         notificationScheduler.removeNotification(taskId);
     }
     
+    // todo why am i public? for what reasons i should be called from outside?
     public int getLastTaskId() {
         Map<Integer, Task> tasksMap = journal.getTasksMap();
         return tasksMap.keySet().stream().max(Integer::compareTo).orElse(0);
@@ -66,11 +68,13 @@ public class Controller {
 
     public void cancelTask(int taskId){
         getTask(taskId).setStatus(Status.CANCELLED);
+        //сначала попробовать отменить нотификацию, потом отменять
         notificationScheduler.removeNotification(taskId);
     }
 
     public void doneTask(int taskId){
         getTask(taskId).setStatus(Status.DONE);
+        //сначала попробовать отменить нотификацию
         notificationScheduler.removeNotification(taskId);
     }
 
@@ -79,6 +83,7 @@ public class Controller {
     }
 
     public void write(){
+        //todo write what? controller?
         TextMarshaller.getInstance().write(journal, ViewPathConstants.FILE_PATH);
     }
 }

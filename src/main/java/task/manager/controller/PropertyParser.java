@@ -11,6 +11,7 @@ public class PropertyParser {
         String propertyValue = "";
 
         // todo find out reasons work with file like with resource and provide me details on syncup
+        //один раз прочитать и запомнить
         try (InputStream inputStream = PropertyParser.class.getClassLoader().getResourceAsStream("staff/application.properties")) {
             properties.load(inputStream);
             propertyValue = properties.getProperty(PropertyName);
