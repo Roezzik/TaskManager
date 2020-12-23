@@ -25,6 +25,7 @@ import java.util.Date;
 public class EditTaskController {
     
     public EditTaskController() throws IOException {
+    
     }
     
     @FXML
@@ -50,6 +51,7 @@ public class EditTaskController {
     
     private final Controller     controller     = Controller.getInstance();
     private final TaskRowManager taskRowManager = TaskRowManager.getInstance();
+    //через конструктор или this в initialize
     
     @FXML
     private void initialize() {

@@ -29,6 +29,9 @@ public class TaskRow {
     private final SimpleStringProperty           taskStatus;
     private final SimpleObjectProperty<Button>   taskEditButton;
     
+    Refresher refresher;
+    //присвоить в конструкторе
+    
     public TaskRow(Task task) {
         
         id = task.getId();
@@ -128,6 +131,7 @@ public class TaskRow {
         final Button    cellButton  = new Button();
         Image image = new Image(ViewPathConstants.PATH_TO_EDIT_BUTTON_IMAGE);
         cellButton.setGraphic(new ImageView(image));
+        //как ресурс
         cellButton.setStyle(ViewConstants.STYLE_FOR_EDIT_BUTTON);
         cellButton.setMinSize(ViewConstants.MIN_SIZE_EDIT_BUTTON, ViewConstants.MIN_SIZE_EDIT_BUTTON);
         cellButton.setMaxSize(ViewConstants.MAX_SIZE_EDIT_BUTTON, ViewConstants.MAX_SIZE_EDIT_BUTTON);

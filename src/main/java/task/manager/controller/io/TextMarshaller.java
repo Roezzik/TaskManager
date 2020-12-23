@@ -102,6 +102,7 @@ public class TextMarshaller implements Marshaller {
                 pw.println(task.getDescription());
                 pw.println(DateConverter.getStringDate(task.getDate()));
                 pw.println((task.getStatus()).getTitle());
+                pw.println();
             });
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();
