@@ -1,27 +1,32 @@
 package task.manager.controller;
 
+import task.manager.view.utils.ViewConstants;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertyParser {
 
-    public static String getPropertyValue(String PropertyName) {
-        Properties properties = new Properties();
-        String propertyValue = "";
+   public static String getPropertyValue(String PropertyName) throws PropertyReadException {
 
-        // todo find out reasons work with file like with resource and provide me details on syncup
-        //один раз прочитать и запомнить
-        try (InputStream inputStream = PropertyParser.class.getClassLoader().getResourceAsStream("staff/application.properties")) {
-            properties.load(inputStream);
-            propertyValue = properties.getProperty(PropertyName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return propertyValue;
-    }
+       Properties properties = new Properties();
+       String propertyValue = "";
+       String path = new File("staff/application.properties").getAbsolutePath();
 
-    public static int getIntegerPropertyValue(String PropertyName) throws NumberFormatException {
+       try (InputStream inputStream = new FileInputStream(path)) {
+           properties.load(inputStream);
+           propertyValue = properties.getProperty(PropertyName);
+       } catch (IOException e) {
+           throw new PropertyReadException(ViewConstants.ERROR_READ_PROPERTY);
+       }
+       return propertyValue;
+   }
+
+    public static int getIntegerPropertyValue(String PropertyName) throws NumberFormatException, PropertyReadException {
         return Integer.parseInt(getPropertyValue(PropertyName));
     }
+
 }

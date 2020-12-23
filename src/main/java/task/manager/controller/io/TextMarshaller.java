@@ -2,10 +2,12 @@ package task.manager.controller.io;
 
 
 import task.manager.controller.DateConverter;
+import task.manager.controller.io.Exception.CreateFileException;
+import task.manager.controller.io.Exception.TextMarshallerReadException;
 import task.manager.model.Journal;
 import task.manager.model.Status;
 import task.manager.model.Task;
-import task.manager.view.utils.AlertForm;
+import task.manager.view.utils.ViewConstants;
 
 import java.io.*;
 import java.text.ParseException;
@@ -27,18 +29,14 @@ public class TextMarshaller implements Marshaller {
     }
 
     @Override
-    public Journal read(String path) throws IOException {
+    public Journal read(String path) throws CreateFileException, TextMarshallerReadException, IOException {
         File file = new File(path);
         try {
             if (!file.exists()) {
                 file.createNewFile();
-                // todo thanks, but why is it here? is it ui?
-                AlertForm.infoNewAlert("Welcome to task manager");
             }
         } catch (Exception e) {
-            // alert
-            // todo ok then, i do not wanna know that something went wrong
-            e.printStackTrace();
+            throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);
         }
 
         Journal journal = new Journal();
@@ -46,7 +44,7 @@ public class TextMarshaller implements Marshaller {
         try {
             br = new BufferedReader(new FileReader(path));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace(); ???
         }
 
         String str;
@@ -69,8 +67,8 @@ public class TextMarshaller implements Marshaller {
                         case "Cancelled" -> task.setStatus(Status.CANCELLED);
                     }
                     journal.addTask(task);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    throw new TextMarshallerReadException(ViewConstants.ERROR_READ_FILE);
                 }
 
             }
@@ -79,20 +77,17 @@ public class TextMarshaller implements Marshaller {
     }
 
     @Override
-    public void write(Journal journal, String path) {
+    public void write(Journal journal, String path) throws CreateFileException {
 
         File file = new File(path);
 
         try {
             if (!file.exists()) {
-                //alert errors
-                System.out.println("error!!");
-                // do you want to create a file? - can be implemented
-                return;
+                file.createNewFile();
+               // return; или выкидывать ошибку, в контроллере ее ловить, потом создавать файл, потом уже записывать?
             }
         } catch (Exception e) {
-            // alert
-            e.printStackTrace();
+            throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);
         }
 
         try (PrintWriter pw = new PrintWriter(path)) {
@@ -105,7 +100,7 @@ public class TextMarshaller implements Marshaller {
                 pw.println();
             });
         } catch (FileNotFoundException fileNotFoundException) {
-            fileNotFoundException.printStackTrace();
+            fileNotFoundException.printStackTrace();//???
         }
 
     }

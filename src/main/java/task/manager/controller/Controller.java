@@ -1,90 +1,97 @@
 package task.manager.controller;
 
-
+import task.manager.controller.io.Exception.CreateFileException;
+import task.manager.controller.io.Exception.TextMarshallerReadException;
 import task.manager.controller.io.Marshaller;
 import task.manager.controller.io.TextMarshaller;
 import task.manager.controller.sheduler.NotificationScheduler;
 import task.manager.model.Journal;
 import task.manager.model.Status;
 import task.manager.model.Task;
+import task.manager.view.utils.AlertForm;
 import task.manager.view.utils.ViewPathConstants;
 
 import java.io.IOException;
 import java.util.*;
 
-
 public class Controller {
-    
+
     private static Controller instance;
-    private final Journal               journal; // todo final? how will we load from disk backup?
-    private final NotificationScheduler notificationScheduler; // todo shit happens you forget init this object, but i did it, no problem if you could not ;)
-    
+    private Journal journal;
+    private final NotificationScheduler notificationScheduler;
+
     // todo example how it really should be presented if you create interface
     private final Marshaller marshaller;
-    
+
     private Controller() throws IOException { // todo noway controller throws exception and system stuck
         this.marshaller = TextMarshaller.getInstance();
-        this.journal = TextMarshaller.getInstance().read(ViewPathConstants.FILE_PATH); // todo exception catch for case if journal is not available
+
+        try {
+            this.journal = TextMarshaller.getInstance().read(ViewPathConstants.FILE_PATH); // todo exception catch for case if journal is not available
+        } catch (CreateFileException e) {
+            AlertForm.errorAlert(e.getErrorMessage());
+        } catch (TextMarshallerReadException e) {
+            AlertForm.errorAlert(e.getErrorMessage());
+        }
+
         this.notificationScheduler = NotificationScheduler.getInstance();
-    
         IdGenerator.getInstance(getLastTaskId());
-        
-        // refactor
-        // вынести в отдельный метод контроллера !
+    }
+
+    public void initAllTask() {
         notificationScheduler.startAllTasks(journal.getListAllTasks());
     }
-    
+
     public static synchronized Controller getInstance() throws IOException {
         if (instance == null) {
             instance = new Controller();
         }
         return instance;
     }
-    
+
     public List<Task> getAllTasks() {
         return journal.getListAllTasks();
     }
-    
+
     public void addTask(Task task) {
         journal.addTask(task);
         notificationScheduler.addNotification(task);
     }
-    
+
     public void updateTask(Task task) {
         journal.updateTask(task);
-        notificationScheduler.postponedNotification(task);
+        notificationScheduler.postponeNotification(task);
     }
-    
+
     public void deleteTask(int taskId) {
         journal.deleteTask(taskId);
-        //сначала попробовать отменить нотификацию, потом удалять
         notificationScheduler.removeNotification(taskId);
     }
-    
-    // todo why am i public? for what reasons i should be called from outside?
+
     public int getLastTaskId() {
         Map<Integer, Task> tasksMap = journal.getTasksMap();
         return tasksMap.keySet().stream().max(Integer::compareTo).orElse(0);
     }
 
-    public void cancelTask(int taskId){
+    public void cancelTask(int taskId) {
         getTask(taskId).setStatus(Status.CANCELLED);
-        //сначала попробовать отменить нотификацию, потом отменять
         notificationScheduler.removeNotification(taskId);
     }
 
-    public void doneTask(int taskId){
+    public void doneTask(int taskId) {
         getTask(taskId).setStatus(Status.DONE);
-        //сначала попробовать отменить нотификацию
         notificationScheduler.removeNotification(taskId);
     }
 
-    public Task getTask(int taskId){
+    public Task getTask(int taskId) {
         return journal.getTask(taskId);
     }
 
-    public void write(){
-        //todo write what? controller?
-        TextMarshaller.getInstance().write(journal, ViewPathConstants.FILE_PATH);
+    public void write() {
+        try {
+            TextMarshaller.getInstance().write(journal, ViewPathConstants.FILE_PATH);
+        } catch (CreateFileException e) {
+            AlertForm.errorAlert(e.getErrorMessage());
+        }
     }
 }

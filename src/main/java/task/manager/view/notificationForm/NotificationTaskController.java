@@ -5,63 +5,47 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import task.manager.controller.Controller;
-import task.manager.controller.sheduler.TaskNotificationList;
+import task.manager.controller.sheduler.NotificationScheduler;
 import task.manager.view.editForm.EditTaskForm;
+import task.manager.view.utils.Refresher;
 
 
 public class NotificationTaskController {
 
-    // scene number among all opened scenes
     private static int SceneNumber;
 
     private int thisSceneNumber;
 
-    private int thisSceneId;
-
-    Controller controller;
+    private Controller controller;
 
     @FXML
     void initialize() throws IOException {
         controller = Controller.getInstance();
         thisSceneNumber =  SceneNumber++;
-      //  thisSceneId =  TaskNotificationList.getTaskIdList(thisSceneNumber);
     }
 
     @FXML
     void clickButtonCancelled(ActionEvent event) {
-        System.out.println(thisSceneNumber + " : " + TaskNotificationList.getTaskIdList(thisSceneNumber));
-        System.out.println(thisSceneNumber + " : " + TaskNotificationList.getTaskIdStageList(thisSceneNumber));
-
-        controller.cancelTask(TaskNotificationList.getTaskIdList(thisSceneNumber));
-        TaskNotificationList.getTaskIdStageList(thisSceneNumber).close();
-
-
-      //  for (int i=0; i< TaskNotificationList.getSize(); i++){
-       //     System.out.println("dd" + TaskNotificationList.getTaskIdStageList(i));
-      //  }
-      //  System.out.println("thisSceneNumber"+thisSceneNumber);
-      //  System.out.println("d" +   TaskNotificationList.getTaskIdStageList(thisSceneNumber));
-        //refreshTable()
+        controller.cancelTask(NotificationScheduler.NotificationHistory.getTaskIdList(thisSceneNumber));
+        closeScene();
     }
 
     @FXML
     void clickButtonDone(ActionEvent event) {
-        System.out.println(thisSceneNumber + " : " + TaskNotificationList.getTaskIdList(thisSceneNumber));
-        System.out.println(thisSceneNumber + " : " + TaskNotificationList.getTaskIdStageList(thisSceneNumber));
-
-        controller.doneTask(TaskNotificationList.getTaskIdList(thisSceneNumber));
-        TaskNotificationList.getTaskIdStageList(thisSceneNumber).close();
-      //  System.out.println(thisSceneId);
-     //   controller.doneTask(thisSceneId);
-       // TaskNotificationList.getTaskIdStageList(thisSceneNumber).close();
-        //refreshTable()
+        controller.doneTask(NotificationScheduler.NotificationHistory.getTaskIdList(thisSceneNumber));
+        closeScene();
     }
 
     @FXML
-    void clickButtonRestponed(ActionEvent event) throws Exception {
-        EditTaskForm editTaskForm = new EditTaskForm();
+    void clickButtonPostponed(ActionEvent event) throws Exception {
+        closeScene();
         Stage stage = new Stage();
-        editTaskForm.start(stage);
-        TaskNotificationList.getTaskIdStageList(thisSceneNumber).close();
+        (new EditTaskForm()).start(stage);
+        stage.setOnCloseRequest(we -> Refresher.getInstance().getMainFormController().refreshTable());
+    }
+
+    private void closeScene(){
+        NotificationScheduler.NotificationHistory.getTaskIdStageList(thisSceneNumber).close();
+        Refresher.getInstance().getMainFormController().refreshTable();
     }
 }

@@ -5,7 +5,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import task.manager.controller.sheduler.TaskNotificationList;
+import javafx.stage.StageStyle;
+import task.manager.controller.sheduler.NotificationScheduler;
 import task.manager.view.utils.ViewConstants;
 import task.manager.view.utils.ViewPathConstants;
 
@@ -28,32 +29,27 @@ public class NotificationTaskForm {
         }
         return instance;
     }
-    static int c;
 
     public void start(int taskId) {
 
         URL url;
+
         try {
             url = new File(ViewPathConstants.PATH_TO_NOTIFICATION_FORM_VIEW).toURI().toURL();
             root = FXMLLoader.load(url);
             stage = new Stage();
-         //   TaskNotificationList.addTaskIdList(taskId);
-            //   System.out.println("i=" + c++ + stage);
             stage.setTitle(ViewConstants.TITLE_TO_NOTIFICATION_FORM_VIEW);
             stage.setScene(new Scene(root));
+            stage.setOnCloseRequest(e -> {
+                e.consume(); // we do not allow you to close on the cross
+            });
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("c = "+ c++);
-        System.out.println("taskId - " + taskId);
-        System.out.println("root" + stage);
 
-        TaskNotificationList.addTaskIdStageList(stage);
-        TaskNotificationList.addTaskIdList(taskId);
-       // System.out.println("d" + stage);
-        //System.out.println( "dd "+ TaskNotificationList.getTaskIdStageList(0));
-
+        NotificationScheduler.NotificationHistory.addTaskIdStageList(stage);
+        NotificationScheduler.NotificationHistory.addTaskIdList(taskId);
     }
 
     public void setLabelTaskName(String textLabelTaskName) {

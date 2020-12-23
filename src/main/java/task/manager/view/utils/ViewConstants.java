@@ -4,7 +4,12 @@ package task.manager.view.utils;
 public class ViewConstants {
 
     public static final String DATE_FORMAT = "dd.MM.yyyy HH:mm";
-    
+
+    public static final String ERROR_CREATE_FILE = "File creation error!";
+    public static final String ERROR_READ_FILE = "File read error!";
+    public static final String ERROR_READ_PROPERTY = "File property read error!";
+
+    public static final String TITLE_TO_ERROR = "Error!";
     public static final String TITLE_TO_MAIN_FORM_VIEW = "Task Manager";
     public static final String TITLE_TO_ADD_FORM_VIEW  = "Add Task";
     public static final String TITLE_TO_EDIT_FORM_VIEW = "Edit Task";

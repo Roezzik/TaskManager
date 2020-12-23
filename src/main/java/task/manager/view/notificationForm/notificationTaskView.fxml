@@ -6,7 +6,7 @@
 <AnchorPane prefHeight="145.0" prefWidth="338.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="task.manager.view.notificationForm.NotificationTaskController">
    <children>
       <!-- do not change the order !!!! From them, the map is formed !!! which works with alerts! -->
-      <Button fx:id="buttonRestponed" layoutX="123.0" layoutY="105.0" mnemonicParsing="false" onAction="#clickButtonRestponed" prefHeight="25.0" prefWidth="92.0" text="Restponed" />
+      <Button fx:id="buttonPostponed" layoutX="123.0" layoutY="105.0" mnemonicParsing="false" onAction="#clickButtonPostponed" prefHeight="25.0" prefWidth="92.0" text="Postponed" />
       <Button fx:id="buttonCancelled" layoutX="238.0" layoutY="105.0" mnemonicParsing="false" onAction="#clickButtonCancelled" prefHeight="25.0" prefWidth="85.0" text="Cancelled" />
       <Label fx:id="labelTaskName" layoutY="-6.0" prefHeight="32.0" prefWidth="341.0" style="-fx-background-color: #FFBB40;" />
       <Button fx:id="buttonDone" layoutX="14.0" layoutY="105.0" mnemonicParsing="false" onAction="#clickButtonDone" prefHeight="25.0" prefWidth="92.0" text="Done" />

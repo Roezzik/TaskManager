@@ -1,12 +1,10 @@
 package task.manager.controller.sheduler;
 
+import javafx.stage.Stage;
 import task.manager.model.Status;
 import task.manager.model.Task;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Timer;
+import java.util.*;
 
 public class NotificationScheduler {
 
@@ -27,18 +25,17 @@ public class NotificationScheduler {
 
     public void startAllTasks(List<Task> listTask) {
 
-        // after come up with a normal way
-       /* for (int i = listTask.size()-1; i>=0; i--){*/
-     /*   for (int i = 0; i< listTask.size(); i++ ){
-            if ( listTask.get(i).getDate().getTime() - new Date().getTime() < 0 || (listTask.get(i).getStatus() != Status.SCHEDULED && listTask.get(i).getStatus() != Status.POSTPONED) )
-                continue;
-            TaskNotificationList.addTaskIdList(listTask.get(i).getId());
-        }*/
+        long timeNow = new Date().getTime();
 
         for (Task task : listTask) {
-            // 2 разных условия
-            if (task.getDate().getTime() - new Date().getTime() < 0 || (task.getStatus() != Status.SCHEDULED && task.getStatus() != Status.POSTPONED) )
+
+            if (task.getDate().getTime() - timeNow < 0 ){
                 continue;
+            }
+
+            if(task.getStatus() != Status.SCHEDULED && task.getStatus() != Status.POSTPONED) {
+                continue;
+            }
 
             timers.put(task.getId(), new Timer());
             timers.get(task.getId()).schedule(new ScheduledTask(task), task.getDate().getTime() - new Date().getTime() + TIME_DELAY);
@@ -61,11 +58,33 @@ public class NotificationScheduler {
     }
 
     // no tested (it is necessary to write in the editform)
-
-    // todo all methods should be named in imperative mood
-    public void postponedNotification(Task task) {
+    public void postponeNotification(Task task) {
         removeNotification(task.getId());
         addNotification(task);
+    }
+
+    // then I'll change it to singleton
+    public static class NotificationHistory {
+
+        private static ArrayList<Integer> taskIdList = new ArrayList<>();
+
+        private static ArrayList<Stage> taskIdStageList = new ArrayList<>();
+
+        public static int getTaskIdList(int taskId) {
+            return taskIdList.get(taskId);
+        }
+
+        public static void addTaskIdList(int taskId) {
+            taskIdList.add(taskId);
+        }
+
+        public static Stage getTaskIdStageList(int taskId) {
+            return taskIdStageList.get(taskId);
+        }
+
+        public static void addTaskIdStageList(Stage taskId) {
+            taskIdStageList.add(taskId);
+        }
     }
 
 }
