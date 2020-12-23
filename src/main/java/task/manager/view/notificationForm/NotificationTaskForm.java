@@ -30,21 +30,29 @@ public class NotificationTaskForm {
     }
     static int c;
 
-    public void start() {
+    public void start(int taskId) {
 
         URL url;
         try {
             url = new File(ViewPathConstants.PATH_TO_NOTIFICATION_FORM_VIEW).toURI().toURL();
             root = FXMLLoader.load(url);
             stage = new Stage();
-            TaskNotificationList.addTaskIdStageList(stage);
-            System.out.println("i=" + c++ + stage);
+         //   TaskNotificationList.addTaskIdList(taskId);
+            //   System.out.println("i=" + c++ + stage);
             stage.setTitle(ViewConstants.TITLE_TO_NOTIFICATION_FORM_VIEW);
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("c = "+ c++);
+        System.out.println("taskId - " + taskId);
+        System.out.println("root" + stage);
+
+        TaskNotificationList.addTaskIdStageList(stage);
+        TaskNotificationList.addTaskIdList(taskId);
+       // System.out.println("d" + stage);
+        //System.out.println( "dd "+ TaskNotificationList.getTaskIdStageList(0));
 
     }
 

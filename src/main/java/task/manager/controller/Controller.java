@@ -30,6 +30,7 @@ public class Controller {
         IdGenerator.getInstance(getLastTaskId());
         
         // refactor
+        // вынести в отдельный метод контроллера !
         notificationScheduler.startAllTasks(journal.getListAllTasks());
     }
     

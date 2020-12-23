@@ -11,7 +11,7 @@ import java.util.Timer;
 public class NotificationScheduler {
 
     public static HashMap<Integer, Timer> timers = new HashMap<>();
-    private static int TIME_DELAY = 250;
+    private static int TIME_DELAY = 50;
 
     private static NotificationScheduler instance;
 
@@ -29,13 +29,14 @@ public class NotificationScheduler {
 
         // after come up with a normal way
        /* for (int i = listTask.size()-1; i>=0; i--){*/
-        for (int i = 0; i< listTask.size(); i++ ){
+     /*   for (int i = 0; i< listTask.size(); i++ ){
             if ( listTask.get(i).getDate().getTime() - new Date().getTime() < 0 || (listTask.get(i).getStatus() != Status.SCHEDULED && listTask.get(i).getStatus() != Status.POSTPONED) )
                 continue;
             TaskNotificationList.addTaskIdList(listTask.get(i).getId());
-        }
+        }*/
 
         for (Task task : listTask) {
+            // 2 разных условия
             if (task.getDate().getTime() - new Date().getTime() < 0 || (task.getStatus() != Status.SCHEDULED && task.getStatus() != Status.POSTPONED) )
                 continue;
 

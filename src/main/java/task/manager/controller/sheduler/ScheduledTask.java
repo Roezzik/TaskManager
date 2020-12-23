@@ -11,7 +11,7 @@ import java.util.TimerTask;
 public class ScheduledTask extends TimerTask {
 
     Task task; // todo all guys from this package can take me and change?
-    static int v =20; // todo what is it?
+    //static int v =20; // todo what is it?
 
     public ScheduledTask(Task task) {
         this.task = task;
@@ -21,12 +21,14 @@ public class ScheduledTask extends TimerTask {
     public void run() {
 
 
-        v *=5; // todo who am i?
+       // v *=5; // todo who am i?
         Platform.runLater(() -> {
 
             try {
                 NotificationTaskForm ntf = NotificationTaskForm.getInstance();
-                ntf.start();
+                System.out.println("x" + task.getId());
+                ntf.start(task.getId());
+              //  TaskNotificationList.addTaskIdList(task.getId());
                 ntf.setLabelTaskName(task.getName());
                 ntf.setLabelTaskDescription(task.getDescription());
                 ntf.setLabelTime(DateConverter.getStringDate(task.getDate()));

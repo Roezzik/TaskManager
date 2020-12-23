@@ -24,14 +24,18 @@ public class NotificationTaskController {
     void initialize() throws IOException {
         controller = Controller.getInstance();
         thisSceneNumber =  SceneNumber++;
-        thisSceneId =  TaskNotificationList.getTaskIdList(  thisSceneNumber);
+      //  thisSceneId =  TaskNotificationList.getTaskIdList(thisSceneNumber);
     }
 
     @FXML
     void clickButtonCancelled(ActionEvent event) {
-        //System.out.println("thisSceneId"+ thisSceneId);
-        controller.cancelTask(thisSceneId);
+        System.out.println(thisSceneNumber + " : " + TaskNotificationList.getTaskIdList(thisSceneNumber));
+        System.out.println(thisSceneNumber + " : " + TaskNotificationList.getTaskIdStageList(thisSceneNumber));
+
+        controller.cancelTask(TaskNotificationList.getTaskIdList(thisSceneNumber));
         TaskNotificationList.getTaskIdStageList(thisSceneNumber).close();
+
+
       //  for (int i=0; i< TaskNotificationList.getSize(); i++){
        //     System.out.println("dd" + TaskNotificationList.getTaskIdStageList(i));
       //  }
@@ -42,9 +46,14 @@ public class NotificationTaskController {
 
     @FXML
     void clickButtonDone(ActionEvent event) {
-      //  System.out.println(thisSceneId);
-        controller.doneTask(thisSceneId);
+        System.out.println(thisSceneNumber + " : " + TaskNotificationList.getTaskIdList(thisSceneNumber));
+        System.out.println(thisSceneNumber + " : " + TaskNotificationList.getTaskIdStageList(thisSceneNumber));
+
+        controller.doneTask(TaskNotificationList.getTaskIdList(thisSceneNumber));
         TaskNotificationList.getTaskIdStageList(thisSceneNumber).close();
+      //  System.out.println(thisSceneId);
+     //   controller.doneTask(thisSceneId);
+       // TaskNotificationList.getTaskIdStageList(thisSceneNumber).close();
         //refreshTable()
     }
 
