@@ -1,6 +1,7 @@
 package task.manager.view.notificationForm;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -32,11 +33,8 @@ public class NotificationTaskForm {
 
     public void start(int taskId) {
 
-        URL url;
-
         try {
-            url = new File(ViewPathConstants.PATH_TO_NOTIFICATION_FORM_VIEW).toURI().toURL();
-            root = FXMLLoader.load(url);
+            root = FXMLLoader.load(getClass().getResource(ViewPathConstants.PATH_TO_NOTIFICATION_FORM_VIEW));
             stage = new Stage();
             stage.setTitle(ViewConstants.TITLE_TO_NOTIFICATION_FORM_VIEW);
             stage.setScene(new Scene(root));
