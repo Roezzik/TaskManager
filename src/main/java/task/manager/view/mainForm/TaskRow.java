@@ -28,9 +28,7 @@ public class TaskRow {
     private final SimpleStringProperty           notificationDate;
     private final SimpleStringProperty           taskStatus;
     private final SimpleObjectProperty<Button>   taskEditButton;
-    
-    Refresher refresher;
-    //присвоить в конструкторе
+    private final Refresher refresher;
     
     public TaskRow(Task task) {
         
@@ -41,6 +39,8 @@ public class TaskRow {
         notificationDate = new SimpleStringProperty(formatNotificationDate(task));
         taskStatus = new SimpleStringProperty(task.getStatus().getTitle());
         taskEditButton = new SimpleObjectProperty<>(createEditButton(task));
+        
+        this.refresher = Refresher.getInstance();
     }
     
     public int getId() {
@@ -129,9 +129,9 @@ public class TaskRow {
     private Button createEditButton(Task task) {
         
         final Button    cellButton  = new Button();
-        Image image = new Image(ViewPathConstants.PATH_TO_EDIT_BUTTON_IMAGE);
+    
+        Image image = new Image(getClass().getResource(ViewPathConstants.PATH_TO_EDIT_BUTTON_IMAGE).toString());
         cellButton.setGraphic(new ImageView(image));
-        //как ресурс
         cellButton.setStyle(ViewConstants.STYLE_FOR_EDIT_BUTTON);
         cellButton.setMinSize(ViewConstants.MIN_SIZE_EDIT_BUTTON, ViewConstants.MIN_SIZE_EDIT_BUTTON);
         cellButton.setMaxSize(ViewConstants.MAX_SIZE_EDIT_BUTTON, ViewConstants.MAX_SIZE_EDIT_BUTTON);
@@ -150,7 +150,7 @@ public class TaskRow {
         TaskRowManager.getInstance().setTaskRow(this);
         EditTaskForm editTaskForm = new EditTaskForm();
         Stage        stage        = new Stage();
-        stage.setOnCloseRequest(we -> Refresher.getInstance().getMainFormController().refreshTable());
+        stage.setOnCloseRequest(we -> refresher.getMainFormController().refreshTable());
         editTaskForm.start(stage);
     }
 }
