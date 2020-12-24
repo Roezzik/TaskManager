@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import task.manager.controller.Controller;
+import task.manager.model.Status;
 import task.manager.model.Task;
 import task.manager.view.utils.Refresher;
 import task.manager.view.utils.TaskRowManager;
@@ -64,11 +65,11 @@ public class MainFormController {
     private Button deleteButton;
     
     private final ArrayList<TaskRow> taskRows;
-    
-    private final Controller controller = Controller.getInstance();
+    private final Controller controller;
     
     public MainFormController() throws IOException {
         this.taskRows = new ArrayList<>();
+        this.controller = Controller.getInstance();
     }
     
     public void refreshTable() {
@@ -119,10 +120,16 @@ public class MainFormController {
     @FXML
     public void disableButtons() {
         
-        int counter = 0;
+        int counter = 0, doneCounter = 0, cancelCounter = 0;
         for (TaskRow taskRow : taskRows) {
             if (taskRow.getTaskCheckBox().isSelected()) {
                 counter++;
+                if (controller.getTask(taskRow.getId()).getStatus() == Status.DONE) {
+                    doneCounter++;
+                }
+                if (controller.getTask(taskRow.getId()).getStatus() == Status.CANCELLED) {
+                    cancelCounter++;
+                }
             }
         }
         if (counter == 0) {
@@ -141,6 +148,15 @@ public class MainFormController {
             editButton.setDisable(true);
             cancelButton.setDisable(false);
             deleteButton.setDisable(false);
+        }
+        
+        if (doneCounter != 0) {
+            editButton.setDisable(true);
+            cancelButton.setDisable(true);
+        }
+        
+        if (cancelCounter != 0) {
+            cancelButton.setDisable(true);
         }
     }
     
