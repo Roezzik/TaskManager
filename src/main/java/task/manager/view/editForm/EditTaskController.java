@@ -11,6 +11,7 @@ import task.manager.controller.factory.TaskFactory;
 import task.manager.model.Status;
 import task.manager.model.Task;
 import task.manager.view.addForm.AddTaskController;
+import task.manager.view.mainForm.TaskRow;
 import task.manager.view.utils.AlertForm;
 import task.manager.view.utils.TaskRowManager;
 import task.manager.view.utils.ViewConstants;
@@ -23,10 +24,6 @@ import java.util.Date;
 
 
 public class EditTaskController {
-    
-    public EditTaskController() throws IOException {
-    
-    }
     
     @FXML
     private TextField taskName;
@@ -49,9 +46,13 @@ public class EditTaskController {
     @FXML
     public Button cancelButton;
     
-    private final Controller     controller     = Controller.getInstance();
-    private final TaskRowManager taskRowManager = TaskRowManager.getInstance();
-    //через конструктор или this в initialize
+    private final Controller     controller;
+    private final TaskRowManager taskRowManager;
+    
+    public EditTaskController() throws IOException {
+        this.controller = Controller.getInstance();
+        this.taskRowManager = TaskRowManager.getInstance();
+    }
     
     @FXML
     private void initialize() {
@@ -65,7 +66,6 @@ public class EditTaskController {
         
         taskName.setText(taskRowManager.getTaskRow().getTaskName());
         taskDescription.setText(taskRowManager.getTaskRow().getTaskDescription());
-        
     }
     
     private void initDatePicker() {
@@ -79,21 +79,41 @@ public class EditTaskController {
             }
         });
         
-        Date      taskDate      = controller.getTask(taskRowManager.getTaskRow().getId()).getDate();
-        LocalDate taskLocalDate = taskDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        if (controller.getTask(taskRowManager.getTaskRow().getId())
+                      .getStatus()
+                      .getTitle()
+                      .equals(Status.EXPIRED.getTitle())) {
+            
+            notificationDate.setValue(today);
+        } else {
+            Date      taskDate      = controller.getTask(taskRowManager.getTaskRow().getId()).getDate();
+            LocalDate taskLocalDate = taskDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            
+            notificationDate.setValue(taskLocalDate);
+        }
         
-        notificationDate.setValue(taskLocalDate);
     }
     
     private void initSpinner() {
         
         AddTaskController.initSpinnerFactory(notificationHour, notificationMinute);
         
-        Date          taskDate     = controller.getTask(taskRowManager.getTaskRow().getId()).getDate();
-        LocalDateTime taskDateTime = LocalDateTime.ofInstant(taskDate.toInstant(), ZoneId.systemDefault());
-        
-        notificationHour.getValueFactory().setValue(taskDateTime.getHour());
-        notificationMinute.getValueFactory().setValue(taskDateTime.getMinute());
+        if (controller.getTask(taskRowManager.getTaskRow().getId())
+                      .getStatus()
+                      .getTitle()
+                      .equals(Status.EXPIRED.getTitle())) {
+            Date          currentDate     = new Date();
+            LocalDateTime currentDateTime = LocalDateTime.ofInstant(currentDate.toInstant(), ZoneId.systemDefault());
+            
+            notificationHour.getValueFactory().setValue(currentDateTime.getHour());
+            notificationMinute.getValueFactory().setValue(currentDateTime.getMinute() + 1);
+        } else {
+            Date          taskDate     = controller.getTask(taskRowManager.getTaskRow().getId()).getDate();
+            LocalDateTime taskDateTime = LocalDateTime.ofInstant(taskDate.toInstant(), ZoneId.systemDefault());
+            
+            notificationHour.getValueFactory().setValue(taskDateTime.getHour());
+            notificationMinute.getValueFactory().setValue(taskDateTime.getMinute());
+        }
     }
     
     public void clickSaveButton(ActionEvent event) {

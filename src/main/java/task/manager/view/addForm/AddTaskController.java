@@ -23,9 +23,6 @@ import java.util.Date;
 
 public class AddTaskController {
     
-    public AddTaskController() throws IOException {
-    }
-    
     @FXML
     private TextField taskName;
     
@@ -47,7 +44,11 @@ public class AddTaskController {
     @FXML
     public Button cancelButton;
     
-    Controller controller = Controller.getInstance();
+    private final Controller controller;
+    
+    public AddTaskController() throws IOException {
+        this.controller = Controller.getInstance();
+    }
     
     @FXML
     private void initialize() {
