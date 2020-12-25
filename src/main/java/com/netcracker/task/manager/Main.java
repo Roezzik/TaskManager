@@ -26,7 +26,7 @@ public class Main extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
         primaryStage.setOnCloseRequest(event -> {
-            controller.write();
+            controller.writeJournal();
             Platform.exit();
             System.exit(0);
         });

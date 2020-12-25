@@ -87,7 +87,7 @@ public class Controller {
         return journal.getTask(taskId);
     }
 
-    public void write() {
+    public void writeJournal() {
         try {
             TextMarshaller.getInstance().write(journal, ViewPathConstants.FILE_PATH);
         } catch (CreateFileException e) {

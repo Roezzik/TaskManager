@@ -179,7 +179,7 @@ public class MainFormController {
     public void saveJournal(ActionEvent actionEvent) {
         //TextMarshaller.getInstance().write(controller.getJournal(), PropertyParser.getPropertyValue("FILE_PATH"));
         //BinaryMarshaller.getInstance().write(controller.getJournal(), PropertyParser.getPropertyValue("FILE_PATH"));
-        controller.write();
+        controller.writeJournal();
     }
     
     @FXML
