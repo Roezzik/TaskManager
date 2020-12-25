@@ -90,7 +90,7 @@ public class TextMarshaller implements Marshaller {
         }
 
         try (PrintWriter pw = new PrintWriter(path)) {
-            journal.getTasksMap().values().forEach(task -> {
+            journal.getListAllTasks().forEach(task -> {
                 pw.println(task.getId());
                 pw.println(task.getName());
                 pw.println(task.getDescription());

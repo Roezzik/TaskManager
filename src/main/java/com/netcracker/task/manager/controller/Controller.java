@@ -69,8 +69,8 @@ public class Controller {
     }
 
     public int getLastTaskId() {
-        Map<Integer, Task> tasksMap = journal.getTasksMap();
-        return tasksMap.keySet().stream().max(Integer::compareTo).orElse(0);
+        List<Task> tasksList = journal.getListAllTasks();
+        return tasksList.stream().map(Task::getId).max(Integer::compareTo).orElse(0);
     }
 
     public void cancelTask(int taskId) {
