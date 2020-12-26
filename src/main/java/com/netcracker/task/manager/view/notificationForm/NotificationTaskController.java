@@ -1,8 +1,11 @@
 package com.netcracker.task.manager.view.notificationForm;
 
+
 import com.netcracker.task.manager.controller.sheduler.NotificationHistory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import com.netcracker.task.manager.controller.Controller;
 import com.netcracker.task.manager.view.editForm.EditTaskForm;
@@ -11,16 +14,34 @@ import com.netcracker.task.manager.view.utils.Refresher;
 
 public class NotificationTaskController {
     
+    @FXML
+    private Label labelTaskName;
+    
+    @FXML
+    private Label labelTaskDescription;
+    
+    @FXML
+    private Label labelTime;
+    
+    @FXML
+    private Button buttonDone;
+    
+    @FXML
+    private Button buttonPostpone;
+    
+    @FXML
+    private Button buttonCancel;
+    
     private static int countScene;
     
     private int currentScene;
     
     private Controller controller;
-
+    
     private NotificationHistory notificationHistory;
     
     @FXML
-    void initialize()  {
+    void initialize() {
         notificationHistory = NotificationHistory.getInstance();
         controller = Controller.getInstance();
         currentScene = countScene++;
