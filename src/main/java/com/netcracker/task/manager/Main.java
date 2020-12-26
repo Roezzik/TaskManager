@@ -26,7 +26,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         
-        Controller controller = Controller.getInstance();
         Journal       journal       = new Journal();
         BackupManager backupManager = new BackupManager();
         
@@ -36,8 +35,10 @@ public class Main extends Application {
             e.printStackTrace();
         }
         
+        Controller controller = Controller.getInstance();
         controller.addTasks(journal);
         controller.initAllTask();
+        
         IdGenerator.getInstance(controller.getLastTaskId());
         
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(ViewPathConstants.PATH_TO_MAIN_FORM_VIEW));
