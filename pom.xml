@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.netcracker</groupId> <!-- todo please, if you create unique group id, then create the same path in java folder of your src/main -->
+    <groupId>com.netcracker</groupId>
     <artifactId>task-manager</artifactId>
     <version>0.1</version>
 
@@ -29,7 +29,7 @@
     <build>
         <resources>
             <resource>
-                <directory>src/main/java/task/manager/view</directory>
+                <directory>src/main/java/com/netcracker/task/manager/view</directory>
             </resource>
         </resources>
     </build>
