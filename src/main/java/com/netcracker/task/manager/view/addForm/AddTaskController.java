@@ -46,7 +46,7 @@ public class AddTaskController {
     
     private final Controller controller;
     
-    public AddTaskController() throws IOException {
+    public AddTaskController() {
         this.controller = Controller.getInstance();
     }
     

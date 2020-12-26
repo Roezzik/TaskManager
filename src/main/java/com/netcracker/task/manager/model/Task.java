@@ -25,11 +25,14 @@ public class Task implements Serializable {
         this.date = date;
         this.status = status;
     }
-
-    public Task() { }
-
-    public void setId(int id) { this.id = id; }
-
+    
+    public Task() {
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public int getId() {
         return id;
     }

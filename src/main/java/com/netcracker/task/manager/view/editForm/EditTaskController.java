@@ -15,7 +15,6 @@ import com.netcracker.task.manager.view.utils.AlertForm;
 import com.netcracker.task.manager.view.utils.TaskRowManager;
 import com.netcracker.task.manager.view.utils.ViewConstants;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -48,7 +47,7 @@ public class EditTaskController {
     private final Controller     controller;
     private final TaskRowManager taskRowManager;
     
-    public EditTaskController() throws IOException {
+    public EditTaskController() {
         this.controller = Controller.getInstance();
         this.taskRowManager = TaskRowManager.getInstance();
     }

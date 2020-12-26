@@ -3,7 +3,6 @@ package com.netcracker.task.manager.controller;
 
 import com.netcracker.task.manager.view.utils.ViewConstants;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,9 +26,8 @@ public class PropertyParser {
         }
         return propertyValue;
     }
-    
+
 //    public static int getIntegerPropertyValue(String PropertyName) throws NumberFormatException, PropertyReadException {
 //        return Integer.parseInt(getPropertyValue(PropertyName));
 //    }
-    
 }

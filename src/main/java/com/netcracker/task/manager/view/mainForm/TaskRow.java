@@ -28,7 +28,7 @@ public class TaskRow {
     private final SimpleStringProperty           notificationDate;
     private final SimpleStringProperty           taskStatus;
     private final SimpleObjectProperty<Button>   taskEditButton;
-    private final Refresher refresher;
+    private final Refresher                      refresher;
     
     public TaskRow(Task task) {
         
@@ -38,7 +38,7 @@ public class TaskRow {
         taskDescription = new SimpleStringProperty(task.getDescription());
         notificationDate = new SimpleStringProperty(formatNotificationDate(task));
         taskStatus = new SimpleStringProperty(task.getStatus().getTitle());
-        taskEditButton = new SimpleObjectProperty<>(createEditButton(task));
+        taskEditButton = new SimpleObjectProperty<>(createEditButton());
         
         this.refresher = Refresher.getInstance();
     }
@@ -126,10 +126,10 @@ public class TaskRow {
         return simpleDate.format(date);
     }
     
-    private Button createEditButton(Task task) {
+    private Button createEditButton() {
         
-        final Button    cellButton  = new Button();
-    
+        final Button cellButton = new Button();
+        
         Image image = new Image(getClass().getResource(ViewPathConstants.PATH_TO_EDIT_BUTTON_IMAGE).toString());
         cellButton.setGraphic(new ImageView(image));
         cellButton.setStyle(ViewConstants.STYLE_FOR_EDIT_BUTTON);
