@@ -90,6 +90,7 @@ public class MainFormController {
         tasksTable.setItems(FXCollections.observableList(taskRows));
         Refresher.getInstance().setMainFormController(this);
         
+        checkBoxAllTasks.setSelected(false);
         editButton.setDisable(true);
         cancelButton.setDisable(true);
         deleteButton.setDisable(true);
@@ -180,56 +181,57 @@ public class MainFormController {
     
     @FXML
     public void loadJournal(ActionEvent actionEvent) {
-       try {
-           Journal journal = backupManager.readBackupJournal();
-           controller.addTasks(journal);
-           refreshTable();
-       } catch (PropertyReadException | CreateFileException | IOException | BufferedReaderException | TextMarshallerReadException | FileInputStreamException e){
-           AlertForm.errorAlert(e.getMessage());
-           System.exit(2);
-       }
+        try {
+            Journal journal = backupManager.readBackupJournal();
+            controller.addTasks(journal);
+            refreshTable();
+        } catch (PropertyReadException | CreateFileException | IOException | BufferedReaderException
+                | TextMarshallerReadException | FileInputStreamException e) {
+            AlertForm.errorAlert(e.getMessage());
+            System.exit(2);
+        }
     }
     
     @FXML
     public void saveJournal(ActionEvent actionEvent) {
         try {
             backupManager.writeBackupJournal(controller.getJournal());
-        }catch (PropertyReadException | CreateFileException | PrintWriterException | FileOutputStreamException e) {
+        } catch (PropertyReadException | CreateFileException | PrintWriterException | FileOutputStreamException e) {
             AlertForm.errorAlert(e.getMessage());
             System.exit(3);
         }
     }
     
     @FXML
-    public void clickAddButton(ActionEvent event)  {
+    public void clickAddButton(ActionEvent event) {
         try {
             AddTaskForm addTaskForm = new AddTaskForm();
             Stage       stage       = new Stage();
             addTaskForm.start(stage);
             stage.setOnCloseRequest(we -> refreshTable());
-        }catch (Exception e){
+        } catch (Exception e) {
             AlertForm.errorAlert(ViewConstants.ERROR_ADD_TASK_FORM_EXCEPTION);
         }
     }
     
     @FXML
-    public void clickEditButton(ActionEvent event)  {
-
+    public void clickEditButton(ActionEvent event) {
+        
         try {
             for (int i = 0; i < tasksTable.getItems().size(); i++) {
                 if (tasksTable.getItems().get(i).getTaskCheckBox().isSelected()) {
                     TaskRowManager.getInstance().setTaskRow(tasksTable.getItems().get(i));
                 }
             }
-
+            
             EditTaskForm editTaskForm = new EditTaskForm();
             Stage        stage        = new Stage();
             editTaskForm.start(stage);
             stage.setOnCloseRequest(we -> refreshTable());
-        }catch (Exception e){
+        } catch (Exception e) {
             AlertForm.errorAlert(ViewConstants.ERROR_EDIT_TASK_FORM_EXCEPTION);
         }
-
+        
     }
     
     @FXML
@@ -255,7 +257,7 @@ public class MainFormController {
     
     public void getTaskRowByTaskId(int taskId) {
         List<TaskRow> taskRows = tasksTable.getItems();
-        TaskRow taskRow = taskRows.stream().filter(tr -> tr.getId() == taskId).findFirst().get();
+        TaskRow       taskRow  = taskRows.stream().filter(tr -> tr.getId() == taskId).findFirst().get();
         TaskRowManager.getInstance().setTaskRow(taskRow);
     }
 }
