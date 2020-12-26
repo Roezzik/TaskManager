@@ -35,15 +35,16 @@ public class TextMarshaller implements Marshaller {
     
     @Override
     public Journal read()
-    throws CreateFileException, TextMarshallerReadException, IOException, PropertyReadException, BufferedReaderException {
-    
+    throws CreateFileException, TextMarshallerReadException, IOException, PropertyReadException,
+           BufferedReaderException {
+        
         String pathToFile = PropertyParser.getPropertyValue(PATH_TO_TXT_BACKUP);
         File   file       = new File(pathToFile);
         
         try {
             if (!file.exists()) {
                 file.createNewFile();
-                AlertForm.errorAlert(ViewConstants.ERROR_NO_TEXT_FILE_FOUND);
+                AlertForm.helloAlert(ViewConstants.ERROR_BACKUP_NOT_FOUND);
             }
         } catch (Exception e) {
             throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);
@@ -87,7 +88,7 @@ public class TextMarshaller implements Marshaller {
     
     @Override
     public void write(Journal journal) throws CreateFileException, PropertyReadException, PrintWriterException {
-    
+        
         String pathToFile = PropertyParser.getPropertyValue(PATH_TO_TXT_BACKUP);
         File   file       = new File(pathToFile);
         
