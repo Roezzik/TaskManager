@@ -33,7 +33,7 @@ public class Main extends Application {
             journal = backupManager.readBackupJournal();
         } catch (PropertyReadException | CreateFileException | IOException | BufferedReaderException | TextMarshallerReadException | FileInputStreamException e) {
             AlertForm.errorAlert(e.getMessage());
-            //System.exit(2);
+            System.exit(2);
         }
         
         Controller controller = Controller.getInstance();

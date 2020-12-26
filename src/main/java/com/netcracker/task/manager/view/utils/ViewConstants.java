@@ -10,13 +10,17 @@ public class ViewConstants {
     public static final String ERROR_ADD_TASK_FORM_EXCEPTION = "Add task form exception!";
     public static final String ERROR_PRINT_WRITER_EXCEPTION = "Error print write!";
     public static final String ERROR_BUFFER_READ_EXCEPTION = "Error Buffer Reader Exception!";
+    public static final String ERROR_NO_TEXT_FILE_FOUND = "No text file found! Therefore, a new one is created!";
+    public static final String ERROR_NO_BINARY_FILE_FOUND = "No binary file found! Therefore, a new one is created!";
     public static final String ERROR_SCHEDULED_TASK = "Error scheduled task!";
     public static final String ERROR_READ_PROPERTY = "File property read error!";
     public static final String ERROR_PLATFORM_RUN = "Error creating a stream!";
     public static final String ERROR_CREATE_FILE = "File creation error!";
     public static final String ERROR_READ_FILE = "File read error!";
 
+
     public static final String TITLE_TO_ERROR = "Error!";
+    public static final String TITLE_TO_HELLO = "Hello";
     public static final String TITLE_TO_MAIN_FORM_VIEW = "Task Manager";
     public static final String TITLE_TO_ADD_FORM_VIEW  = "Add Task";
     public static final String TITLE_TO_EDIT_FORM_VIEW = "Edit Task";

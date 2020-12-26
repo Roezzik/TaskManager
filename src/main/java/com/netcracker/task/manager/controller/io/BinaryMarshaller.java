@@ -5,6 +5,7 @@ import com.netcracker.task.manager.controller.PropertyParser;
 import com.netcracker.task.manager.controller.PropertyReadException;
 import com.netcracker.task.manager.controller.io.exception.*;
 import com.netcracker.task.manager.model.Journal;
+import com.netcracker.task.manager.view.utils.AlertForm;
 import com.netcracker.task.manager.view.utils.ViewConstants;
 
 import java.io.*;
@@ -38,6 +39,7 @@ public class BinaryMarshaller implements Marshaller {
             if (!file.exists()) {
                 file.createNewFile();
                 write(journal);
+                AlertForm.errorAlert(ViewConstants.ERROR_NO_BINARY_FILE_FOUND);
             }
         } catch (Exception e) {
             throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);

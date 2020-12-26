@@ -12,6 +12,13 @@ public class AlertForm {
         alert.setHeaderText(info);
         alert.showAndWait();
     }
+
+    public static void HelloAlert(String info) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(ViewConstants.TITLE_TO_HELLO);
+        alert.setHeaderText(info);
+        alert.showAndWait();
+    }
     
     public static void infoAddAlert(String info) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

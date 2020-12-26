@@ -11,6 +11,7 @@ import com.netcracker.task.manager.controller.io.exception.TextMarshallerReadExc
 import com.netcracker.task.manager.model.Journal;
 import com.netcracker.task.manager.model.Status;
 import com.netcracker.task.manager.model.Task;
+import com.netcracker.task.manager.view.utils.AlertForm;
 import com.netcracker.task.manager.view.utils.ViewConstants;
 
 import java.io.*;
@@ -42,6 +43,7 @@ public class TextMarshaller implements Marshaller {
         try {
             if (!file.exists()) {
                 file.createNewFile();
+                AlertForm.errorAlert(ViewConstants.ERROR_NO_TEXT_FILE_FOUND);
             }
         } catch (Exception e) {
             throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);
