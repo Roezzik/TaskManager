@@ -14,24 +14,41 @@ import java.io.IOException;
 public class BackupManager {
     
     private             Marshaller marshaller;
-    public static final String     TXT_FORMAT = "txt", BIN_FORMAT = "bin";
     
-    private void chooseFileFormat(String fileFormat) {
-        
-        if (fileFormat.equals(TXT_FORMAT)) {
+    private void chooseMarshaller() throws PropertyReadException {
+    
+        String fileFormat = PropertyParser.getPropertyValue("backup_format");
+
+        if (fileFormat.equals(FileFormat.TEXT.getTitle())) {
             marshaller = TextMarshaller.getInstance();
-        } else if (fileFormat.equals(BIN_FORMAT)) {
+        } else if (fileFormat.equals(FileFormat.BINARY.getTitle())) {
             //marshaller = BinaryMarshaller.getInstance();
         }
     }
     
-    public void writeBackupJournal(Journal journal, String fileFormat) throws CreateFileException, PropertyReadException {
-        chooseFileFormat(fileFormat);
+    public void writeBackupJournal(Journal journal) throws CreateFileException, PropertyReadException {
+        chooseMarshaller();
         marshaller.write(journal);
     }
     
-    public Journal readBackupJournal(String fileFormat) throws PropertyReadException, TextMarshallerReadException, CreateFileException, IOException {
-        chooseFileFormat(fileFormat);
+    public Journal readBackupJournal() throws PropertyReadException, TextMarshallerReadException, CreateFileException, IOException {
+        chooseMarshaller();
         return marshaller.read();
+    }
+    
+    enum FileFormat {
+        
+        TEXT("txt"),
+        BINARY("bin");
+        
+        private final String title;
+    
+        FileFormat(String title) {
+            this.title = title;
+        }
+        
+        public String getTitle() {
+            return title;
+        }
     }
 }

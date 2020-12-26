@@ -31,7 +31,7 @@ public class Main extends Application {
         BackupManager backupManager = new BackupManager();
         
         try {
-            journal = backupManager.readBackupJournal(BackupManager.TXT_FORMAT);
+            journal = backupManager.readBackupJournal();
         } catch (PropertyReadException | CreateFileException | IOException | TextMarshallerReadException e) {
             e.printStackTrace();
         }
@@ -49,7 +49,7 @@ public class Main extends Application {
         Refresher.getInstance().getMainFormController().refreshTable();
         primaryStage.setOnCloseRequest(event -> {
             try {
-                backupManager.writeBackupJournal(controller.getJournal(), BackupManager.TXT_FORMAT);
+                backupManager.writeBackupJournal(controller.getJournal());
             } catch (PropertyReadException | CreateFileException e) {
                 e.printStackTrace();
             }
