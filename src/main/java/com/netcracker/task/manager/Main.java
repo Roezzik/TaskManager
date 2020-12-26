@@ -5,9 +5,9 @@ import com.netcracker.task.manager.controller.BackupManager;
 import com.netcracker.task.manager.controller.Controller;
 import com.netcracker.task.manager.controller.IdGenerator;
 import com.netcracker.task.manager.controller.PropertyReadException;
-import com.netcracker.task.manager.controller.io.Exception.CreateFileException;
-import com.netcracker.task.manager.controller.io.Exception.TextMarshallerReadException;
+import com.netcracker.task.manager.controller.io.exception.*;
 import com.netcracker.task.manager.model.Journal;
+import com.netcracker.task.manager.view.utils.AlertForm;
 import com.netcracker.task.manager.view.utils.Refresher;
 import com.netcracker.task.manager.view.utils.ViewPathConstants;
 import javafx.application.Application;
@@ -32,8 +32,9 @@ public class Main extends Application {
         
         try {
             journal = backupManager.readBackupJournal();
-        } catch (PropertyReadException | CreateFileException | IOException | TextMarshallerReadException e) {
-            e.printStackTrace();
+        } catch (PropertyReadException | CreateFileException | IOException | BufferedReaderException | TextMarshallerReadException | FileInputStreamException e) {
+            AlertForm.errorAlert(e.getMessage());
+            //System.exit(2);
         }
         
         controller.addTasks(journal);
@@ -50,8 +51,9 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest(event -> {
             try {
                 backupManager.writeBackupJournal(controller.getJournal());
-            } catch (PropertyReadException | CreateFileException e) {
-                e.printStackTrace();
+            } catch (PropertyReadException | CreateFileException | PrintWriterException | FileOutputStreamException e) {
+                AlertForm.errorAlert(e.getMessage());
+                System.exit(3);
             }
             Platform.exit();
             System.exit(0);

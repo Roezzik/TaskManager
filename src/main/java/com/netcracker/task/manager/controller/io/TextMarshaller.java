@@ -4,8 +4,10 @@ package com.netcracker.task.manager.controller.io;
 import com.netcracker.task.manager.controller.DateConverter;
 import com.netcracker.task.manager.controller.PropertyParser;
 import com.netcracker.task.manager.controller.PropertyReadException;
-import com.netcracker.task.manager.controller.io.Exception.CreateFileException;
-import com.netcracker.task.manager.controller.io.Exception.TextMarshallerReadException;
+import com.netcracker.task.manager.controller.io.exception.BufferedReaderException;
+import com.netcracker.task.manager.controller.io.exception.CreateFileException;
+import com.netcracker.task.manager.controller.io.exception.PrintWriterException;
+import com.netcracker.task.manager.controller.io.exception.TextMarshallerReadException;
 import com.netcracker.task.manager.model.Journal;
 import com.netcracker.task.manager.model.Status;
 import com.netcracker.task.manager.model.Task;
@@ -32,7 +34,7 @@ public class TextMarshaller implements Marshaller {
     
     @Override
     public Journal read()
-    throws CreateFileException, TextMarshallerReadException, IOException, PropertyReadException {
+    throws CreateFileException, TextMarshallerReadException, IOException, PropertyReadException, BufferedReaderException {
     
         String pathToFile = PropertyParser.getPropertyValue(PATH_TO_TXT_BACKUP);
         File   file       = new File(pathToFile);
@@ -50,7 +52,7 @@ public class TextMarshaller implements Marshaller {
         try {
             br = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException e) {
-            //e.printStackTrace(); ???
+            throw new BufferedReaderException(ViewConstants.ERROR_BUFFER_READ_EXCEPTION);
         }
         
         String str;
@@ -76,21 +78,19 @@ public class TextMarshaller implements Marshaller {
                 } catch (Exception e) {
                     throw new TextMarshallerReadException(ViewConstants.ERROR_READ_FILE);
                 }
-                
             }
         }
         return journal;
     }
     
     @Override
-    public void write(Journal journal) throws CreateFileException, PropertyReadException {
+    public void write(Journal journal) throws CreateFileException, PropertyReadException, PrintWriterException {
     
         String pathToFile = PropertyParser.getPropertyValue(PATH_TO_TXT_BACKUP);
         File   file       = new File(pathToFile);
         
         try {
             file.createNewFile();
-            // return; или выкидывать ошибку, в контроллере ее ловить, потом создавать файл, потом уже записывать?
         } catch (IOException e) {
             throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);
         }
@@ -105,7 +105,7 @@ public class TextMarshaller implements Marshaller {
                 pw.println();
             });
         } catch (FileNotFoundException fileNotFoundException) {
-            fileNotFoundException.printStackTrace();//???
+            throw new PrintWriterException(ViewConstants.ERROR_PRINT_WRITER_EXCEPTION);
         }
         
     }

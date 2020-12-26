@@ -3,6 +3,8 @@ package com.netcracker.task.manager.controller.sheduler;
 import com.netcracker.task.manager.controller.DateConverter;
 import com.netcracker.task.manager.model.Task;
 import com.netcracker.task.manager.view.notificationForm.NotificationTaskForm;
+import com.netcracker.task.manager.view.notificationForm.RunPlatformException;
+import com.netcracker.task.manager.view.utils.ViewConstants;
 import javafx.application.Platform;
 
 import java.util.TimerTask;
@@ -26,8 +28,10 @@ public class ScheduledTask extends TimerTask {
                 ntf.setLabelTaskName(task.getName());
                 ntf.setLabelTaskDescription(task.getDescription());
                 ntf.setLabelTime(DateConverter.getStringDate(task.getDate()));
+            } catch (RunPlatformException e) {
+                System.out.println(e.getMessage());
             } catch (Exception e) {
-                //e.printStackTrace();??? // todo ok thanks that you do not say anything
+                System.out.println(ViewConstants.ERROR_SCHEDULED_TASK);
             }
 
 

@@ -2,8 +2,8 @@ package com.netcracker.task.manager.controller;
 
 
 //import com.netcracker.task.manager.controller.io.BinaryMarshaller;
-import com.netcracker.task.manager.controller.io.Exception.CreateFileException;
-import com.netcracker.task.manager.controller.io.Exception.TextMarshallerReadException;
+import com.netcracker.task.manager.controller.io.BinaryMarshaller;
+import com.netcracker.task.manager.controller.io.exception.*;
 import com.netcracker.task.manager.controller.io.Marshaller;
 import com.netcracker.task.manager.controller.io.TextMarshaller;
 import com.netcracker.task.manager.model.Journal;
@@ -22,16 +22,16 @@ public class BackupManager {
         if (fileFormat.equals(FileFormat.TEXT.getTitle())) {
             marshaller = TextMarshaller.getInstance();
         } else if (fileFormat.equals(FileFormat.BINARY.getTitle())) {
-            //marshaller = BinaryMarshaller.getInstance();
+            marshaller = BinaryMarshaller.getInstance();
         }
     }
     
-    public void writeBackupJournal(Journal journal) throws CreateFileException, PropertyReadException {
+    public void writeBackupJournal(Journal journal) throws CreateFileException, PropertyReadException, PrintWriterException, FileOutputStreamException {
         chooseMarshaller();
         marshaller.write(journal);
     }
     
-    public Journal readBackupJournal() throws PropertyReadException, TextMarshallerReadException, CreateFileException, IOException {
+    public Journal readBackupJournal() throws PropertyReadException, TextMarshallerReadException, CreateFileException, IOException, BufferedReaderException, FileInputStreamException {
         chooseMarshaller();
         return marshaller.read();
     }

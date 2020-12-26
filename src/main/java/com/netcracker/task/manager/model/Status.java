@@ -1,7 +1,9 @@
 package com.netcracker.task.manager.model;
 
 
-public enum Status {
+import java.io.Serializable;
+
+public enum Status implements Serializable  {
     
     SCHEDULED("Scheduled"),
     DONE("Done"),

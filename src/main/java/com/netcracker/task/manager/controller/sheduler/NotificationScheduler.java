@@ -10,10 +10,12 @@ public class NotificationScheduler {
 
     public static HashMap<Integer, Timer> timers = new HashMap<>();
     private static int TIME_DELAY = 50;
+    private NotificationHistory notificationHistory;
 
     private static NotificationScheduler instance;
 
     private NotificationScheduler() {
+        notificationHistory = NotificationHistory.getInstance();
     }
 
     public static NotificationScheduler getInstance() {
@@ -57,34 +59,9 @@ public class NotificationScheduler {
         }
     }
 
-    // no tested (it is necessary to write in the editform)
     public void postponeNotification(Task task) {
         removeNotification(task.getId());
         addNotification(task);
-    }
-
-    // then I'll change it to singleton
-    public static class NotificationHistory {
-
-        private static ArrayList<Integer> taskIdList = new ArrayList<>();
-
-        private static ArrayList<Stage> taskIdStageList = new ArrayList<>();
-
-        public static int getTaskIdList(int taskId) {
-            return taskIdList.get(taskId);
-        }
-
-        public static void addTaskIdList(int taskId) {
-            taskIdList.add(taskId);
-        }
-
-        public static Stage getTaskIdStageList(int taskId) {
-            return taskIdStageList.get(taskId);
-        }
-
-        public static void addTaskIdStageList(Stage taskId) {
-            taskIdStageList.add(taskId);
-        }
     }
 
 }

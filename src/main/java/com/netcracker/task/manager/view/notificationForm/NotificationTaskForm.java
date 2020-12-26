@@ -1,12 +1,12 @@
 package com.netcracker.task.manager.view.notificationForm;
 
+import com.netcracker.task.manager.controller.sheduler.NotificationHistory;
 import com.netcracker.task.manager.view.utils.ViewPathConstants;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import com.netcracker.task.manager.controller.sheduler.NotificationScheduler;
 import com.netcracker.task.manager.view.utils.ViewConstants;
 
 
@@ -14,10 +14,12 @@ public class NotificationTaskForm {
 
     private Pane root;
     private Stage stage;
+    private NotificationHistory notificationHistory;
 
     private static NotificationTaskForm instance;
 
     private NotificationTaskForm() {
+        notificationHistory = NotificationHistory.getInstance();
     }
 
     public static NotificationTaskForm getInstance() {
@@ -27,7 +29,7 @@ public class NotificationTaskForm {
         return instance;
     }
 
-    public void start(int taskId) {
+    public void start(int taskId) throws RunPlatformException {
 
         try {
             root = FXMLLoader.load(getClass().getResource(ViewPathConstants.PATH_TO_NOTIFICATION_FORM_VIEW));
@@ -39,11 +41,11 @@ public class NotificationTaskForm {
             });
             stage.show();
         } catch (Exception e) {
-            e.printStackTrace();
+           throw new RunPlatformException(ViewConstants.ERROR_PLATFORM_RUN);
         }
 
-        NotificationScheduler.NotificationHistory.addTaskIdStageList(stage);
-        NotificationScheduler.NotificationHistory.addTaskIdList(taskId);
+        notificationHistory.addTaskIdStageList(stage);
+        notificationHistory.addTaskIdList(taskId);
     }
 
     public void setLabelTaskName(String textLabelTaskName) {

@@ -3,12 +3,13 @@ package com.netcracker.task.manager.view.mainForm;
 
 import com.netcracker.task.manager.controller.BackupManager;
 import com.netcracker.task.manager.controller.PropertyReadException;
-import com.netcracker.task.manager.controller.io.Exception.CreateFileException;
-import com.netcracker.task.manager.controller.io.Exception.TextMarshallerReadException;
+import com.netcracker.task.manager.controller.io.exception.*;
 import com.netcracker.task.manager.model.Journal;
 import com.netcracker.task.manager.model.Status;
 import com.netcracker.task.manager.model.Task;
+import com.netcracker.task.manager.view.utils.AlertForm;
 import com.netcracker.task.manager.view.utils.Refresher;
+import com.netcracker.task.manager.view.utils.ViewConstants;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -178,39 +179,57 @@ public class MainFormController {
     }
     
     @FXML
-    public void loadJournal(ActionEvent actionEvent)
-    throws PropertyReadException, TextMarshallerReadException, CreateFileException, IOException {
-        Journal journal = backupManager.readBackupJournal();
-        controller.addTasks(journal);
-        refreshTable();
+    public void loadJournal(ActionEvent actionEvent) {
+       try {
+           Journal journal = backupManager.readBackupJournal();
+           controller.addTasks(journal);
+           refreshTable();
+       } catch (PropertyReadException | CreateFileException | IOException | BufferedReaderException | TextMarshallerReadException | FileInputStreamException e){
+           AlertForm.errorAlert(e.getMessage());
+           System.exit(2);
+       }
     }
     
     @FXML
-    public void saveJournal(ActionEvent actionEvent) throws PropertyReadException, CreateFileException {
-        //TextMarshaller.getInstance().write(controller.getJournal());
-        backupManager.writeBackupJournal(controller.getJournal());
-    }
-    
-    @FXML
-    public void clickAddButton(ActionEvent event) throws Exception {
-        AddTaskForm addTaskForm = new AddTaskForm();
-        Stage       stage       = new Stage();
-        addTaskForm.start(stage);
-        stage.setOnCloseRequest(we -> refreshTable());
-    }
-    
-    @FXML
-    public void clickEditButton(ActionEvent event) throws Exception {
-        for (int i = 0; i < tasksTable.getItems().size(); i++) {
-            if (tasksTable.getItems().get(i).getTaskCheckBox().isSelected()) {
-                TaskRowManager.getInstance().setTaskRow(tasksTable.getItems().get(i));
-            }
+    public void saveJournal(ActionEvent actionEvent) {
+        try {
+            backupManager.writeBackupJournal(controller.getJournal());
+        }catch (PropertyReadException | CreateFileException | PrintWriterException | FileOutputStreamException e) {
+            AlertForm.errorAlert(e.getMessage());
+            System.exit(3);
         }
-        
-        EditTaskForm editTaskForm = new EditTaskForm();
-        Stage        stage        = new Stage();
-        editTaskForm.start(stage);
-        stage.setOnCloseRequest(we -> refreshTable());
+    }
+    
+    @FXML
+    public void clickAddButton(ActionEvent event)  {
+        try {
+            AddTaskForm addTaskForm = new AddTaskForm();
+            Stage       stage       = new Stage();
+            addTaskForm.start(stage);
+            stage.setOnCloseRequest(we -> refreshTable());
+        }catch (Exception e){
+            AlertForm.errorAlert(ViewConstants.ERROR_ADD_TASK_FORM_EXCEPTION);
+        }
+    }
+    
+    @FXML
+    public void clickEditButton(ActionEvent event)  {
+
+        try {
+            for (int i = 0; i < tasksTable.getItems().size(); i++) {
+                if (tasksTable.getItems().get(i).getTaskCheckBox().isSelected()) {
+                    TaskRowManager.getInstance().setTaskRow(tasksTable.getItems().get(i));
+                }
+            }
+
+            EditTaskForm editTaskForm = new EditTaskForm();
+            Stage        stage        = new Stage();
+            editTaskForm.start(stage);
+            stage.setOnCloseRequest(we -> refreshTable());
+        }catch (Exception e){
+            AlertForm.errorAlert(ViewConstants.ERROR_EDIT_TASK_FORM_EXCEPTION);
+        }
+
     }
     
     @FXML

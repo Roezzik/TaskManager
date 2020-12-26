@@ -1,13 +1,20 @@
 package com.netcracker.task.manager.view.utils;
 
-
 public class ViewConstants {
 
     public static final String DATE_FORMAT = "dd.MM.yyyy HH:mm";
 
+    public static final String ERROR_FILE_OUTPUT_STREAM_EXCEPTION = "Error output stream Exception!";
+    public static final String ERROR_FILE_INPUT_STREAM_EXCEPTION = "Error input stream Exception!";
+    public static final String ERROR_EDIT_TASK_FORM_EXCEPTION = "Edit task form exception!";
+    public static final String ERROR_ADD_TASK_FORM_EXCEPTION = "Add task form exception!";
+    public static final String ERROR_PRINT_WRITER_EXCEPTION = "Error print write!";
+    public static final String ERROR_BUFFER_READ_EXCEPTION = "Error Buffer Reader Exception!";
+    public static final String ERROR_SCHEDULED_TASK = "Error scheduled task!";
+    public static final String ERROR_READ_PROPERTY = "File property read error!";
+    public static final String ERROR_PLATFORM_RUN = "Error creating a stream!";
     public static final String ERROR_CREATE_FILE = "File creation error!";
     public static final String ERROR_READ_FILE = "File read error!";
-    public static final String ERROR_READ_PROPERTY = "File property read error!";
 
     public static final String TITLE_TO_ERROR = "Error!";
     public static final String TITLE_TO_MAIN_FORM_VIEW = "Task Manager";
@@ -27,5 +34,4 @@ public class ViewConstants {
     public static final String ALERT_MISSING_TASK_NAME = "Please, enter a name of task!";
     public static final String ALERT_INCORRECT_TIME    = "You can't set the passed time for notification! \n "
                                                          + "Please, enter a correct time of notification.";
-
 }
