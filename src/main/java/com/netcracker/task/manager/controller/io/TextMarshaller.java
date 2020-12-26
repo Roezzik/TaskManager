@@ -2,6 +2,8 @@ package com.netcracker.task.manager.controller.io;
 
 
 import com.netcracker.task.manager.controller.DateConverter;
+import com.netcracker.task.manager.controller.PropertyParser;
+import com.netcracker.task.manager.controller.PropertyReadException;
 import com.netcracker.task.manager.controller.io.Exception.CreateFileException;
 import com.netcracker.task.manager.controller.io.Exception.TextMarshallerReadException;
 import com.netcracker.task.manager.model.Journal;
@@ -13,23 +15,28 @@ import java.io.*;
 
 
 public class TextMarshaller implements Marshaller {
-
-
+    
     private static TextMarshaller instance;
-
+    
+    private static final String PATH_TO_TXT_BACKUP = "path_to_txt_backup";
+    
     private TextMarshaller() {
     }
-
+    
     public static TextMarshaller getInstance() {
         if (instance == null) {
             instance = new TextMarshaller();
         }
         return instance;
     }
-
+    
     @Override
-    public Journal read(String path) throws CreateFileException, TextMarshallerReadException, IOException {
-        File file = new File(path);
+    public Journal read()
+    throws CreateFileException, TextMarshallerReadException, IOException, PropertyReadException {
+    
+        String pathToFile = PropertyParser.getPropertyValue(PATH_TO_TXT_BACKUP);
+        File   file       = new File(pathToFile);
+        
         try {
             if (!file.exists()) {
                 file.createNewFile();
@@ -37,21 +44,21 @@ public class TextMarshaller implements Marshaller {
         } catch (Exception e) {
             throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);
         }
-
-        Journal journal = new Journal();
-        BufferedReader br = null;
+        
+        Journal        journal = new Journal();
+        BufferedReader br      = null;
         try {
-            br = new BufferedReader(new FileReader(path));
+            br = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException e) {
             //e.printStackTrace(); ???
         }
-
+        
         String str;
         if (br != null) {
             while ((str = br.readLine()) != null) {
-
+                
                 if (str.equals("")) continue;
-
+                
                 try {
                     Task task = new Task(Integer.parseInt(str),
                                          br.readLine(),
@@ -69,27 +76,26 @@ public class TextMarshaller implements Marshaller {
                 } catch (Exception e) {
                     throw new TextMarshallerReadException(ViewConstants.ERROR_READ_FILE);
                 }
-
+                
             }
         }
         return journal;
     }
-
+    
     @Override
-    public void write(Journal journal, String path) throws CreateFileException {
-
-        File file = new File(path);
-
+    public void write(Journal journal) throws CreateFileException, PropertyReadException {
+    
+        String pathToFile = PropertyParser.getPropertyValue(PATH_TO_TXT_BACKUP);
+        File   file       = new File(pathToFile);
+        
         try {
-            if (!file.exists()) {
-                file.createNewFile();
-               // return; или выкидывать ошибку, в контроллере ее ловить, потом создавать файл, потом уже записывать?
-            }
-        } catch (Exception e) {
+            file.createNewFile();
+            // return; или выкидывать ошибку, в контроллере ее ловить, потом создавать файл, потом уже записывать?
+        } catch (IOException e) {
             throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);
         }
-
-        try (PrintWriter pw = new PrintWriter(path)) {
+        
+        try (PrintWriter pw = new PrintWriter(file)) {
             journal.getListAllTasks().forEach(task -> {
                 pw.println(task.getId());
                 pw.println(task.getName());
@@ -101,6 +107,6 @@ public class TextMarshaller implements Marshaller {
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();//???
         }
-
+        
     }
 }

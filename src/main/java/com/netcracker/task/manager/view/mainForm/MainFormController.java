@@ -1,6 +1,11 @@
 package com.netcracker.task.manager.view.mainForm;
 
 
+import com.netcracker.task.manager.controller.BackupManager;
+import com.netcracker.task.manager.controller.PropertyReadException;
+import com.netcracker.task.manager.controller.io.Exception.CreateFileException;
+import com.netcracker.task.manager.controller.io.Exception.TextMarshallerReadException;
+import com.netcracker.task.manager.model.Journal;
 import com.netcracker.task.manager.model.Status;
 import com.netcracker.task.manager.model.Task;
 import com.netcracker.task.manager.view.utils.Refresher;
@@ -65,11 +70,13 @@ public class MainFormController {
     private Button deleteButton;
     
     private final ArrayList<TaskRow> taskRows;
-    private final Controller controller;
+    private final Controller    controller;
+    private final BackupManager backupManager;
     
-    public MainFormController() throws IOException {
+    public MainFormController() {
         this.taskRows = new ArrayList<>();
         this.controller = Controller.getInstance();
+        this.backupManager = new BackupManager();
     }
     
     public void refreshTable() {
@@ -171,15 +178,17 @@ public class MainFormController {
     }
     
     @FXML
-    public void loadJournal(ActionEvent actionEvent) {
-        //TODO
+    public void loadJournal(ActionEvent actionEvent)
+    throws PropertyReadException, TextMarshallerReadException, CreateFileException, IOException {
+        Journal journal = backupManager.readBackupJournal(BackupManager.TXT_FORMAT);
+        controller.addTasks(journal);
+        refreshTable();
     }
     
     @FXML
-    public void saveJournal(ActionEvent actionEvent) {
-        //TextMarshaller.getInstance().write(controller.getJournal(), PropertyParser.getPropertyValue("FILE_PATH"));
-        //BinaryMarshaller.getInstance().write(controller.getJournal(), PropertyParser.getPropertyValue("FILE_PATH"));
-        controller.writeJournal();
+    public void saveJournal(ActionEvent actionEvent) throws PropertyReadException, CreateFileException {
+        //TextMarshaller.getInstance().write(controller.getJournal());
+        backupManager.writeBackupJournal(controller.getJournal(), BackupManager.TXT_FORMAT);
     }
     
     @FXML
@@ -223,6 +232,12 @@ public class MainFormController {
             }
         }
         refreshTable();
+    }
+    
+    public void getTaskRow(int taskId) {
+        for (int i = 0; i < tasksTable.getItems().size(); i++) {
+            TaskRowManager.getInstance().setTaskRow(tasksTable.getItems().get(i));
+        }
     }
 }
 
