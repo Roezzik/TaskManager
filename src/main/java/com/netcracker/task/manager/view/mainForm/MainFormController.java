@@ -70,8 +70,8 @@ public class MainFormController {
     private Button deleteButton;
     
     private final ArrayList<TaskRow> taskRows;
-    private final Controller    controller;
-    private final BackupManager backupManager;
+    private final Controller         controller;
+    private final BackupManager      backupManager;
     
     public MainFormController() {
         this.taskRows = new ArrayList<>();
@@ -180,7 +180,7 @@ public class MainFormController {
     @FXML
     public void loadJournal(ActionEvent actionEvent)
     throws PropertyReadException, TextMarshallerReadException, CreateFileException, IOException {
-        Journal journal = backupManager.readBackupJournal(BackupManager.TXT_FORMAT);
+        Journal journal = backupManager.readBackupJournal();
         controller.addTasks(journal);
         refreshTable();
     }
@@ -188,7 +188,7 @@ public class MainFormController {
     @FXML
     public void saveJournal(ActionEvent actionEvent) throws PropertyReadException, CreateFileException {
         //TextMarshaller.getInstance().write(controller.getJournal());
-        backupManager.writeBackupJournal(controller.getJournal(), BackupManager.TXT_FORMAT);
+        backupManager.writeBackupJournal(controller.getJournal());
     }
     
     @FXML
@@ -234,10 +234,10 @@ public class MainFormController {
         refreshTable();
     }
     
-    public void getTaskRow(int taskId) {
-        for (int i = 0; i < tasksTable.getItems().size(); i++) {
-            TaskRowManager.getInstance().setTaskRow(tasksTable.getItems().get(i));
-        }
+    public void getTaskRowByTaskId(int taskId) {
+        List<TaskRow> taskRows = tasksTable.getItems();
+        TaskRow taskRow = taskRows.stream().filter(tr -> tr.getId() == taskId).findFirst().get();
+        TaskRowManager.getInstance().setTaskRow(taskRow);
     }
 }
 

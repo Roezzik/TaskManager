@@ -50,9 +50,7 @@ public class NotificationTaskController {
         Stage stage = new Stage();
         Refresher.getInstance()
                  .getMainFormController()
-                 .getTaskRow(NotificationScheduler.NotificationHistory.getTaskIdList(currentScene));
-        //System.out.println(currentScene);
-        //System.out.println(NotificationScheduler.NotificationHistory.getTaskIdList(currentScene));
+                 .getTaskRowByTaskId(NotificationScheduler.NotificationHistory.getTaskIdList(currentScene));
         (new EditTaskForm()).start(stage);
         stage.setOnCloseRequest(we -> Refresher.getInstance().getMainFormController().refreshTable());
     }
