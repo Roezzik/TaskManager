@@ -10,7 +10,7 @@
             <Insets right="5.0" />
         </padding>
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem fx:id="loadJournalItem" mnemonicParsing="false" text="Load Journal" />
+            <MenuItem fx:id="loadJournalItem" mnemonicParsing="false" onAction="#loadJournal" text="Load Journal" />
             <MenuItem fx:id="saveJournalItem" mnemonicParsing="false" onAction="#saveJournal" text="Save Journal" />
         </Menu>
     </MenuBar>
