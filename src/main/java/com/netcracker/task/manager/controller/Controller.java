@@ -83,7 +83,12 @@ public class Controller {
         Date currentDate = new Date();
         for (Task task : tasksList) {
             if (task.getDate().before(currentDate)) {
-                task.setStatus(Status.EXPIRED);
+                if (task.getStatus().equals(Status.SCHEDULED)) {
+                    task.setStatus(Status.EXPIRED);
+                }
+                if (task.getStatus().equals(Status.POSTPONED)) {
+                    task.setStatus(Status.EXPIRED);
+                }
             }
         }
     }
