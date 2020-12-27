@@ -4,30 +4,30 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="145.0" prefWidth="338.0" xmlns="http://javafx.com/javafx/11.0.1"
+<AnchorPane minWidth="-Infinity" prefHeight="145.0" prefWidth="335.0" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.netcracker.task.manager.view.notificationForm.NotificationTaskController">
-    <Button fx:id="buttonPostpone" layoutX="123.0" layoutY="105.0" mnemonicParsing="false"
-            onAction="#clickButtonPostponed" prefHeight="25.0" prefWidth="92.0" text="Postpone"/>
-    <Button fx:id="buttonCancel" layoutX="238.0" layoutY="105.0" mnemonicParsing="false"
-            onAction="#clickButtonCancelled" prefHeight="25.0" prefWidth="85.0" text="Cancel"/>
-    <Label fx:id="labelTaskName" layoutY="-6.0" prefHeight="32.0" prefWidth="341.0"
+    <Button fx:id="buttonPostpone" layoutX="125.0" layoutY="105.0" mnemonicParsing="false"
+            onAction="#clickPostponeButton" prefHeight="25.0" prefWidth="92.0" text="Postpone"/>
+    <Button fx:id="buttonCancel" layoutX="233.0" layoutY="105.0" mnemonicParsing="false" onAction="#clickCancelButton"
+            prefHeight="25.0" prefWidth="85.0" text="Cancel"/>
+    <Label fx:id="labelTaskName" layoutY="-6.0" prefHeight="32.0" prefWidth="335.0"
            style="-fx-background-color: #FFBB40;" textAlignment="CENTER">
         <padding>
-          <Insets left="2.0" right="2.0"/>
+            <Insets left="4.0" right="4.0"/>
         </padding>
     </Label>
-    <Button fx:id="buttonDone" layoutX="14.0" layoutY="105.0" mnemonicParsing="false" onAction="#clickButtonDone"
+    <Button fx:id="buttonDone" layoutX="17.0" layoutY="105.0" mnemonicParsing="false" onAction="#clickDoneButton"
             prefHeight="25.0" prefWidth="92.0" text="Done"/>
-    <Label fx:id="labelTaskDescription" layoutX="-3.0" layoutY="36.0" prefHeight="38.0" prefWidth="341.0"
+    <Label fx:id="labelTaskDescription" layoutX="1.0" layoutY="36.0" prefHeight="38.0" prefWidth="335.0"
            textAlignment="CENTER">
         <padding>
-          <Insets left="5.0" right="5.0"/>
+            <Insets left="3.0" right="3.0"/>
         </padding>
     </Label>
-    <Label fx:id="labelTime" layoutX="-1.0" layoutY="74.0" prefHeight="17.0" prefWidth="341.0" textAlignment="CENTER">
+    <Label fx:id="labelTime" layoutY="74.0" prefHeight="17.0" prefWidth="335.0" textAlignment="CENTER">
         <padding>
-          <Insets left="5.0" right="5.0"/>
+            <Insets left="4.0" right="4.0"/>
         </padding>
     </Label>
 </AnchorPane>
