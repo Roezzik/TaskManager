@@ -23,6 +23,7 @@ import com.netcracker.task.manager.view.editForm.EditTaskForm;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -87,6 +88,7 @@ public class MainFormController {
         for (Task task : tasksList) {
             taskRows.add(new TaskRow(task));
         }
+        taskRows.sort(Comparator.comparingInt(TaskRow::getId));
         tasksTable.setItems(FXCollections.observableList(taskRows));
         Refresher.getInstance().setMainFormController(this);
         
@@ -96,6 +98,9 @@ public class MainFormController {
         deleteButton.setDisable(true);
         for (TaskRow taskRow : taskRows) {
             taskRow.getTaskCheckBox().setOnAction(event -> disableButtons());
+            if (taskRow.getTaskStatus().equals(Status.DONE.getTitle())) {
+                taskRow.getTaskEditButton().setDisable(true);
+            }
         }
     }
     
@@ -255,7 +260,7 @@ public class MainFormController {
         refreshTable();
     }
     
-    public void getTaskRowByTaskId(int taskId) {
+    public void setTaskRowByTaskId(int taskId) {
         List<TaskRow> taskRows = tasksTable.getItems();
         TaskRow       taskRow  = taskRows.stream().filter(tr -> tr.getId() == taskId).findFirst().get();
         TaskRowManager.getInstance().setTaskRow(taskRow);
