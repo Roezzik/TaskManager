@@ -43,7 +43,7 @@ public class TextMarshaller implements Marshaller {
         
         try {
             if (!file.exists()) {
-                file.createNewFile();
+                boolean create = file.createNewFile();
                 AlertForm.helloAlert(ViewConstants.ERROR_BACKUP_NOT_FOUND);
             }
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class TextMarshaller implements Marshaller {
         }
         
         Journal        journal = new Journal();
-        BufferedReader br      = null;
+        BufferedReader br;
         try {
             br = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException e) {
@@ -59,28 +59,26 @@ public class TextMarshaller implements Marshaller {
         }
         
         String str;
-        if (br != null) {
-            while ((str = br.readLine()) != null) {
-                
-                if (str.equals("")) continue;
-                
-                try {
-                    Task task = new Task(Integer.parseInt(str),
-                                         br.readLine(),
-                                         br.readLine(),
-                                         DateConverter.stringToDate(br.readLine()),
-                                         null);
-                    switch (br.readLine()) {
-                        case "Scheduled" -> task.setStatus(Status.SCHEDULED);
-                        case "Done" -> task.setStatus(Status.DONE);
-                        case "Postponed" -> task.setStatus(Status.POSTPONED);
-                        case "Expired" -> task.setStatus(Status.EXPIRED);
-                        case "Cancelled" -> task.setStatus(Status.CANCELLED);
-                    }
-                    journal.addTask(task);
-                } catch (Exception e) {
-                    throw new TextMarshallerReadException(ViewConstants.ERROR_READ_FILE);
+        while ((str = br.readLine()) != null) {
+            
+            if (str.equals("")) continue;
+            
+            try {
+                Task task = new Task(Integer.parseInt(str),
+                                     br.readLine(),
+                                     br.readLine(),
+                                     DateConverter.stringToDate(br.readLine()),
+                                     null);
+                switch (br.readLine()) {
+                    case "Scheduled" -> task.setStatus(Status.SCHEDULED);
+                    case "Done" -> task.setStatus(Status.DONE);
+                    case "Postponed" -> task.setStatus(Status.POSTPONED);
+                    case "Expired" -> task.setStatus(Status.EXPIRED);
+                    case "Cancelled" -> task.setStatus(Status.CANCELLED);
                 }
+                journal.addTask(task);
+            } catch (Exception e) {
+                throw new TextMarshallerReadException(ViewConstants.ERROR_READ_FILE);
             }
         }
         return journal;
@@ -93,7 +91,7 @@ public class TextMarshaller implements Marshaller {
         File   file       = new File(pathToFile);
         
         try {
-            file.createNewFile();
+            boolean create = file.createNewFile();
         } catch (IOException e) {
             throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);
         }

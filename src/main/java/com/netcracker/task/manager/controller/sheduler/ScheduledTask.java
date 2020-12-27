@@ -13,7 +13,7 @@ import java.util.TimerTask;
 
 public class ScheduledTask extends TimerTask {
     
-    private Task task;
+    private final Task task;
     
     public ScheduledTask(Task task) {
         this.task = task;

@@ -37,7 +37,7 @@ public class BinaryMarshaller implements Marshaller {
         
         try {
             if (!file.exists()) {
-                file.createNewFile();
+                boolean create = file.createNewFile();
                 write(journal);
                 AlertForm.helloAlert(ViewConstants.ERROR_BACKUP_NOT_FOUND);
             }
@@ -62,7 +62,7 @@ public class BinaryMarshaller implements Marshaller {
         File   file       = new File(pathToFile);
         
         try {
-            file.createNewFile();
+            boolean create = file.createNewFile();
         } catch (IOException e) {
             throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);
         }

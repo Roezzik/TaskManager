@@ -11,12 +11,11 @@ public class NotificationScheduler {
     
     public static  HashMap<Integer, Timer> timers     = new HashMap<>();
     private static int                     TIME_DELAY = 50;
-    private        NotificationHistory     notificationHistory;
     
     private static NotificationScheduler instance;
     
     private NotificationScheduler() {
-        notificationHistory = NotificationHistory.getInstance();
+        NotificationHistory notificationHistory = NotificationHistory.getInstance();
     }
     
     public static NotificationScheduler getInstance() {
@@ -53,12 +52,11 @@ public class NotificationScheduler {
                                           task.getDate().getTime() - new Date().getTime() + TIME_DELAY);
     }
     
-    //cancel, done, delete
     public void removeNotification(int taskId) {
         if (timers.get(taskId) != null) {
             timers.get(taskId).cancel();
             timers.get(taskId).purge();
-            timers.keySet().removeIf(key -> key == taskId); //  remove task from the map
+            timers.keySet().removeIf(key -> key == taskId);
         }
     }
     
