@@ -28,16 +28,20 @@ public class ViewConstants {
     public static final String TITLE_TO_ADD_FORM_VIEW          = "Add Task";
     public static final String TITLE_TO_EDIT_FORM_VIEW         = "Edit Task";
     public static final String TITLE_TO_NOTIFICATION_FORM_VIEW = "Notification";
+    public static final String TITLE_TO_POSTPONE_FORM_VIEW     = "Postpone Task";
     
     public static final String STYLE_FOR_EDIT_BUTTON = "-fx-background-color: transparent;";
     public static final double MIN_SIZE_EDIT_BUTTON  = 17;
     public static final double MAX_SIZE_EDIT_BUTTON  = 17;
     public static final double PREF_SIZE_EDIT_BUTTON = 17;
     
-    public static final String TITLE_TO_ALERT_ERROR_ADDING  = "Adding error!";
-    public static final String TITLE_TO_ALERT_ERROR_EDITING = "Editing error!";
+    public static final String TITLE_TO_ALERT_ERROR_ADDING     = "Adding error!";
+    public static final String TITLE_TO_ALERT_ERROR_EDITING    = "Editing error!";
+    public static final String TITLE_TO_POSTPONE_ERROR_EDITING = "Postpone error!";
     
-    public static final String ALERT_MISSING_TASK_NAME = "Please, enter a name of task!";
-    public static final String ALERT_INCORRECT_TIME    = "You can't set the passed time for notification! \n "
-                                                         + "Please, enter a correct time of notification.";
+    public static final String ALERT_MISSING_TASK_NAME  = "Please, enter a name of task!";
+    public static final String ALERT_INCORRECT_TIME     = "You can't set the passed time for notification! \n "
+                                                          + "Please, enter a correct time of notification.";
+    public static final String ALERT_INCORRECT_POSTPONE = "You can't postpone a task by the elapsed time.\n"
+                                                          + "The selected time period will be added to the current moment. ";
 }
