@@ -2,13 +2,13 @@ package com.netcracker.task.manager.view.notificationForm;
 
 
 import com.netcracker.task.manager.controller.sheduler.NotificationHistory;
+import com.netcracker.task.manager.view.notificationForm.postponeForm.PostponeTaskForm;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import com.netcracker.task.manager.controller.Controller;
-import com.netcracker.task.manager.view.editForm.EditTaskForm;
 import com.netcracker.task.manager.view.utils.Refresher;
 
 
@@ -48,26 +48,27 @@ public class NotificationTaskController {
     }
     
     @FXML
-    void clickButtonCancelled(ActionEvent event) {
+    void clickCancelButton(ActionEvent event) {
         controller.cancelTask(notificationHistory.getTaskIdList(currentScene));
         closeScene();
     }
     
     @FXML
-    void clickButtonDone(ActionEvent event) {
+    void clickDoneButton(ActionEvent event) {
         controller.doneTask(notificationHistory.getTaskIdList(currentScene));
         closeScene();
     }
     
     @FXML
-    void clickButtonPostponed(ActionEvent event) throws Exception {
+    void clickPostponeButton(ActionEvent event) throws Exception {
         closeScene();
-        Stage stage = new Stage();
-        Thread.sleep(100);
+        
         Refresher.getInstance()
                  .getMainFormController()
-                 .getTaskRowByTaskId(notificationHistory.getTaskIdList(currentScene));
-        (new EditTaskForm()).start(stage);
+                 .setTaskRowByTaskId(notificationHistory.getTaskIdList(currentScene));
+        PostponeTaskForm postponeTaskForm = new PostponeTaskForm();
+        Stage            stage            = new Stage();
+        postponeTaskForm.start(stage);
         stage.setOnCloseRequest(we -> Refresher.getInstance().getMainFormController().refreshTable());
     }
     
