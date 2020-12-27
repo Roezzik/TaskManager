@@ -26,8 +26,8 @@ public class PropertyParser {
         }
         return propertyValue;
     }
-
-//    public static int getIntegerPropertyValue(String PropertyName) throws NumberFormatException, PropertyReadException {
-//        return Integer.parseInt(getPropertyValue(PropertyName));
-//    }
+    
+    public static int getIntegerPropertyValue(String PropertyName) throws NumberFormatException, PropertyReadException {
+        return Integer.parseInt(getPropertyValue(PropertyName));
+    }
 }
