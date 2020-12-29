@@ -1,4 +1,4 @@
-package com.netcracker.task.manager.controller;
+package com.netcracker.task.manager.controller.exception;
 
 
 public class PropertyReadException extends Exception {

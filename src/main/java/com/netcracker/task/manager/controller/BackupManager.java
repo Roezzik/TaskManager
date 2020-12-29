@@ -2,22 +2,25 @@ package com.netcracker.task.manager.controller;
 
 
 import com.netcracker.task.manager.controller.io.BinaryMarshaller;
-import com.netcracker.task.manager.controller.io.exception.*;
+import com.netcracker.task.manager.controller.exception.*;
 import com.netcracker.task.manager.controller.io.Marshaller;
 import com.netcracker.task.manager.controller.io.TextMarshaller;
 import com.netcracker.task.manager.model.Journal;
 
 import java.io.IOException;
+import java.util.Properties;
 
 
 public class BackupManager {
     
     private Marshaller marshaller;
+    PropertyParser propertyParser = PropertyParser.getInstance();
     
     private void chooseMarshaller() throws PropertyReadException {
         
-        String fileFormat = PropertyParser.getPropertyValue("backup_format");
-        
+        String fileFormat = propertyParser.getPropertyValue("backup_format");
+       // String fileFormat = propertyParser.getFileFormat();
+
         if (fileFormat.equals(FileFormat.TEXT.getTitle())) {
             marshaller = TextMarshaller.getInstance();
         } else if (fileFormat.equals(FileFormat.BINARY.getTitle())) {

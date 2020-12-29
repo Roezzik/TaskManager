@@ -3,9 +3,9 @@ package com.netcracker.task.manager.controller.io;
 
 import com.netcracker.task.manager.controller.DateConverter;
 import com.netcracker.task.manager.controller.PropertyParser;
-import com.netcracker.task.manager.controller.PropertyReadException;
+
+import com.netcracker.task.manager.controller.exception.*;
 import com.netcracker.task.manager.controller.factory.JournalFactory;
-import com.netcracker.task.manager.controller.io.exception.*;
 import com.netcracker.task.manager.model.Journal;
 import com.netcracker.task.manager.model.Status;
 import com.netcracker.task.manager.model.Task;
@@ -18,11 +18,13 @@ import java.util.Date;
 public class TextMarshaller implements Marshaller {
     
     private static TextMarshaller instance;
+
+    PropertyParser propertyParser = PropertyParser.getInstance();
     
     JournalFactory journalFactory = new JournalFactory();
     
-    //private static final String PATH_TO_BACKUP = "path_to_backup";
-    //private static final String BACKUP_FORMAT  = "backup_format";
+    private static final String PATH_TO_BACKUP = "path_to_backup";
+    private static final String BACKUP_FORMAT  = "backup_format";
     private boolean flag = false;
     
     private TextMarshaller() {
@@ -35,6 +37,8 @@ public class TextMarshaller implements Marshaller {
         return instance;
     }
     
+
+
     private Journal readTextBackup(File file) throws BufferedReaderException, IOException, TextMarshallerReadException {
         
         Journal        journal = journalFactory.create();
@@ -119,8 +123,8 @@ public class TextMarshaller implements Marshaller {
     public Journal read()
     throws TextMarshallerReadException, IOException, PropertyReadException, BufferedReaderException {
         
-        //String pathToFile = PropertyParser.getPropertyValue(PATH_TO_BACKUP) + "." + PropertyParser.getPropertyValue(BACKUP_FORMAT);
-        String pathToFile = PropertyParser.getPathToBackup();
+        String pathToFile = propertyParser.getPropertyValue(PATH_TO_BACKUP) + "." + propertyParser.getPropertyValue(BACKUP_FORMAT);
+      //  String pathToFile = propertyParser.getPathToBackup();
         File   file       = new File(pathToFile);
         
         if (!file.exists()) {
@@ -142,8 +146,8 @@ public class TextMarshaller implements Marshaller {
     @Override
     public void write(Journal journal) throws CreateFileException, PropertyReadException, PrintWriterException {
         
-        //String pathToFile = PropertyParser.getPropertyValue(PATH_TO_BACKUP) + "." + PropertyParser.getPropertyValue(BACKUP_FORMAT);
-        String pathToFile = PropertyParser.getPathToBackup();
+        String pathToFile = propertyParser.getPropertyValue(PATH_TO_BACKUP) + "." + propertyParser.getPropertyValue(BACKUP_FORMAT);
+        //String pathToFile = propertyParser.getPathToBackup();
         File   file       = new File(pathToFile);
         
         try {

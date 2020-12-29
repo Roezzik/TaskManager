@@ -2,8 +2,8 @@ package com.netcracker.task.manager.view.mainForm;
 
 
 import com.netcracker.task.manager.controller.BackupManager;
-import com.netcracker.task.manager.controller.PropertyReadException;
-import com.netcracker.task.manager.controller.io.exception.*;
+import com.netcracker.task.manager.controller.exception.PropertyReadException;
+import com.netcracker.task.manager.controller.exception.*;
 import com.netcracker.task.manager.model.Journal;
 import com.netcracker.task.manager.model.Status;
 import com.netcracker.task.manager.model.Task;

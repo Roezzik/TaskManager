@@ -1,4 +1,4 @@
-package com.netcracker.task.manager.controller.io.exception;
+package com.netcracker.task.manager.controller.exception;
 
 
 public class TextMarshallerReadException extends Exception {

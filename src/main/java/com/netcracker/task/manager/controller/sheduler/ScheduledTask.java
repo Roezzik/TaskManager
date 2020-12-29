@@ -4,7 +4,7 @@ package com.netcracker.task.manager.controller.sheduler;
 import com.netcracker.task.manager.controller.DateConverter;
 import com.netcracker.task.manager.model.Task;
 import com.netcracker.task.manager.view.notificationForm.NotificationTaskForm;
-import com.netcracker.task.manager.view.notificationForm.RunPlatformException;
+import com.netcracker.task.manager.controller.exception.RunPlatformException;
 import com.netcracker.task.manager.view.utils.ViewConstants;
 import javafx.application.Platform;
 

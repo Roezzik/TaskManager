@@ -1,6 +1,7 @@
 package com.netcracker.task.manager.view.notificationForm;
 
 
+import com.netcracker.task.manager.controller.exception.RunPlatformException;
 import com.netcracker.task.manager.controller.sheduler.NotificationHistory;
 import com.netcracker.task.manager.view.utils.ViewPathConstants;
 import javafx.event.Event;
