@@ -27,7 +27,7 @@ public class Controller {
         return instance;
     }
     
-    public void initAllTask() {
+    private void initAllTask() {
         notificationScheduler.startAllTasks(journal.getListAllTasks());
     }
     
@@ -77,6 +77,7 @@ public class Controller {
         this.journal = journal;
         List<Task> tasksList = this.journal.getListAllTasks();
         checkingExpiredTasks(tasksList);
+        initAllTask();
     }
     
     public void checkingExpiredTasks(List<Task> tasksList) {
