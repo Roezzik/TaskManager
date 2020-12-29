@@ -9,13 +9,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+
 /**
- * class for working with  Property file
+ * class for working with Property file
  */
 public class PropertyParser {
-
+    
     /**
-     * PATH_TO_PROPERTIES -  path to the property file
+     * PATH_TO_PROPERTIES - path to the property file
      */
     public final   String         PATH_TO_PROPERTIES = "staff/application.properties";
     private static PropertyParser instance;
@@ -37,9 +38,10 @@ public class PropertyParser {
         }
         return instance;
     }
-
+    
     /**
      * getPropertyValue is to return the value of the variable by its name from the property file
+     *
      * @param propertyName - the name of the variable
      * @return the value of the variable by its name from the property file
      */

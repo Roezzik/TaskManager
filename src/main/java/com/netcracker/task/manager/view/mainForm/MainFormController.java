@@ -190,18 +190,19 @@ public class MainFormController {
     public void loadJournal(ActionEvent actionEvent) {
         
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Load Journal");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Backup Files (.txt, .bin)",
+        fileChooser.setTitle(ViewConstants.TITLE_TO_LOAD_FILE_CHOOSER);
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(ViewConstants.FILTERS_FOR_FILE_CHOOSER,
                                                                                  "*.bin", "*.txt"));
         File file = fileChooser.showOpenDialog(tasksTable.getScene().getWindow());
-        
+        if (file == null) {
+            return;
+        }
         try {
             Journal journal = backupManager.readOtherBackup(file.toString());
-            controller.addTasks(journal);
+            controller.restoreBackupTasks(journal);
             refreshTable();
         } catch (ReadFileException e) {
             AlertForm.errorAlert(e.getMessage());
-           // System.exit(2);
         }
     }
     
@@ -211,7 +212,6 @@ public class MainFormController {
             backupManager.writeBackup(controller.getJournal());
         } catch (WriteFileException e) {
             AlertForm.errorAlert(e.getMessage());
-           // System.exit(3);
         }
     }
     

@@ -30,6 +30,9 @@ public class ViewConstants {
     public static final String TITLE_TO_NOTIFICATION_FORM_VIEW = "Notification";
     public static final String TITLE_TO_POSTPONE_FORM_VIEW     = "Postpone Task";
     
+    public static final String TITLE_TO_LOAD_FILE_CHOOSER  = "Load Journal";
+    public static final String FILTERS_FOR_FILE_CHOOSER    = "Backup Files (.txt, .bin)";
+    
     public static final String STYLE_FOR_EDIT_BUTTON = "-fx-background-color: transparent;";
     public static final double MIN_SIZE_EDIT_BUTTON  = 17;
     public static final double MAX_SIZE_EDIT_BUTTON  = 17;
