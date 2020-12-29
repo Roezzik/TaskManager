@@ -4,6 +4,7 @@ package com.netcracker.task.manager.controller.io;
 import com.netcracker.task.manager.controller.DateConverter;
 import com.netcracker.task.manager.controller.PropertyParser;
 import com.netcracker.task.manager.controller.PropertyReadException;
+import com.netcracker.task.manager.controller.factory.JournalFactory;
 import com.netcracker.task.manager.controller.io.exception.*;
 import com.netcracker.task.manager.model.Journal;
 import com.netcracker.task.manager.model.Status;
@@ -17,6 +18,8 @@ import java.util.Date;
 public class TextMarshaller implements Marshaller {
     
     private static TextMarshaller instance;
+    
+    JournalFactory journalFactory = new JournalFactory();
     
     //private static final String PATH_TO_BACKUP = "path_to_backup";
     //private static final String BACKUP_FORMAT  = "backup_format";
@@ -34,7 +37,7 @@ public class TextMarshaller implements Marshaller {
     
     private Journal readTextBackup(File file) throws BufferedReaderException, IOException, TextMarshallerReadException {
         
-        Journal        journal = new Journal();
+        Journal        journal = journalFactory.create();
         BufferedReader br;
         try {
             br = new BufferedReader(new FileReader(file));
@@ -122,7 +125,7 @@ public class TextMarshaller implements Marshaller {
         
         if (!file.exists()) {
             flag = true;
-            return new Journal();
+            return journalFactory.create();
         }
         
         return readTextBackup(file);

@@ -5,6 +5,7 @@ import com.netcracker.task.manager.controller.BackupManager;
 import com.netcracker.task.manager.controller.Controller;
 import com.netcracker.task.manager.controller.IdGenerator;
 import com.netcracker.task.manager.controller.PropertyReadException;
+import com.netcracker.task.manager.controller.factory.JournalFactory;
 import com.netcracker.task.manager.controller.io.BinaryMarshaller;
 import com.netcracker.task.manager.controller.io.TextMarshaller;
 import com.netcracker.task.manager.controller.io.exception.*;
@@ -27,8 +28,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         
-        Journal       journal       = new Journal();
-        BackupManager backupManager = new BackupManager();
+        JournalFactory journalFactory = new JournalFactory();
+        Journal        journal        = journalFactory.create();
+        BackupManager  backupManager  = new BackupManager();
         
         try {
             journal = backupManager.readDefaultBackup();

@@ -3,9 +3,9 @@ package com.netcracker.task.manager.controller.io;
 
 import com.netcracker.task.manager.controller.PropertyParser;
 import com.netcracker.task.manager.controller.PropertyReadException;
+import com.netcracker.task.manager.controller.factory.JournalFactory;
 import com.netcracker.task.manager.controller.io.exception.*;
 import com.netcracker.task.manager.model.Journal;
-import com.netcracker.task.manager.view.utils.AlertForm;
 import com.netcracker.task.manager.view.utils.ViewConstants;
 
 import java.io.*;
@@ -57,7 +57,8 @@ public class BinaryMarshaller implements Marshaller {
         
         if (!file.exists()) {
             flag = true;
-            return new Journal();
+            JournalFactory journalFactory = new JournalFactory();
+            return journalFactory.create();
         }
         
         return readBinaryBackup(file);

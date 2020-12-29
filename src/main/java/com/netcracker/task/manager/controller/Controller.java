@@ -1,6 +1,7 @@
 package com.netcracker.task.manager.controller;
 
 
+import com.netcracker.task.manager.controller.factory.JournalFactory;
 import com.netcracker.task.manager.controller.sheduler.NotificationScheduler;
 import com.netcracker.task.manager.model.Journal;
 import com.netcracker.task.manager.model.Status;
@@ -16,7 +17,8 @@ public class Controller {
     private final  NotificationScheduler notificationScheduler;
     
     private Controller() {
-        this.journal = new Journal();
+        JournalFactory journalFactory = new JournalFactory();
+        this.journal = journalFactory.create();
         this.notificationScheduler = NotificationScheduler.getInstance();
     }
     
