@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class EditTaskForm {
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource(ViewPathConstants.PATH_TO_EDIT_FORM_VIEW));
+        Parent root = FXMLLoader.load(getClass().getResource(ViewPathConstants.PATH_TO_EDIT_FORM_VIEW ));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle(ViewConstants.TITLE_TO_EDIT_FORM_VIEW);
         stage.setScene(new Scene(root));

@@ -2,9 +2,7 @@ package com.netcracker.task.manager.controller.io;
 
 
 import com.netcracker.task.manager.controller.PropertyParser;
-import com.netcracker.task.manager.controller.exception.CreateFileException;
-import com.netcracker.task.manager.controller.exception.FileInputStreamException;
-import com.netcracker.task.manager.controller.exception.FileOutputStreamException;
+import com.netcracker.task.manager.controller.exception.*;
 import com.netcracker.task.manager.controller.factory.JournalFactory;
 import com.netcracker.task.manager.model.Journal;
 import com.netcracker.task.manager.view.utils.ViewConstants;
@@ -38,7 +36,7 @@ public class BinaryMarshaller implements Marshaller {
     }
     
     @Override
-    public Journal read(String pathToBackup) throws FileInputStreamException {
+    public Journal read(String pathToBackup) throws  ReadFileException {
         
         File file = new File(pathToBackup);
         
@@ -54,14 +52,13 @@ public class BinaryMarshaller implements Marshaller {
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             journal = (Journal) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            throw new FileInputStreamException(ViewConstants.ERROR_FILE_INPUT_STREAM_EXCEPTION);
+            throw new ReadFileException(ViewConstants.ERROR_FILE_INPUT_STREAM_EXCEPTION);
         }
         return journal;
     }
     
     @Override
-    public void write(Journal journal)
-    throws CreateFileException, FileOutputStreamException {
+    public void write(Journal journal) throws  WriteFileException {
         
         String pathToFile = propertyParser.getPropertyValue(PATH) + "." + propertyParser.getPropertyValue(FORMAT);
         File file = new File(pathToFile);
@@ -69,14 +66,14 @@ public class BinaryMarshaller implements Marshaller {
         try {
             boolean create = file.createNewFile();
         } catch (IOException e) {
-            throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);
+            throw new WriteFileException(ViewConstants.ERROR_CREATE_FILE);
         }
         
         try (FileOutputStream fos = new FileOutputStream(pathToFile);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             oos.writeObject(journal);
         } catch (IOException e) {
-            throw new FileOutputStreamException(ViewConstants.ERROR_FILE_OUTPUT_STREAM_EXCEPTION);
+            throw new WriteFileException(ViewConstants.ERROR_FILE_OUTPUT_STREAM_EXCEPTION);
         }
     }
 }

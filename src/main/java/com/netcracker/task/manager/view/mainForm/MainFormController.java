@@ -2,7 +2,6 @@ package com.netcracker.task.manager.view.mainForm;
 
 
 import com.netcracker.task.manager.controller.BackupManager;
-import com.netcracker.task.manager.controller.exception.PropertyReadException;
 import com.netcracker.task.manager.controller.exception.*;
 import com.netcracker.task.manager.model.Journal;
 import com.netcracker.task.manager.model.Status;
@@ -25,7 +24,6 @@ import com.netcracker.task.manager.view.addForm.AddTaskForm;
 import com.netcracker.task.manager.view.editForm.EditTaskForm;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -201,10 +199,9 @@ public class MainFormController {
             Journal journal = backupManager.readOtherBackup(file.toString());
             controller.addTasks(journal);
             refreshTable();
-        } catch (PropertyReadException | CreateFileException | IOException | BufferedReaderException
-                | TextMarshallerReadException | FileInputStreamException e) {
+        } catch (ReadFileException e) {
             AlertForm.errorAlert(e.getMessage());
-            System.exit(2);
+           // System.exit(2);
         }
     }
     
@@ -212,9 +209,9 @@ public class MainFormController {
     public void saveJournal(ActionEvent actionEvent) {
         try {
             backupManager.writeBackup(controller.getJournal());
-        } catch (PropertyReadException | CreateFileException | PrintWriterException | FileOutputStreamException e) {
+        } catch (WriteFileException e) {
             AlertForm.errorAlert(e.getMessage());
-            System.exit(3);
+           // System.exit(3);
         }
     }
     

@@ -3,23 +3,26 @@ package com.netcracker.task.manager.view.utils;
 
 import javafx.scene.control.Alert;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 
 public class AlertForm {
-    
+
+
     public static void errorAlert(String info) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(ViewConstants.TITLE_TO_ERROR);
         alert.setHeaderText(info);
         alert.showAndWait();
     }
-    
+
     public static void helloAlert(String info) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(ViewConstants.TITLE_TO_HELLO);
         alert.setHeaderText(info);
         alert.showAndWait();
     }
-    
+
     public static void infoAddAlert(String info) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(ViewConstants.TITLE_TO_ALERT_ERROR_ADDING);

@@ -4,15 +4,14 @@ package com.netcracker.task.manager;
 import com.netcracker.task.manager.controller.BackupManager;
 import com.netcracker.task.manager.controller.Controller;
 import com.netcracker.task.manager.controller.IdGenerator;
-//import com.netcracker.task.manager.controller.PropertyReadException;
 import com.netcracker.task.manager.controller.exception.*;
 import com.netcracker.task.manager.controller.factory.JournalFactory;
 import com.netcracker.task.manager.controller.io.BinaryMarshaller;
 import com.netcracker.task.manager.controller.io.TextMarshaller;
-//import com.netcracker.task.manager.controller.io.exception.*;
 import com.netcracker.task.manager.model.Journal;
 import com.netcracker.task.manager.view.utils.AlertForm;
 import com.netcracker.task.manager.view.utils.ViewPathConstants;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -20,9 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import com.netcracker.task.manager.view.utils.ViewConstants;
-
-import java.io.IOException;
-
 
 public class Main extends Application {
     
@@ -38,10 +34,8 @@ public class Main extends Application {
             if (TextMarshaller.getInstance().checkCreateFile() | BinaryMarshaller.getInstance().checkCreateFile()) {
                 AlertForm.helloAlert(ViewConstants.ERROR_BACKUP_NOT_FOUND);
             }
-        } catch (PropertyReadException | CreateFileException | IOException | BufferedReaderException
-                | TextMarshallerReadException | FileInputStreamException e) {
-            AlertForm.errorAlert(e.getMessage());
-            System.exit(2);
+        } catch (ReadFileException e) {
+            AlertForm.errorAlert(e.getMessage() + " Create new file!");
         }
         
         Controller controller = Controller.getInstance();
@@ -58,9 +52,8 @@ public class Main extends Application {
         primaryStage.setOnCloseRequest(event -> {
             try {
                 backupManager.writeBackup(controller.getJournal());
-            } catch (PropertyReadException | CreateFileException | PrintWriterException | FileOutputStreamException e) {
+            } catch (WriteFileException e) {
                 AlertForm.errorAlert(e.getMessage());
-                System.exit(3);
             }
             Platform.exit();
             System.exit(0);

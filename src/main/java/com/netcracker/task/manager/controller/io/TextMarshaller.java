@@ -42,7 +42,7 @@ public class TextMarshaller implements Marshaller {
     }
     
     @Override
-    public Journal read(String pathToBackup) throws IOException, TextMarshallerReadException, BufferedReaderException {
+    public Journal read(String pathToBackup) throws ReadFileException {
         
         File file = new File(pathToBackup);
         
@@ -56,85 +56,94 @@ public class TextMarshaller implements Marshaller {
         try {
             br = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException e) {
-            throw new BufferedReaderException(ViewConstants.ERROR_BUFFER_READ_EXCEPTION);
+            throw new ReadFileException(ViewConstants.ERROR_BUFFER_READ_EXCEPTION);
         }
         
         String firstLine;
         String buffer;
-        
-        while ((firstLine = br.readLine()) != null) {
-            
-            if (firstLine.equals("")) continue;
-            try {
-                int    levelOfTask     = 0;
-                int    idTask;
-                String taskName        = "";
-                String taskDescription = "";
-                Date   taskDate        = null;
-                
-                idTask = Integer.parseInt(firstLine);
-                while (true) {
-                    buffer = br.readLine();
-                    
-                    if (levelOfTask == 0) {
-                        taskName = buffer;
-                    }
-                    
-                    if (levelOfTask == 1) {
-                        StringBuilder descriptionBuffer;
-                        if (buffer.equals("")) {
-                            descriptionBuffer = new StringBuilder();
-                        } else {
-                            descriptionBuffer = new StringBuilder(buffer);
+
+        try {
+            while ((firstLine = br.readLine()) != null) {
+
+                if (firstLine.equals("")) continue;
+                try {
+                    int levelOfTask = 0;
+                    int idTask;
+                    String taskName = "";
+                    String taskDescription = "";
+                    Date taskDate = null;
+
+                    idTask = Integer.parseInt(firstLine);
+                    while (true) {
+                        buffer = br.readLine();
+
+                        if (levelOfTask == 0) {
+                            taskName = buffer;
                         }
-                        while (true) {
-                            buffer = br.readLine();
+
+                        if (levelOfTask == 1) {
+                            StringBuilder descriptionBuffer;
                             if (buffer.equals("")) {
-                                descriptionBuffer.append('\n' + "");
+                                descriptionBuffer = new StringBuilder();
                             } else {
-                                try {
-                                    taskDate = DateConverter.stringToDate(buffer);
-                                    taskDescription = descriptionBuffer.toString();
-                                    break;
-                                } catch (Exception e) {
-                                    descriptionBuffer.append('\n').append(buffer);
+                                descriptionBuffer = new StringBuilder(buffer);
+                            }
+                            while (true) {
+                                buffer = br.readLine();
+                                if (buffer.equals("")) {
+                                    descriptionBuffer.append('\n' + "");
+                                } else {
+                                    try {
+                                        taskDate = DateConverter.stringToDate(buffer);
+                                        taskDescription = descriptionBuffer.toString();
+                                        break;
+                                    } catch (Exception e) {
+                                        descriptionBuffer.append('\n').append(buffer);
+                                    }
                                 }
                             }
                         }
+                        if (levelOfTask == 2) {
+                            break;
+                        }
+                        levelOfTask++;
                     }
-                    if (levelOfTask == 2) {
-                        break;
+
+                    Task task = new Task(idTask, taskName, taskDescription, taskDate, null);
+
+                    switch (buffer) {
+                        case "Scheduled" -> task.setStatus(Status.SCHEDULED);
+                        case "Done" -> task.setStatus(Status.DONE);
+                        case "Postponed" -> task.setStatus(Status.POSTPONED);
+                        case "Expired" -> task.setStatus(Status.EXPIRED);
+                        case "Cancelled" -> task.setStatus(Status.CANCELLED);
                     }
-                    levelOfTask++;
+
+                    if (task.getStatus() == null) throw new ReadFileException(ViewConstants.ERROR_READ_FILE);
+
+                    journal.addTask(task);
+                } catch (Exception e) {
+                    throw new ReadFileException(ViewConstants.ERROR_READ_FILE);
                 }
-                
-                Task task = new Task(idTask, taskName, taskDescription, taskDate, null);
-                
-                switch (buffer) {
-                    case "Scheduled" -> task.setStatus(Status.SCHEDULED);
-                    case "Done" -> task.setStatus(Status.DONE);
-                    case "Postponed" -> task.setStatus(Status.POSTPONED);
-                    case "Expired" -> task.setStatus(Status.EXPIRED);
-                    case "Cancelled" -> task.setStatus(Status.CANCELLED);
-                }
-                journal.addTask(task);
-            } catch (Exception e) {
-                throw new TextMarshallerReadException(ViewConstants.ERROR_READ_FILE);
             }
+        }catch (IOException e){
+            throw new ReadFileException(ViewConstants.ERROR_READ_FILE);
         }
         return journal;
     }
     
     @Override
-    public void write(Journal journal) throws CreateFileException, PrintWriterException {
+    public void write(Journal journal) throws  WriteFileException {
         
         String pathToFile = propertyParser.getPropertyValue(PATH) + "." + propertyParser.getPropertyValue(FORMAT);
         File   file       = new File(pathToFile);
         
         try {
-            boolean create = file.createNewFile();
+            if (!file.exists()) {
+                boolean create = file.createNewFile();
+            }
         } catch (IOException e) {
-            throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);
+            throw new WriteFileException(ViewConstants.ERROR_CREATE_FILE);
         }
         
         try (PrintWriter pw = new PrintWriter(file)) {
@@ -147,7 +156,7 @@ public class TextMarshaller implements Marshaller {
                 pw.println();
             });
         } catch (FileNotFoundException fileNotFoundException) {
-            throw new PrintWriterException(ViewConstants.ERROR_PRINT_WRITER_EXCEPTION);
+            throw new WriteFileException(ViewConstants.ERROR_PRINT_WRITER_EXCEPTION);
         }
     }
 }

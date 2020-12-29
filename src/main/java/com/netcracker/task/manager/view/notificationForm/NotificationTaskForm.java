@@ -1,7 +1,7 @@
 package com.netcracker.task.manager.view.notificationForm;
 
 
-import com.netcracker.task.manager.controller.exception.RunPlatformException;
+import com.netcracker.task.manager.controller.exception.NotificationException;
 import com.netcracker.task.manager.controller.sheduler.NotificationHistory;
 import com.netcracker.task.manager.view.utils.ViewPathConstants;
 import javafx.event.Event;
@@ -31,7 +31,7 @@ public class NotificationTaskForm {
         return instance;
     }
     
-    public void start(int taskId) throws RunPlatformException {
+    public void start(int taskId) throws NotificationException {
         
         Stage stage;
         try {
@@ -42,7 +42,7 @@ public class NotificationTaskForm {
             stage.setOnCloseRequest(Event::consume);
             stage.show();
         } catch (Exception e) {
-            throw new RunPlatformException(ViewConstants.ERROR_PLATFORM_RUN);
+            throw new NotificationException(ViewConstants.ERROR_PLATFORM_RUN);
         }
         
         notificationHistory.addTaskIdStageList(stage);

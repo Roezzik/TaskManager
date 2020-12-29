@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.*;
 
 
-public class Journal implements Serializable {
+public class Journal  {
     
     private final HashMap<Integer, Task> tasksMap;
     

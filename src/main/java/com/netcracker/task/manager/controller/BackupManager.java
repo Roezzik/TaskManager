@@ -7,7 +7,6 @@ import com.netcracker.task.manager.controller.io.Marshaller;
 import com.netcracker.task.manager.controller.io.TextMarshaller;
 import com.netcracker.task.manager.model.Journal;
 
-import java.io.IOException;
 
 
 public class BackupManager {
@@ -40,23 +39,17 @@ public class BackupManager {
         pathToDefaultBackup = propertyParser.getPropertyValue("path_to_backup") + "." + fileFormat;
     }
     
-    public void writeBackup(Journal journal) throws CreateFileException, PropertyReadException,
-                                                    PrintWriterException, FileOutputStreamException {
+    public void writeBackup(Journal journal) throws WriteFileException {
         chooseMarshaller();
         marshaller.write(journal);
     }
     
-    public Journal readDefaultBackup() throws PropertyReadException, TextMarshallerReadException,
-                                              CreateFileException, IOException, BufferedReaderException,
-                                              FileInputStreamException {
+    public Journal readDefaultBackup() throws ReadFileException {
         chooseMarshaller();
         return marshaller.read(pathToDefaultBackup);
     }
     
-    public Journal readOtherBackup(String pathToBackup) throws PropertyReadException, TextMarshallerReadException,
-                                                               CreateFileException, IOException,
-                                                               BufferedReaderException,
-                                                               FileInputStreamException {
+    public Journal readOtherBackup(String pathToBackup) throws ReadFileException {
         chooseMarshaller();
         return marshaller.read(pathToBackup);
     }
