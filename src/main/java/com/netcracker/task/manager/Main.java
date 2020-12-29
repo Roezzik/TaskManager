@@ -31,7 +31,7 @@ public class Main extends Application {
         
         JournalFactory journalFactory = new JournalFactory();
         Journal        journal        = journalFactory.create();
-        BackupManager  backupManager  = new BackupManager();
+        BackupManager  backupManager  = BackupManager.getInstance();
         
         try {
             journal = backupManager.readDefaultBackup();

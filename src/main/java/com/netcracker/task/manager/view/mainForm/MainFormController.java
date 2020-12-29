@@ -82,7 +82,7 @@ public class MainFormController {
     public MainFormController() {
         this.taskRows = new ArrayList<>();
         this.controller = Controller.getInstance();
-        this.backupManager = new BackupManager();
+        this.backupManager = BackupManager.getInstance();
     }
     
     public void refreshTable() {

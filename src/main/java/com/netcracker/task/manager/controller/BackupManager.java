@@ -8,24 +8,36 @@ import com.netcracker.task.manager.controller.io.TextMarshaller;
 import com.netcracker.task.manager.model.Journal;
 
 import java.io.IOException;
-import java.util.Properties;
 
 
 public class BackupManager {
     
+    private static BackupManager instance;
+    
+    private BackupManager() {
+    }
+    
+    public static BackupManager getInstance() {
+        if (instance == null) {
+            instance = new BackupManager();
+        }
+        return instance;
+    }
+    
     private Marshaller marshaller;
     PropertyParser propertyParser = PropertyParser.getInstance();
+    private String pathToDefaultBackup;
     
-    private void chooseMarshaller() throws PropertyReadException {
+    private void chooseMarshaller() {
         
         String fileFormat = propertyParser.getPropertyValue("backup_format");
-       // String fileFormat = propertyParser.getFileFormat();
-
+        
         if (fileFormat.equals(FileFormat.TEXT.getTitle())) {
             marshaller = TextMarshaller.getInstance();
         } else if (fileFormat.equals(FileFormat.BINARY.getTitle())) {
             marshaller = BinaryMarshaller.getInstance();
         }
+        pathToDefaultBackup = propertyParser.getPropertyValue("path_to_backup") + "." + fileFormat;
     }
     
     public void writeBackup(Journal journal) throws CreateFileException, PropertyReadException,
@@ -34,10 +46,11 @@ public class BackupManager {
         marshaller.write(journal);
     }
     
-    public Journal readDefaultBackup() throws PropertyReadException, TextMarshallerReadException, CreateFileException,
-                                              IOException, BufferedReaderException, FileInputStreamException {
+    public Journal readDefaultBackup() throws PropertyReadException, TextMarshallerReadException,
+                                              CreateFileException, IOException, BufferedReaderException,
+                                              FileInputStreamException {
         chooseMarshaller();
-        return marshaller.read();
+        return marshaller.read(pathToDefaultBackup);
     }
     
     public Journal readOtherBackup(String pathToBackup) throws PropertyReadException, TextMarshallerReadException,
