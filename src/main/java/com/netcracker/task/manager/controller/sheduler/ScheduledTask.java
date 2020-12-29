@@ -10,7 +10,9 @@ import javafx.application.Platform;
 
 import java.util.TimerTask;
 
-
+/**
+ * ScheduledTask -  running each task in a separate thread
+ */
 public class ScheduledTask extends TimerTask {
     
     private final Task task;
