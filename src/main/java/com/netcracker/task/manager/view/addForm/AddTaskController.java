@@ -14,11 +14,12 @@ import com.netcracker.task.manager.controller.factory.TaskFactory;
 import com.netcracker.task.manager.view.utils.AlertForm;
 import com.netcracker.task.manager.view.utils.ViewConstants;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class AddTaskController {
@@ -55,6 +56,37 @@ public class AddTaskController {
         
         initDatePicker();
         initSpinner();
+        taskDescription = limitArea();
+    }
+    
+    private TextArea limitArea() {
+        
+        return getTextArea(taskDescription);
+    }
+    
+    public static TextArea getTextArea(TextArea taskDescription) {
+        Pattern newline = Pattern.compile("\n");
+        taskDescription.setTextFormatter(new TextFormatter<String>(change -> {
+            
+            String newText = change.getControlNewText();
+            
+            Matcher matcher = newline.matcher(newText);
+            int     lines   = 1;
+            while (matcher.find()) {
+                lines++;
+            }
+            
+            if (lines <= ViewConstants.MAX_DESCRIPTION_LINES) return change;
+            
+            int    lastIndex = newText.lastIndexOf("\n");
+            String substring = newText.substring(0, lastIndex);
+            change.setRange(0, substring.length());
+            change.setText(substring);
+            
+            return change;
+        }));
+        
+        return taskDescription;
     }
     
     private void initDatePicker() {

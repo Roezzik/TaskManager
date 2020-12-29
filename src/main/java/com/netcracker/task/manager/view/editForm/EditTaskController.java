@@ -64,6 +64,12 @@ public class EditTaskController {
         
         taskName.setText(taskRowManager.getTaskRow().getTaskName());
         taskDescription.setText(taskRowManager.getTaskRow().getTaskDescription());
+        taskDescription = limitArea();
+    }
+    
+    private TextArea limitArea() {
+        
+        return AddTaskController.getTextArea(taskDescription);
     }
     
     private void initDatePicker() {
