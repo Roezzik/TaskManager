@@ -5,10 +5,11 @@ import com.netcracker.task.manager.controller.BackupManager;
 import com.netcracker.task.manager.controller.Controller;
 import com.netcracker.task.manager.controller.IdGenerator;
 import com.netcracker.task.manager.controller.PropertyReadException;
+import com.netcracker.task.manager.controller.io.BinaryMarshaller;
+import com.netcracker.task.manager.controller.io.TextMarshaller;
 import com.netcracker.task.manager.controller.io.exception.*;
 import com.netcracker.task.manager.model.Journal;
 import com.netcracker.task.manager.view.utils.AlertForm;
-import com.netcracker.task.manager.view.utils.Refresher;
 import com.netcracker.task.manager.view.utils.ViewPathConstants;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -30,15 +31,18 @@ public class Main extends Application {
         BackupManager backupManager = new BackupManager();
         
         try {
-            journal = backupManager.readBackupJournal();
-        } catch (PropertyReadException | CreateFileException | IOException | BufferedReaderException | TextMarshallerReadException | FileInputStreamException e) {
+            journal = backupManager.readDefaultBackup();
+            if (TextMarshaller.getInstance().checkCreateFile() | BinaryMarshaller.getInstance().checkCreateFile()) {
+                AlertForm.helloAlert(ViewConstants.ERROR_BACKUP_NOT_FOUND);
+            }
+        } catch (PropertyReadException | CreateFileException | IOException | BufferedReaderException
+                | TextMarshallerReadException | FileInputStreamException e) {
             AlertForm.errorAlert(e.getMessage());
             System.exit(2);
         }
         
         Controller controller = Controller.getInstance();
         controller.addTasks(journal);
-        controller.initAllTask();
         
         IdGenerator.getInstance(controller.getLastTaskId());
         
@@ -48,10 +52,9 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.show();
-        Refresher.getInstance().getMainFormController().refreshTable();
         primaryStage.setOnCloseRequest(event -> {
             try {
-                backupManager.writeBackupJournal(controller.getJournal());
+                backupManager.writeBackup(controller.getJournal());
             } catch (PropertyReadException | CreateFileException | PrintWriterException | FileOutputStreamException e) {
                 AlertForm.errorAlert(e.getMessage());
                 System.exit(3);
