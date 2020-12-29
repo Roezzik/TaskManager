@@ -15,7 +15,9 @@ public class BinaryMarshaller implements Marshaller {
     
     private static BinaryMarshaller instance;
     
-    private static final String PATH_TO_BIN_BACKUP = "path_to_bin_backup";
+    //private static final String PATH_TO_BACKUP = "path_to_backup";
+    //private static final String BACKUP_FORMAT  = "backup_format";
+    private boolean flag = false;
     
     private BinaryMarshaller() {
     }
@@ -27,25 +29,11 @@ public class BinaryMarshaller implements Marshaller {
         return instance;
     }
     
-    @Override
-    public Journal read() throws CreateFileException, PropertyReadException, FileInputStreamException {
+    private Journal readBinaryBackup(File file) throws FileInputStreamException {
         
-        String pathToFile = PropertyParser.getPropertyValue(PATH_TO_BIN_BACKUP);
+        Journal journal;
         
-        File    file    = new File(pathToFile);
-        Journal journal = new Journal();
-        
-        try {
-            if (!file.exists()) {
-                boolean create = file.createNewFile();
-                write(journal);
-                AlertForm.helloAlert(ViewConstants.ERROR_BACKUP_NOT_FOUND);
-            }
-        } catch (Exception e) {
-            throw new CreateFileException(ViewConstants.ERROR_CREATE_FILE);
-        }
-        
-        try (FileInputStream fis = new FileInputStream(pathToFile);
+        try (FileInputStream fis = new FileInputStream(file);
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             journal = (Journal) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
@@ -54,11 +42,41 @@ public class BinaryMarshaller implements Marshaller {
         return journal;
     }
     
+    public boolean checkCreateFile() {
+        return flag;
+    }
+    
+    @Override
+    public Journal read() throws PropertyReadException, FileInputStreamException {
+        
+        //String pathToFile = PropertyParser.getPropertyValue(PATH_TO_BACKUP) + "." + PropertyParser.getPropertyValue(BACKUP_FORMAT);
+        String pathToFile = PropertyParser.getPathToBackup();
+        System.out.println(pathToFile);
+        
+        File file = new File(pathToFile);
+        
+        if (!file.exists()) {
+            flag = true;
+            return new Journal();
+        }
+        
+        return readBinaryBackup(file);
+    }
+    
+    @Override
+    public Journal read(String pathToBackup) throws FileInputStreamException {
+        
+        //String pathToFile = PropertyParser.getPropertyValue(PATH_TO_BIN_BACKUP);
+        File file = new File(pathToBackup);
+        return readBinaryBackup(file);
+    }
+    
     @Override
     public void write(Journal journal)
     throws CreateFileException, PropertyReadException, FileOutputStreamException {
         
-        String pathToFile = PropertyParser.getPropertyValue(PATH_TO_BIN_BACKUP);
+        //String pathToFile = PropertyParser.getPropertyValue(PATH_TO_BIN_BACKUP);
+        String pathToFile = PropertyParser.getPathToBackup();
         File   file       = new File(pathToFile);
         
         try {
@@ -74,5 +92,4 @@ public class BinaryMarshaller implements Marshaller {
             throw new FileOutputStreamException(ViewConstants.ERROR_FILE_OUTPUT_STREAM_EXCEPTION);
         }
     }
-    
 }

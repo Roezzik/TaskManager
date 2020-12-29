@@ -14,13 +14,17 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import com.netcracker.task.manager.controller.Controller;
 import com.netcracker.task.manager.view.utils.TaskRowManager;
 import com.netcracker.task.manager.view.addForm.AddTaskForm;
 import com.netcracker.task.manager.view.editForm.EditTaskForm;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -186,8 +190,15 @@ public class MainFormController {
     
     @FXML
     public void loadJournal(ActionEvent actionEvent) {
+        
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load Journal");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Backup Files (.txt, .bin)",
+                                                                                 "*.bin", "*.txt"));
+        File file = fileChooser.showOpenDialog(tasksTable.getScene().getWindow());
+        
         try {
-            Journal journal = backupManager.readBackupJournal();
+            Journal journal = backupManager.readOtherBackup(file.toString());
             controller.addTasks(journal);
             refreshTable();
         } catch (PropertyReadException | CreateFileException | IOException | BufferedReaderException
@@ -200,7 +211,7 @@ public class MainFormController {
     @FXML
     public void saveJournal(ActionEvent actionEvent) {
         try {
-            backupManager.writeBackupJournal(controller.getJournal());
+            backupManager.writeBackup(controller.getJournal());
         } catch (PropertyReadException | CreateFileException | PrintWriterException | FileOutputStreamException e) {
             AlertForm.errorAlert(e.getMessage());
             System.exit(3);

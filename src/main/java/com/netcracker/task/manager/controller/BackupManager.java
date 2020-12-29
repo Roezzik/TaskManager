@@ -25,16 +25,24 @@ public class BackupManager {
         }
     }
     
-    public void writeBackupJournal(Journal journal) throws CreateFileException, PropertyReadException,
-                                                           PrintWriterException, FileOutputStreamException {
+    public void writeBackup(Journal journal) throws CreateFileException, PropertyReadException,
+                                                    PrintWriterException, FileOutputStreamException {
         chooseMarshaller();
         marshaller.write(journal);
     }
     
-    public Journal readBackupJournal() throws PropertyReadException, TextMarshallerReadException, CreateFileException,
+    public Journal readDefaultBackup() throws PropertyReadException, TextMarshallerReadException, CreateFileException,
                                               IOException, BufferedReaderException, FileInputStreamException {
         chooseMarshaller();
         return marshaller.read();
+    }
+    
+    public Journal readOtherBackup(String pathToBackup) throws PropertyReadException, TextMarshallerReadException,
+                                                               CreateFileException, IOException,
+                                                               BufferedReaderException,
+                                                               FileInputStreamException {
+        chooseMarshaller();
+        return marshaller.read(pathToBackup);
     }
     
     enum FileFormat {
