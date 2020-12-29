@@ -8,10 +8,23 @@ import com.netcracker.task.manager.model.Task;
 import java.util.Date;
 
 
+/**
+ * Factory pattern class for creating Journal
+ * @see Task
+ */
 public class TaskFactory {
     
     IdGenerator idGenerator = IdGenerator.getInstance();
     
+    /**
+     * Function for creating a Task
+     * @param id - id of Task
+     * @param name - name of Task
+     * @param description - description of Task
+     * @param date - date of notification of the Task
+     * @param status - status of Task
+     * @return new Task object
+     */
     public Task create(int id, String name, String description, Date date, Status status) {
         return new Task(id, name, description, date, status);
     }

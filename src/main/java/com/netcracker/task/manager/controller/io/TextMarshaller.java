@@ -14,6 +14,9 @@ import java.io.*;
 import java.util.Date;
 
 
+/**
+ * Class for uploading and saving backup files in the format .txt
+ */
 public class TextMarshaller implements Marshaller {
     
     private static TextMarshaller instance;
@@ -30,6 +33,11 @@ public class TextMarshaller implements Marshaller {
     private TextMarshaller() {
     }
     
+    /**
+     * Singleton implementation for TextMarshaller
+     *
+     * @return single TextMarshaller object
+     */
     public static TextMarshaller getInstance() {
         if (instance == null) {
             instance = new TextMarshaller();
@@ -37,6 +45,11 @@ public class TextMarshaller implements Marshaller {
         return instance;
     }
     
+    /**
+     * Function for checking the availability of the read file
+     *
+     * @return boolean value
+     */
     public boolean checkCreateFile() {
         return flag;
     }
@@ -61,26 +74,26 @@ public class TextMarshaller implements Marshaller {
         
         String firstLine;
         String buffer;
-
+        
         try {
             while ((firstLine = br.readLine()) != null) {
-
+                
                 if (firstLine.equals("")) continue;
                 try {
-                    int levelOfTask = 0;
-                    int idTask;
-                    String taskName = "";
+                    int    levelOfTask     = 0;
+                    int    idTask;
+                    String taskName        = "";
                     String taskDescription = "";
-                    Date taskDate = null;
-
+                    Date   taskDate        = null;
+                    
                     idTask = Integer.parseInt(firstLine);
                     while (true) {
                         buffer = br.readLine();
-
+                        
                         if (levelOfTask == 0) {
                             taskName = buffer;
                         }
-
+                        
                         if (levelOfTask == 1) {
                             StringBuilder descriptionBuffer;
                             if (buffer.equals("")) {
@@ -108,9 +121,9 @@ public class TextMarshaller implements Marshaller {
                         }
                         levelOfTask++;
                     }
-
+                    
                     Task task = new Task(idTask, taskName, taskDescription, taskDate, null);
-
+                    
                     switch (buffer) {
                         case "Scheduled" -> task.setStatus(Status.SCHEDULED);
                         case "Done" -> task.setStatus(Status.DONE);
@@ -118,22 +131,22 @@ public class TextMarshaller implements Marshaller {
                         case "Expired" -> task.setStatus(Status.EXPIRED);
                         case "Cancelled" -> task.setStatus(Status.CANCELLED);
                     }
-
+                    
                     if (task.getStatus() == null) throw new ReadFileException(ViewConstants.ERROR_READ_FILE);
-
+                    
                     journal.addTask(task);
                 } catch (Exception e) {
                     throw new ReadFileException(ViewConstants.ERROR_READ_FILE);
                 }
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new ReadFileException(ViewConstants.ERROR_READ_FILE);
         }
         return journal;
     }
     
     @Override
-    public void write(Journal journal) throws  WriteFileException {
+    public void write(Journal journal) throws WriteFileException {
         
         String pathToFile = propertyParser.getPropertyValue(PATH) + "." + propertyParser.getPropertyValue(FORMAT);
         File   file       = new File(pathToFile);

@@ -10,6 +10,9 @@ import com.netcracker.task.manager.view.utils.ViewConstants;
 import java.io.*;
 
 
+/**
+ * Class for uploading and saving backup files in the format .bin
+ */
 public class BinaryMarshaller implements Marshaller {
     
     private static BinaryMarshaller instance;
@@ -24,6 +27,11 @@ public class BinaryMarshaller implements Marshaller {
     private BinaryMarshaller() {
     }
     
+    /**
+     * Singleton implementation for BinaryMarshaller
+     *
+     * @return single BinaryMarshaller object
+     */
     public static BinaryMarshaller getInstance() {
         if (instance == null) {
             instance = new BinaryMarshaller();
@@ -31,12 +39,17 @@ public class BinaryMarshaller implements Marshaller {
         return instance;
     }
     
+    /**
+     * Function for checking the availability of the read file
+     *
+     * @return boolean value
+     */
     public boolean checkCreateFile() {
         return flag;
     }
     
     @Override
-    public Journal read(String pathToBackup) throws  ReadFileException {
+    public Journal read(String pathToBackup) throws ReadFileException {
         
         File file = new File(pathToBackup);
         
@@ -58,10 +71,10 @@ public class BinaryMarshaller implements Marshaller {
     }
     
     @Override
-    public void write(Journal journal) throws  WriteFileException {
+    public void write(Journal journal) throws WriteFileException {
         
         String pathToFile = propertyParser.getPropertyValue(PATH) + "." + propertyParser.getPropertyValue(FORMAT);
-        File file = new File(pathToFile);
+        File   file       = new File(pathToFile);
         
         try {
             boolean create = file.createNewFile();

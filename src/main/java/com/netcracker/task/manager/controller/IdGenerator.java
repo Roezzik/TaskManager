@@ -1,6 +1,9 @@
 package com.netcracker.task.manager.controller;
 
 
+/**
+ * Class for generating unique task IDs
+ */
 public class IdGenerator {
     
     private static IdGenerator instance;
@@ -14,6 +17,11 @@ public class IdGenerator {
         this.counter = counter;
     }
     
+    /**
+     * Singleton implementation for IdGenerator
+     *
+     * @return single IdGenerator object without parameter
+     */
     public static IdGenerator getInstance() {
         if (instance == null) {
             instance = new IdGenerator();
@@ -21,6 +29,11 @@ public class IdGenerator {
         return instance;
     }
     
+    /**
+     * Singleton implementation for IdGenerator
+     *
+     * @return single IdGenerator object with parameter
+     */
     public static IdGenerator getInstance(int counter) {
         if (instance == null) {
             instance = new IdGenerator(counter);
@@ -28,6 +41,10 @@ public class IdGenerator {
         return instance;
     }
     
+    /**
+     * Function for getting the task id
+     * @return task id
+     */
     public int getNextId() {
         return ++counter;
     }

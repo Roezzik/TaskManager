@@ -20,6 +20,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import com.netcracker.task.manager.view.utils.ViewConstants;
 
+
+/**
+ * Class from which the application starts working
+ */
 public class Main extends Application {
     
     @Override
@@ -39,7 +43,7 @@ public class Main extends Application {
         }
         
         Controller controller = Controller.getInstance();
-        controller.addTasks(journal);
+        controller.restoreBackupTasks(journal);
         
         IdGenerator.getInstance(controller.getLastTaskId());
         

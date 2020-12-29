@@ -4,6 +4,9 @@ package com.netcracker.task.manager.view.utils;
 import com.netcracker.task.manager.view.mainForm.TaskRow;
 
 
+/**
+ * Class for selecting a row with a task
+ */
 public class TaskRowManager {
     
     private static TaskRowManager instance;

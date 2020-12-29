@@ -4,6 +4,9 @@ package com.netcracker.task.manager.view.utils;
 import com.netcracker.task.manager.view.mainForm.MainFormController;
 
 
+/**
+ * Class for updating a table with tasks
+ */
 public class Refresher {
     
     private static Refresher          instance;
