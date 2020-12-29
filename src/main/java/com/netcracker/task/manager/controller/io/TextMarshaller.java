@@ -3,7 +3,6 @@ package com.netcracker.task.manager.controller.io;
 
 import com.netcracker.task.manager.controller.DateConverter;
 import com.netcracker.task.manager.controller.PropertyParser;
-
 import com.netcracker.task.manager.controller.exception.*;
 import com.netcracker.task.manager.controller.factory.JournalFactory;
 import com.netcracker.task.manager.model.Journal;
@@ -18,13 +17,14 @@ import java.util.Date;
 public class TextMarshaller implements Marshaller {
     
     private static TextMarshaller instance;
-
+    
     PropertyParser propertyParser = PropertyParser.getInstance();
     
     JournalFactory journalFactory = new JournalFactory();
     
-    private static final String PATH_TO_BACKUP = "path_to_backup";
-    private static final String BACKUP_FORMAT  = "backup_format";
+    private static final String FORMAT = "backup_format";
+    private static final String PATH   = "path_to_backup";
+    
     private boolean flag = false;
     
     private TextMarshaller() {
@@ -37,9 +37,19 @@ public class TextMarshaller implements Marshaller {
         return instance;
     }
     
-
-
-    private Journal readTextBackup(File file) throws BufferedReaderException, IOException, TextMarshallerReadException {
+    public boolean checkCreateFile() {
+        return flag;
+    }
+    
+    @Override
+    public Journal read(String pathToBackup) throws IOException, TextMarshallerReadException, BufferedReaderException {
+        
+        File file = new File(pathToBackup);
+        
+        if (!file.exists()) {
+            flag = true;
+            return journalFactory.create();
+        }
         
         Journal        journal = journalFactory.create();
         BufferedReader br;
@@ -115,39 +125,10 @@ public class TextMarshaller implements Marshaller {
         return journal;
     }
     
-    public boolean checkCreateFile() {
-        return flag;
-    }
-    
     @Override
-    public Journal read()
-    throws TextMarshallerReadException, IOException, PropertyReadException, BufferedReaderException {
+    public void write(Journal journal) throws CreateFileException, PrintWriterException {
         
-        String pathToFile = propertyParser.getPropertyValue(PATH_TO_BACKUP) + "." + propertyParser.getPropertyValue(BACKUP_FORMAT);
-      //  String pathToFile = propertyParser.getPathToBackup();
-        File   file       = new File(pathToFile);
-        
-        if (!file.exists()) {
-            flag = true;
-            return journalFactory.create();
-        }
-        
-        return readTextBackup(file);
-    }
-    
-    @Override
-    public Journal read(String pathToBackup) throws IOException, TextMarshallerReadException, BufferedReaderException {
-        
-        File file = new File(pathToBackup);
-        
-        return readTextBackup(file);
-    }
-    
-    @Override
-    public void write(Journal journal) throws CreateFileException, PropertyReadException, PrintWriterException {
-        
-        String pathToFile = propertyParser.getPropertyValue(PATH_TO_BACKUP) + "." + propertyParser.getPropertyValue(BACKUP_FORMAT);
-        //String pathToFile = propertyParser.getPathToBackup();
+        String pathToFile = propertyParser.getPropertyValue(PATH) + "." + propertyParser.getPropertyValue(FORMAT);
         File   file       = new File(pathToFile);
         
         try {
