@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class NotificationScheduler {
     
-    public static  HashMap<Integer, Timer> timers     = new HashMap<>();
+    public static  HashMap<Integer, Timer> timers     = new HashMap<>(); // todo init in constructor
     private static int                     TIME_DELAY = 50;
     
     private static NotificationScheduler instance;
