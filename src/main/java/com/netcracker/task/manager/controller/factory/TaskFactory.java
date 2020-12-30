@@ -10,19 +10,25 @@ import java.util.Date;
 
 /**
  * Factory pattern class for creating Journal
+ *
  * @see Task
  */
 public class TaskFactory {
     
-    private IdGenerator idGenerator = IdGenerator.getInstance(); // todo init in constructor
+    private final IdGenerator idGenerator;
+    
+    public TaskFactory() {
+        idGenerator = IdGenerator.getInstance();
+    }
     
     /**
      * Function for creating a Task
-     * @param id - id of Task
-     * @param name - name of Task
+     *
+     * @param id          - id of Task
+     * @param name        - name of Task
      * @param description - description of Task
-     * @param date - date of notification of the Task
-     * @param status - status of Task
+     * @param date        - date of notification of the Task
+     * @param status      - status of Task
      * @return new Task object
      */
     public Task create(int id, String name, String description, Date date, Status status) {

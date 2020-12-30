@@ -13,12 +13,13 @@ import com.netcracker.task.manager.model.Journal;
  */
 public class BackupManager {
     
-    private static BackupManager instance;
-    private        Marshaller    marshaller;
-    private PropertyParser propertyParser = PropertyParser.getInstance(); // todo init propertyParser in constructor
-    private String pathToDefaultBackup;
+    private static BackupManager  instance;
+    private        Marshaller     marshaller;
+    private final  PropertyParser propertyParser;
+    private        String         pathToDefaultBackup;
     
     private BackupManager() {
+        propertyParser = PropertyParser.getInstance();
         chooseMarshaller();
     }
     
@@ -39,15 +40,15 @@ public class BackupManager {
      * gets the path to the backup file depending on the properties
      */
     private void chooseMarshaller() {
-        // todo constants for all green strings
-        String fileFormat = propertyParser.getPropertyValue("backup_format");
+        String fileFormat = propertyParser.getPropertyValue(ControllerConstants.BACKUP_FORMAT_PROPERTY);
         
         if (fileFormat.equals(FileFormat.TEXT.getTitle())) {
             marshaller = TextMarshaller.getInstance();
         } else if (fileFormat.equals(FileFormat.BINARY.getTitle())) {
             marshaller = BinaryMarshaller.getInstance();
         }
-        pathToDefaultBackup = propertyParser.getPropertyValue("path_to_backup") + "." + fileFormat;
+        pathToDefaultBackup =
+                propertyParser.getPropertyValue(ControllerConstants.PATH_TO_BACKUP_PROPERTY) + "." + fileFormat;
     }
     
     /**
@@ -75,15 +76,13 @@ public class BackupManager {
      * @return journal with tasks from the uploaded file
      */
     public Journal readOtherBackup(String pathToBackup) throws ReadFileException {
-        chooseMarshaller(); // todo why is it here?
         return marshaller.read(pathToBackup);
     }
     
-    // todo private
-    enum FileFormat {
+    private enum FileFormat {
         
-        TEXT("txt"),
-        BINARY("bin");
+        TEXT(ControllerConstants.TEXT_FORMAT),
+        BINARY(ControllerConstants.BINARY_FORMAT);
         
         private final String title;
         

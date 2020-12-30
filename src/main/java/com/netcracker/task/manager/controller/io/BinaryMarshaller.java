@@ -1,6 +1,7 @@
 package com.netcracker.task.manager.controller.io;
 
 
+import com.netcracker.task.manager.controller.ControllerConstants;
 import com.netcracker.task.manager.controller.PropertyParser;
 import com.netcracker.task.manager.controller.exception.*;
 import com.netcracker.task.manager.controller.factory.JournalFactory;
@@ -16,15 +17,12 @@ import java.io.*;
 public class BinaryMarshaller implements Marshaller {
     
     private static BinaryMarshaller instance;
-    
-    private PropertyParser propertyParser = PropertyParser.getInstance(); // todo init in constructor
-    
-    private static final String FORMAT = "backup_format";
-    private static final String PATH   = "path_to_backup";
+    private final  PropertyParser   propertyParser;
     
     private boolean flag = false;
     
     private BinaryMarshaller() {
+        propertyParser = PropertyParser.getInstance();
     }
     
     /**
@@ -73,8 +71,10 @@ public class BinaryMarshaller implements Marshaller {
     @Override
     public void write(Journal journal) throws WriteFileException {
         
-        String pathToFile = propertyParser.getPropertyValue(PATH) + "." + propertyParser.getPropertyValue(FORMAT);
-        File   file       = new File(pathToFile);
+        String pathToFile = propertyParser.getPropertyValue(ControllerConstants.PATH_TO_BACKUP_PROPERTY)
+                            + "."
+                            + propertyParser.getPropertyValue(ControllerConstants.BACKUP_FORMAT_PROPERTY);
+        File file = new File(pathToFile);
         
         try {
             boolean create = file.createNewFile();

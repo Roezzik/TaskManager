@@ -12,12 +12,13 @@ import java.util.*;
  */
 public class NotificationScheduler {
     
-    public static  HashMap<Integer, Timer> timers     = new HashMap<>(); // todo init in constructor
+    public static  HashMap<Integer, Timer> timers;
     private static int                     TIME_DELAY = 50;
     
     private static NotificationScheduler instance;
     
     private NotificationScheduler() {
+        timers = new HashMap<>();
         NotificationHistory notificationHistory = NotificationHistory.getInstance();
     }
     

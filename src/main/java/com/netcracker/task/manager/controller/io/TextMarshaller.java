@@ -1,6 +1,7 @@
 package com.netcracker.task.manager.controller.io;
 
 
+import com.netcracker.task.manager.controller.ControllerConstants;
 import com.netcracker.task.manager.controller.DateConverter;
 import com.netcracker.task.manager.controller.PropertyParser;
 import com.netcracker.task.manager.controller.exception.*;
@@ -20,17 +21,14 @@ import java.util.Date;
 public class TextMarshaller implements Marshaller {
     
     private static TextMarshaller instance;
-    
-    PropertyParser propertyParser = PropertyParser.getInstance();
+    PropertyParser propertyParser;
     
     JournalFactory journalFactory = new JournalFactory();
-    
-    private static final String FORMAT = "backup_format";
-    private static final String PATH   = "path_to_backup";
     
     private boolean flag = false;
     
     private TextMarshaller() {
+        propertyParser = PropertyParser.getInstance();
     }
     
     /**
@@ -148,8 +146,10 @@ public class TextMarshaller implements Marshaller {
     @Override
     public void write(Journal journal) throws WriteFileException {
         
-        String pathToFile = propertyParser.getPropertyValue(PATH) + "." + propertyParser.getPropertyValue(FORMAT);
-        File   file       = new File(pathToFile);
+        String pathToFile = propertyParser.getPropertyValue(ControllerConstants.PATH_TO_BACKUP_PROPERTY)
+                            + "."
+                            + propertyParser.getPropertyValue(ControllerConstants.BACKUP_FORMAT_PROPERTY);
+        File file = new File(pathToFile);
         
         try {
             if (!file.exists()) {
