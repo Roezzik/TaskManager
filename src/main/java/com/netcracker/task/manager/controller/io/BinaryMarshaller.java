@@ -17,7 +17,7 @@ public class BinaryMarshaller implements Marshaller {
     
     private static BinaryMarshaller instance;
     
-    PropertyParser propertyParser = PropertyParser.getInstance();
+    private PropertyParser propertyParser = PropertyParser.getInstance(); // todo init in constructor
     
     private static final String FORMAT = "backup_format";
     private static final String PATH   = "path_to_backup";
@@ -44,7 +44,7 @@ public class BinaryMarshaller implements Marshaller {
      *
      * @return boolean value
      */
-    public boolean checkCreateFile() {
+    public boolean checkCreateFile() { // todo kill me
         return flag;
     }
     
