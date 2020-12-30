@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class TaskFactory {
     
-    IdGenerator idGenerator = IdGenerator.getInstance();
+    private IdGenerator idGenerator = IdGenerator.getInstance(); // todo init in constructor
     
     /**
      * Function for creating a Task
