@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.netcracker.task.manager.view.mainForm.MainFormController">
+    <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="700.0">
+        <padding>
+            <Insets right="5.0" />
+        </padding>
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem fx:id="loadJournalItem" mnemonicParsing="false" onAction="#loadJournal" text="Load Journal" />
+            <MenuItem fx:id="saveJournalItem" mnemonicParsing="false" onAction="#saveJournal" text="Save Journal" />
+        </Menu>
+    </MenuBar>
+    <TableView fx:id="tasksTable" editable="true" layoutY="27.0" prefHeight="420.0" prefWidth="700.0">
+        <columns>
+            <TableColumn fx:id="checkColumn" prefWidth="24.0" resizable="false" sortable="false">
+                <graphic>
+                    <CheckBox fx:id="checkBoxAllTasks" mnemonicParsing="false" onAction="#selectAllTasks" prefHeight="17.0" prefWidth="23.0">
+                        <padding>
+                            <Insets left="1.0" />
+                        </padding>
+                    </CheckBox>
+                </graphic>
+            </TableColumn>
+            <TableColumn fx:id="nameColumn" prefWidth="103.0" text="Name" />
+            <TableColumn fx:id="descriptionColumn" prefWidth="315.0" text="Description" />
+            <TableColumn fx:id="dateColumn" prefWidth="130.0" text="Date" />
+            <TableColumn fx:id="statusColumn" prefWidth="102.0" sortable="false" text="Status" />
+            <TableColumn fx:id="editColumn" prefWidth="24.0" sortable="false" />
+        </columns>
+    </TableView>
+    <Button fx:id="cancelButton" layoutX="370.0" layoutY="459.0" mnemonicParsing="false" onAction="#clickCancelButton" text="Cancel" />
+    <Button fx:id="addButton" layoutX="253.0" layoutY="459.0" mnemonicParsing="false" onAction="#clickAddButton" prefHeight="25.0" prefWidth="52.0" text="Add" />
+    <Button fx:id="deleteButton" layoutX="429.0" layoutY="459.0" mnemonicParsing="false" onAction="#clickDeleteButton" prefHeight="25.0" prefWidth="52.0" text="Delete" />
+    <Button fx:id="editButton" layoutX="312.0" layoutY="459.0" mnemonicParsing="false" onAction="#clickEditButton" prefHeight="25.0" prefWidth="52.0" text="Edit" />
+</AnchorPane>

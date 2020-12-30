@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="215.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.netcracker.task.manager.view.addForm.AddTaskController">
+    <Label layoutX="9.0" layoutY="13.0" text="Task Name"/>
+    <Label layoutX="9.0" layoutY="42.0" text="Task Description"/>
+    <Label layoutX="9.0" layoutY="135.0" text="Notification Date"/>
+    <TextField fx:id="taskName" layoutX="105.0" layoutY="9.0" prefHeight="25.0" prefWidth="265.0"/>
+    <DatePicker fx:id="notificationDate" editable="false" layoutX="105.0" layoutY="131.0" prefHeight="25.0"
+                prefWidth="109.0"/>
+    <Button fx:id="addButton" layoutX="230.0" layoutY="182.0" mnemonicParsing="false" onAction="#clickAddButton"
+            prefHeight="25.0" prefWidth="67.0" text="Add"/>
+    <Label layoutX="217.0" layoutY="135.0" text="Time"/>
+    <Spinner fx:id="notificationHour" layoutX="245.0" layoutY="131.0" prefHeight="25.0" prefWidth="59.0"/>
+    <Spinner fx:id="notificationMinute" layoutX="311.0" layoutY="131.0" prefHeight="25.0" prefWidth="59.0"/>
+    <TextArea fx:id="taskDescription" layoutX="105.0" layoutY="41.0" prefHeight="83.0" prefWidth="265.0"/>
+    <Label layoutX="306.0" layoutY="135.0" text=":"/>
+    <Button fx:id="cancelButton" layoutX="302.0" layoutY="182.0" mnemonicParsing="false" onAction="#clickCancelButton"
+            prefHeight="25.0" prefWidth="67.0" text="Cancel"/>
+</AnchorPane>

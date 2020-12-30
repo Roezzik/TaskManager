@@ -5,13 +5,32 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.netcracker</groupId>
-    <artifactId>TaskManager</artifactId>
-    <version>0.1</version>
+    <artifactId>task-manager</artifactId>
+    <version>1.0.0</version>
 
     <properties>
-        <maven.compiler.source>14</maven.compiler.source>
-        <maven.compiler.target>14</maven.compiler.target>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>15</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>15</version>
+        </dependency>
+    </dependencies>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java/com/netcracker/task/manager/view</directory>
+            </resource>
+        </resources>
+    </build>
 </project>
