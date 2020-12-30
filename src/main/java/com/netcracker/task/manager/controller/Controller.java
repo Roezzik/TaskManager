@@ -129,7 +129,7 @@ public class Controller {
      *
      * @return - journal with tasks
      */
-    public Journal getJournal() {
+    public Journal getJournal() { // todo do not return private entities to users of ypur realization
         return journal;
     }
     
