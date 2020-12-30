@@ -26,7 +26,7 @@ public class PropertyParser {
         properties = new Properties();
         try (InputStream inputStream = new FileInputStream(PATH_TO_PROPERTIES)) {
             properties.load(inputStream);
-        } catch (IOException e) {
+        } catch (IOException e) { // todo thow up exception, and handle in the exection part
             AlertForm.errorAlert(ViewConstants.ERROR_READ_PROPERTY);
             System.exit(4);
         }
