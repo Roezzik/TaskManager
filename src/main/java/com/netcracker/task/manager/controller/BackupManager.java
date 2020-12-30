@@ -15,7 +15,7 @@ public class BackupManager {
     
     private static BackupManager instance;
     private        Marshaller    marshaller;
-    PropertyParser propertyParser = PropertyParser.getInstance();
+    private PropertyParser propertyParser = PropertyParser.getInstance(); // todo init propertyParser in constructor
     private String pathToDefaultBackup;
     
     private BackupManager() {
@@ -39,7 +39,7 @@ public class BackupManager {
      * gets the path to the backup file depending on the properties
      */
     private void chooseMarshaller() {
-        
+        // todo constants for all green strings
         String fileFormat = propertyParser.getPropertyValue("backup_format");
         
         if (fileFormat.equals(FileFormat.TEXT.getTitle())) {
@@ -75,10 +75,11 @@ public class BackupManager {
      * @return journal with tasks from the uploaded file
      */
     public Journal readOtherBackup(String pathToBackup) throws ReadFileException {
-        chooseMarshaller();
+        chooseMarshaller(); // todo why is it here?
         return marshaller.read(pathToBackup);
     }
     
+    // todo private
     enum FileFormat {
         
         TEXT("txt"),
