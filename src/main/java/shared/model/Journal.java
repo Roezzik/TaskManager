@@ -1,15 +1,13 @@
 package shared.model;
 
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
-
+@XmlRootElement(name = "Journal")
 public class Journal implements Serializable {
-
+    
     private final HashMap<Integer, Task> tasksMap;
 
     public Journal() {
@@ -36,7 +34,7 @@ public class Journal implements Serializable {
     public void deleteTask(int taskId) {
         tasksMap.remove(taskId);
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,12 +42,12 @@ public class Journal implements Serializable {
         Journal journal = (Journal) o;
         return tasksMap.equals(journal.tasksMap);
     }
-
+    
     @Override
     public int hashCode() {
         return tasksMap.hashCode();
     }
-
+    
     @Override
     public String toString() {
         return "Journal{" +
